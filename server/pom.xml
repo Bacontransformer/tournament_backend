@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ybk</groupId>
-    <artifactId>game</artifactId>
+    <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tournament</name>
-    <description>tournament</description>
+    <name>server</name>
+    <description>server</description>
     <url/>
     <licenses>
         <license/>
@@ -68,7 +68,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.3.5</version>
                 <configuration>
                     <excludes>
                         <exclude>
