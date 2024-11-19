@@ -1,0 +1,10 @@
+tournament:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: tournament
+    username: root
+    password: 4275
+
+
