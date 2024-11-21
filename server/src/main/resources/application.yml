@@ -6,6 +6,11 @@ spring:
     name: tournament
   profiles:
     active: dev
+  redis:
+    host: ${tournament.redis.host}
+    port: ${tournament.redis.port}
+    password: ${tournament.redis.password}
+    database: ${tournament.redis.database}  #不是必须的，默认0
 
   main:
     allow-circular-references: true
