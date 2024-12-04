@@ -21,9 +21,31 @@ spring:
       username: ${tournament.datasource.username}
       password: ${tournament.datasource.password}
 
-mybatis:
+mybatis-plus:
   #mapper配置文件
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.ybk.entity # 替换为实体类所在包
   configuration:
     #开启驼峰命名
     map-underscore-to-camel-case: true
+
+ybk:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: admin
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: admin_token
+    # 设置jwt签名加密时使用的秘钥
+    leader-secret-key: leader
+    # 设置jwt过期时间
+    leader-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    leader-token-name: leader_token
+    # 设置jwt签名加密时使用的秘钥
+    referee-secret-key: leader
+    # 设置jwt过期时间
+    referee-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    referee-token-name: leader_token
