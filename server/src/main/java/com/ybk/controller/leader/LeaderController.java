@@ -70,6 +70,4 @@ public class LeaderController {
         leaderService.save(leaderDto);
         return Result.success();
     }
-
-
 }

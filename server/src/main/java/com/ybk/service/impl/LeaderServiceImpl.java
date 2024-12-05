@@ -28,7 +28,7 @@ public class LeaderServiceImpl implements LeaderService {
         leader.setIsPassed(false);
         leader.setCreateTime(LocalDateTime.now());
         leader.setUpdateTime(LocalDateTime.now());
-        leader.setPassword(leaderDto.getPasswordFirst());
+        leader.setPassword(DigestUtils.md5DigestAsHex(leaderDto.getPasswordFirst().getBytes()));
         leaderMapper.insert(leader);
     }
 

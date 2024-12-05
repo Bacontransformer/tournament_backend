@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -56,4 +57,7 @@ public class JwtUtil {
         return claims;
     }
 
+    public static void main(String[] args) {
+        System.out.println(DigestUtils.md5DigestAsHex("123456".getBytes()));
+    }
 }

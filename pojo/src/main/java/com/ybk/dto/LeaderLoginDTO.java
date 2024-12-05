@@ -15,5 +15,4 @@ public class LeaderLoginDTO implements Serializable {
 
     @ApiModelProperty("密码")
     private String password;
-
 }
