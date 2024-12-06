@@ -46,12 +46,15 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         log.info("开始注册自定义拦截器...");
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
+                .excludePathPatterns("/admin/save")
                 .excludePathPatterns("/admin/login");
         registry.addInterceptor(jwtTokenLeaderInterceptor)
                 .addPathPatterns("/leader/**")
+                .excludePathPatterns("/leader/save")
                 .excludePathPatterns("/leader/login");
         registry.addInterceptor(jwtTokenRefereeInterceptor)
                 .addPathPatterns("/referee/**")
+                .excludePathPatterns("/referee/save")
                 .excludePathPatterns("/referee/login");
     }
 //401是因为login被拦截，WebMvcConfiguration中的放行指令没有生效，将excludePathPatterns("/user/user/login")改为/**/**/login

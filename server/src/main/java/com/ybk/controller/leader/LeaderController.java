@@ -70,4 +70,19 @@ public class LeaderController {
         leaderService.save(leaderDto);
         return Result.success();
     }
+
+    @ApiOperation(value = "领队修改")
+    @PostMapping("/update")
+    public Result updateLeader(@RequestBody LeaderDTO leaderDTO){
+        String passwordFirst = leaderDTO.getPasswordFirst();
+        String passwordSecond = leaderDTO.getPasswordSecond();
+        if (passwordFirst != null && passwordSecond != null) {
+            if (!passwordFirst.equals(passwordSecond)){
+                return Result.error("两次输入的密码不一致");
+            }
+        }
+        log.info("领队修改：{}", leaderDTO);
+        leaderService.udpate(leaderDTO);
+        return Result.success();
+    }
 }

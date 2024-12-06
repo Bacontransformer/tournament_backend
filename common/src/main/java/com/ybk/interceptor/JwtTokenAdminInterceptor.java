@@ -35,8 +35,6 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        //System.out.println("当前线程id"+Thread.currentThread().getId());
-
         //判断当前拦截到的是Controller的方法还是其他资源
         if (!(handler instanceof HandlerMethod)) {
             //当前拦截到的不是动态方法，直接放行
@@ -50,9 +48,9 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.ADMIN_ID).toString());
-            BaseContext.setCurrentId(empId);
-            log.info("当前员工id：", empId);
+            Long adminId = Long.valueOf(claims.get(JwtClaimsConstant.ADMIN_ID).toString());
+            BaseContext.setCurrentId(adminId);
+            log.info("当前管理员id：", adminId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {

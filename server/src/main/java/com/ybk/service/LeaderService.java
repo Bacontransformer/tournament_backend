@@ -8,4 +8,6 @@ public interface LeaderService {
     void save(LeaderDTO leaderDto);
 
     Leader login(LeaderLoginDTO leaderLoginDTO);
+
+    void udpate(LeaderDTO leaderDTO);
 }

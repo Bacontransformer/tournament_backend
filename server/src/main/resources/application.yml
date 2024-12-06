@@ -44,8 +44,8 @@ ybk:
     # 设置前端传递过来的令牌名称
     leader-token-name: leader_token
     # 设置jwt签名加密时使用的秘钥
-    referee-secret-key: leader
+    referee-secret-key: referee
     # 设置jwt过期时间
     referee-ttl: 7200000
     # 设置前端传递过来的令牌名称
-    referee-token-name: leader_token
+    referee-token-name: referee_token

@@ -35,24 +35,26 @@ public class JwtTokenLeaderInterceptor implements HandlerInterceptor {
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        //System.out.println("当前线程id"+Thread.currentThread().getId());
-
         //判断当前拦截到的是Controller的方法还是其他资源
         if (!(handler instanceof HandlerMethod)) {
             //当前拦截到的不是动态方法，直接放行
             return true;
         }
 
+//        log.info("Request Path: {}", request.getRequestURI());
+//        log.info("JWT Token Header Name: {}", jwtProperties.getLeaderTokenName());
+        // 发起请求的header字段名leader_token要和这里的JWT Token Header Name一致
+
         //1、从请求头中获取令牌
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+        String token = request.getHeader(jwtProperties.getLeaderTokenName());
 
         //2、校验令牌
         try {
             log.info("jwt校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.LEADER_ID).toString());
-            BaseContext.setCurrentId(empId);
-            log.info("当前员工id：", empId);
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getLeaderSecretKey(), token);
+            Long leaderId = Long.valueOf(claims.get(JwtClaimsConstant.LEADER_ID).toString());
+            BaseContext.setCurrentId(leaderId);
+            log.info("当前领队id：", leaderId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {

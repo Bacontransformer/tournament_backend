@@ -44,15 +44,15 @@ public class JwtTokenRefereeInterceptor implements HandlerInterceptor {
         }
 
         //1、从请求头中获取令牌
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+        String token = request.getHeader(jwtProperties.getRefereeTokenName());
 
         //2、校验令牌
         try {
             log.info("jwt校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.REFEREE_ID).toString());
-            BaseContext.setCurrentId(empId);
-            log.info("当前员工id：", empId);
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getRefereeSecretKey(), token);
+            Long refereeId = Long.valueOf(claims.get(JwtClaimsConstant.REFEREE_ID).toString());
+            BaseContext.setCurrentId(refereeId);
+            log.info("当前裁判id：", refereeId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {
