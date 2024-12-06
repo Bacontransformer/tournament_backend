@@ -7,16 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "领队登录返回的数据格式")
-public class LeaderLoginVo implements Serializable {
+@ApiModel(description = "裁判登录返回的数据格式")
+public class RefereeLoginVO {
     @ApiModelProperty("主键值")
-    private Integer leaderId;
+    private Integer refereeId;
 
     @ApiModelProperty("用户名")
     private String userName;

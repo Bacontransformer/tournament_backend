@@ -8,7 +8,7 @@ import com.ybk.properties.JwtProperties;
 import com.ybk.result.Result;
 import com.ybk.service.LeaderService;
 import com.ybk.util.JwtUtil;
-import com.ybk.vo.LeaderLoginVo;
+import com.ybk.vo.LeaderLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class LeaderController {
 
     @ApiOperation(value="领队登录")
     @PostMapping("/login")
-    public Result<LeaderLoginVo> login(@RequestBody LeaderLoginDTO leaderLoginDTO){
+    public Result<LeaderLoginVO> login(@RequestBody LeaderLoginDTO leaderLoginDTO){
         log.info("领队登录：{}", leaderService);
 
         Leader leader = leaderService.login(leaderLoginDTO);
@@ -46,7 +46,7 @@ public class LeaderController {
                 jwtProperties.getLeaderTtl(),
                 claims);
 
-        LeaderLoginVo leaderLoginVo = LeaderLoginVo.builder()
+        LeaderLoginVO leaderLoginVo = LeaderLoginVO.builder()
                 .leaderId(leader.getLeaderId())
                 .userName(leader.getUsername())
                 .name(leader.getName())
