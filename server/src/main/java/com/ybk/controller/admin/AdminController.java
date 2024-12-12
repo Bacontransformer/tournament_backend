@@ -61,10 +61,5 @@ public class AdminController {
         return Result.success(adminLoginVO);
     }
 
-    @ApiOperation(value="分页查询待审批的领队信息")
-    @PostMapping("/page-leader")
-    public Result<PageResult> pageLeader(){
-        log.info("分页查询待审批的领队信息");
-        return null;
-    }
+
 }

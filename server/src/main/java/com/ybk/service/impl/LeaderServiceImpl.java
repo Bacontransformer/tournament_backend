@@ -1,6 +1,8 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ybk.dto.AuthorizeQueryDTO;
 import com.ybk.dto.LeaderDTO;
 import com.ybk.dto.LeaderLoginDTO;
 import com.ybk.entity.Leader;
@@ -9,6 +11,7 @@ import com.ybk.exception.AccountNotFoundException;
 import com.ybk.exception.PasswordErrorException;
 import com.ybk.exception.UsernameAlreadyExistedException;
 import com.ybk.mapper.LeaderMapper;
+import com.ybk.result.PageResult;
 import com.ybk.service.LeaderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +84,10 @@ public class LeaderServiceImpl implements LeaderService {
         return leader;
     }
 
+    /**
+     * 修改信息
+     * @param leaderDTO
+     */
     @Override
     public void udpate(LeaderDTO leaderDTO) {
         String username = leaderDTO.getUsername();
@@ -102,4 +109,29 @@ public class LeaderServiceImpl implements LeaderService {
         }
         leaderMapper.updateById(leader);
     }
+
+    /**
+     * 分页查询
+     * @param authorizeQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(AuthorizeQueryDTO authorizeQueryDTO) {
+        // 创建分页对象
+        Page<Leader> page = new Page<>(authorizeQueryDTO.getPage(), authorizeQueryDTO.getPageSize());
+
+        // 构造查询条件
+        QueryWrapper<Leader> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("is_passed", false);
+
+        // 执行分页查询
+        page = leaderMapper.selectPage(page, queryWrapper);
+
+        // 封装结果返回
+        PageResult pageResult = new PageResult();
+        pageResult.setRecords(page.getRecords());
+        pageResult.setTotal(page.getTotal()); // 修正为总记录数
+        return pageResult;
+    }
+
 }
