@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @TableName("event")
 public class Event {
     @TableId("event_id")
-    private Integer eventId;
+    private Long eventId;
     private String name;
     private String introduction;
     // 比赛场地

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @TableName("leader")
 public class Leader {
     @TableId(value = "leader_id", type = IdType.AUTO)
-    private Integer leaderId;
+    private Long leaderId;
     private String password;
     private String name;
     private String username;

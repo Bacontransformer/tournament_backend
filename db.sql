@@ -75,27 +75,10 @@ create table team
 )
     comment '队伍表';
 
-create table team_member
-(
-    id        int auto_increment comment '主键'
-        primary key,
-    team_id   int                                   not null comment '队伍ID',
-    player_id int                                   not null comment '队员ID',
-    role      varchar(20) default '队员'            not null comment '角色（队长、副队长、队员等）',
-    is_active tinyint(1)  default 1                 not null comment '是否活跃（1：是，0：否）',
-    join_time datetime    default CURRENT_TIMESTAMP null comment '加入时间',
-    constraint team_member_ibfk_1
-        foreign key (team_id) references team (team_id)
-            on delete cascade,
-    constraint team_member_ibfk_2
-        foreign key (player_id) references player (player_id)
-            on delete cascade
-)
-    comment '队伍队员明细表';
+ALTER TABLE admin MODIFY COLUMN admin_id BIGINT AUTO_INCREMENT COMMENT '管理员ID';
+ALTER TABLE leader MODIFY COLUMN leader_id BIGINT AUTO_INCREMENT COMMENT '领导ID';
+ALTER TABLE player MODIFY COLUMN player_id BIGINT NOT NULL COMMENT '选手ID';
+ALTER TABLE referee MODIFY COLUMN referee_id BIGINT AUTO_INCREMENT COMMENT '裁判ID';
+ALTER TABLE team MODIFY COLUMN team_id BIGINT AUTO_INCREMENT COMMENT '队伍ID';
 
-create index player_id
-    on team_member (player_id);
-
-create index team_id
-    on team_member (team_id);
 

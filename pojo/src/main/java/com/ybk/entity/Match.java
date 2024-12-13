@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @TableName("match")
 public class Match {
     @TableId("match_id")
-    private Integer matchId;
+    private Long matchId;
     private String place;
     private Integer venue_id;
     // 比赛开始时间

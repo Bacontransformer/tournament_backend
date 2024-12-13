@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @TableName("admin")
 public class Admin {
     @TableId("admin_id")
-    private Integer adminId;
+    private Long adminId;
     private String password;
     private String username;
     private String name;

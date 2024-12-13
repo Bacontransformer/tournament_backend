@@ -25,7 +25,7 @@ public class PlayerController {
     @PostMapping("/save")
     public Result savePlayer(@RequestBody PlayerDTO playerDTO){
         log.info("队员创建：{}", playerDTO);
-        // playerService.save(playerDTO);
+        playerService.save(playerDTO);
         return Result.success();
     }
 }

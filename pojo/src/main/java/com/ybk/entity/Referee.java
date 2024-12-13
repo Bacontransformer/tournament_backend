@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @TableName("referee")
 public class Referee {
     @TableId("refereeId")
-    private Integer refereeId;
+    private Long refereeId;
     private String password;
     private String username;
     private String name;

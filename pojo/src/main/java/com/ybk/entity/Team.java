@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @TableName("team")
 public class Team {
     @TableId("team_id")
-    private Integer teamId;
-    private Integer leaderId;
+    private Long teamId;
+    private Long leaderId;
     private String name;
     private String LeaderName;
     private String introduction; // 数据库中可以为空

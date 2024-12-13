@@ -14,12 +14,14 @@ import java.time.LocalDateTime;
 @TableName("player")
 public class Player {
     @TableId("player_id")
-    private Integer playerId;
-    private Integer teamId;
+    private Long playerId;
+    private Long teamId;
+    private Long leaderId;
     private String gender;
     private String name;
     private String department;
     private String phone;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private String role; // 队员角色（如：队长、副队长、队员）
+    private Boolean isActive; // 是否活跃
+    private LocalDateTime joinTime; // 加入队伍时间
 }
