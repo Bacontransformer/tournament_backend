@@ -7,13 +7,16 @@ import com.ybk.dto.AuthorizeQueryDTO;
 import com.ybk.dto.LeaderDTO;
 import com.ybk.dto.LeaderLoginDTO;
 import com.ybk.entity.Leader;
+import com.ybk.entity.Team;
 import com.ybk.exception.AccountLockedException;
 import com.ybk.exception.AccountNotFoundException;
 import com.ybk.exception.PasswordErrorException;
 import com.ybk.exception.UsernameAlreadyExistedException;
 import com.ybk.mapper.LeaderMapper;
+import com.ybk.mapper.TeamMapper;
 import com.ybk.result.PageResult;
 import com.ybk.service.LeaderService;
+import com.ybk.service.TeamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,9 @@ import java.util.List;
 
 @Service
 public class LeaderServiceImpl implements LeaderService {
+    @Autowired
+    private TeamMapper teamMapper;
+
     @Autowired
     private LeaderMapper leaderMapper;
 
@@ -47,7 +53,21 @@ public class LeaderServiceImpl implements LeaderService {
         leader.setUpdateTime(LocalDateTime.now());
         leader.setPassword(DigestUtils.md5DigestAsHex(leaderDTO.getPasswordFirst().getBytes()));
         leaderMapper.insert(leader);
+        // 插入一条新的team记录
+        // 获取插入后自动生成的 leaderId
+        Integer leaderId = leader.getLeaderId();
+        Team team = new Team();
+        team.setLeaderId(leaderId);
+        team.setLeaderName(leaderDTO.getName());
+        team.setName(leaderDTO.getTeamName());
+        team.setIntroduction(leaderDTO.getIntroduction());
+        team.setDepartment(leaderDTO.getDepartment());
+        team.setCreateTime(LocalDateTime.now());
+        team.setUpdateTime(LocalDateTime.now());
+        teamMapper.insert(team);
     }
+
+
 
     /**
      * 领队登录

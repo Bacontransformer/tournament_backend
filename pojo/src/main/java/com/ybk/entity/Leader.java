@@ -1,5 +1,6 @@
 package com.ybk.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @TableName("leader")
 public class Leader {
-    @TableId("leader_id")
+    @TableId(value = "leader_id", type = IdType.AUTO)
     private Integer leaderId;
     private String password;
     private String name;
