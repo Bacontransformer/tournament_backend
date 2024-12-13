@@ -47,14 +47,19 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .addPathPatterns("/authorize/**")
+                .addPathPatterns("/event/**")
+                .addPathPatterns("/match/**")
                 .excludePathPatterns("/admin/save")
                 .excludePathPatterns("/admin/login");
         registry.addInterceptor(jwtTokenLeaderInterceptor)
                 .addPathPatterns("/leader/**")
+                .addPathPatterns("/player/**")
+                .addPathPatterns("/team/**")
                 .excludePathPatterns("/leader/save")
                 .excludePathPatterns("/leader/login");
         registry.addInterceptor(jwtTokenRefereeInterceptor)
                 .addPathPatterns("/referee/**")
+                .addPathPatterns("/score/**")
                 .excludePathPatterns("/referee/save")
                 .excludePathPatterns("/referee/login");
     }

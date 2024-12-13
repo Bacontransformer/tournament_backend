@@ -1,6 +1,8 @@
 package com.ybk.controller.referee;
 
 import com.ybk.constant.JwtClaimsConstant;
+import com.ybk.dto.LeaderDTO;
+import com.ybk.dto.RefereeDTO;
 import com.ybk.dto.RefereeLoginDTO;
 import com.ybk.entity.Referee;
 import com.ybk.properties.JwtProperties;
@@ -54,5 +56,35 @@ public class RefereeController {
                 .build();
 
         return Result.success(refereeLoginVO);
+    }
+
+    @ApiOperation(value = "裁判创建")
+    @PostMapping("/save")
+    public Result saveReferee(@RequestBody RefereeDTO refereeDTO){
+        String passwordFirst = refereeDTO.getPasswordFirst();
+        String passwordSecond = refereeDTO.getPasswordSecond();
+        if (passwordFirst != null && passwordSecond != null) {
+            if (!passwordFirst.equals(passwordSecond)){
+                return Result.error("两次输入的密码不一致");
+            }
+        }
+        log.info("领队创建：{}", refereeDTO);
+        refereeService.save(refereeDTO);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "裁判修改")
+    @PostMapping("/update")
+    public Result updateReferee(@RequestBody RefereeDTO refereeDTO){
+        String passwordFirst = refereeDTO.getPasswordFirst();
+        String passwordSecond = refereeDTO.getPasswordSecond();
+        if (passwordFirst != null && passwordSecond != null) {
+            if (!passwordFirst.equals(passwordSecond)){
+                return Result.error("两次输入的密码不一致");
+            }
+        }
+        log.info("裁判修改：{}", refereeDTO);
+        refereeService.udpate(refereeDTO);
+        return Result.success();
     }
 }

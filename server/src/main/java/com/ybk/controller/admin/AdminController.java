@@ -4,10 +4,8 @@ import com.ybk.constant.JwtClaimsConstant;
 import com.ybk.dto.AdminLoginDTO;
 import com.ybk.entity.Admin;
 import com.ybk.properties.JwtProperties;
-import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.AdminService;
-import com.ybk.service.LeaderManageService;
 import com.ybk.util.JwtUtil;
 import com.ybk.vo.AdminLoginVO;
 import io.swagger.annotations.Api;
@@ -29,9 +27,6 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     private JwtProperties jwtProperties;
-
-    @Autowired
-    private LeaderManageService leaderManageService;
 
     @Autowired
     private AdminService adminService;

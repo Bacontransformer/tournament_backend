@@ -6,6 +6,8 @@ import com.ybk.dto.LeaderLoginDTO;
 import com.ybk.entity.Leader;
 import com.ybk.result.PageResult;
 
+import java.util.List;
+
 public interface LeaderService {
     void save(LeaderDTO leaderDto);
 
@@ -14,4 +16,6 @@ public interface LeaderService {
     void udpate(LeaderDTO leaderDTO);
 
     PageResult pageQuery(AuthorizeQueryDTO authorizeQueryDTO);
+
+    void passLeader(List<Integer> ids);
 }

@@ -20,18 +20,15 @@ public class AdminServiceImpl implements AdminService {
     public Admin login(AdminLoginDTO adminLoginDTO) {
         String username = adminLoginDTO.getUsername();
         String password = adminLoginDTO.getPassword();
-
         //1、根据用户名查询数据库中的数据
         QueryWrapper<Admin> wrapper = new QueryWrapper<>();
         wrapper.eq("username",username);
         Admin admin = adminMapper.selectOne(wrapper);
-
         //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
         if (admin == null) {
             //账号不存在
             throw new AccountNotFoundException("用户名不存在");
         }
-
         //密码比对
         // 对前端传过来的明文密码进行处理
         password = DigestUtils.md5DigestAsHex(password.getBytes());
@@ -39,7 +36,6 @@ public class AdminServiceImpl implements AdminService {
             //密码错误
             throw new PasswordErrorException("密码错误");
         }
-
         //3、返回实体对象
         return admin;
     }

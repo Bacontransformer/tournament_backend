@@ -47,7 +47,15 @@ public class AuthorizeController {
     @PostMapping("/pass-referee")
     public Result<PageResult> passReferee(@RequestBody List<Integer> ids){
         log.info("通过待审批的裁判信息");
-        refereeService.pass(ids);
+        refereeService.passReferee(ids);
+        return Result.success();
+    }
+
+    @ApiOperation(value="通过待审批的领队信息")
+    @PostMapping("/pass-leader")
+    public Result<PageResult> passLeader(@RequestBody List<Integer> ids){
+        log.info("通过待审批的领队信息");
+        leaderService.passLeader(ids);
         return Result.success();
     }
 }
