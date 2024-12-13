@@ -3,7 +3,7 @@ package com.ybk.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ybk.dto.AuthorizeQueryDTO;
+import com.ybk.dto.PageQueryDTO;
 import com.ybk.dto.LeaderDTO;
 import com.ybk.dto.LeaderLoginDTO;
 import com.ybk.entity.Leader;
@@ -16,7 +16,6 @@ import com.ybk.mapper.LeaderMapper;
 import com.ybk.mapper.TeamMapper;
 import com.ybk.result.PageResult;
 import com.ybk.service.LeaderService;
-import com.ybk.service.TeamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class LeaderServiceImpl implements LeaderService {
         leaderMapper.insert(leader);
         // 插入一条新的team记录
         // 获取插入后自动生成的 leaderId
-        Integer leaderId = leader.getLeaderId();
+        Long leaderId = leader.getLeaderId();
         Team team = new Team();
         team.setLeaderId(leaderId);
         team.setLeaderName(leaderDTO.getName());
@@ -131,13 +130,13 @@ public class LeaderServiceImpl implements LeaderService {
 
     /**
      * 分页查询
-     * @param authorizeQueryDTO
+     * @param pageQueryDTO
      * @return
      */
     @Override
-    public PageResult pageQuery(AuthorizeQueryDTO authorizeQueryDTO) {
+    public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
         // 创建分页对象
-        Page<Leader> page = new Page<>(authorizeQueryDTO.getPage(), authorizeQueryDTO.getPageSize());
+        Page<Leader> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         // 构造查询条件
         QueryWrapper<Leader> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_passed", false);

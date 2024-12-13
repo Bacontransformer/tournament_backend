@@ -16,7 +16,7 @@ import java.io.Serializable;
 @ApiModel(description = "领队登录返回的数据格式")
 public class LeaderLoginVO implements Serializable {
     @ApiModelProperty("主键值")
-    private Integer leaderId;
+    private Long leaderId;
 
     @ApiModelProperty("用户名")
     private String userName;

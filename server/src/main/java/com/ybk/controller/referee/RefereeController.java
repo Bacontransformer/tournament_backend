@@ -33,6 +33,11 @@ public class RefereeController {
     @Autowired
     private RefereeService refereeService;
 
+    /**
+     * 裁判登录
+     * @param refereeLoginDTO
+     * @return
+     */
     @ApiOperation(value="裁判登录")
     @PostMapping("/login")
     public Result<RefereeLoginVO> login(@RequestBody RefereeLoginDTO refereeLoginDTO){
@@ -58,6 +63,11 @@ public class RefereeController {
         return Result.success(refereeLoginVO);
     }
 
+    /**
+     * 裁判创建
+     * @param refereeDTO
+     * @return
+     */
     @ApiOperation(value = "裁判创建")
     @PostMapping("/save")
     public Result saveReferee(@RequestBody RefereeDTO refereeDTO){
@@ -73,6 +83,11 @@ public class RefereeController {
         return Result.success();
     }
 
+    /**
+     * 裁判修改
+     * @param refereeDTO
+     * @return
+     */
     @ApiOperation(value = "裁判修改")
     @PostMapping("/update")
     public Result updateReferee(@RequestBody RefereeDTO refereeDTO){

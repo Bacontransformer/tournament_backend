@@ -3,7 +3,7 @@ package com.ybk.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ybk.dto.AuthorizeQueryDTO;
+import com.ybk.dto.PageQueryDTO;
 import com.ybk.dto.RefereeDTO;
 import com.ybk.dto.RefereeLoginDTO;
 import com.ybk.entity.Referee;
@@ -64,13 +64,13 @@ public class RefereeServiceImpl implements RefereeService {
 
     /**
      * 分页查询
-     * @param authorizeQueryDTO
+     * @param pageQueryDTO
      * @return
      */
     @Override
-    public PageResult pageQuery(AuthorizeQueryDTO authorizeQueryDTO) {
+    public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
         // 创建分页对象
-        Page<Referee> page = new Page<>(authorizeQueryDTO.getPage(), authorizeQueryDTO.getPageSize());
+        Page<Referee> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         // 构造查询条件
         QueryWrapper<Referee> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_passed", false);

@@ -31,6 +31,11 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * 管理员登录
+     * @param adminLoginDTO
+     * @return
+     */
     @ApiOperation(value="管理员登录")
     @PostMapping("/login")
     public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO){
@@ -55,6 +60,4 @@ public class AdminController {
 
         return Result.success(adminLoginVO);
     }
-
-
 }

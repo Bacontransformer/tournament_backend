@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 裁判
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

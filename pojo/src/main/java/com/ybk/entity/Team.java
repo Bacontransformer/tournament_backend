@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 队伍
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

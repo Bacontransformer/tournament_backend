@@ -1,6 +1,6 @@
 package com.ybk.controller.admin;
 
-import com.ybk.dto.AuthorizeQueryDTO;
+import com.ybk.dto.PageQueryDTO;
 import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.LeaderService;
@@ -27,22 +27,37 @@ public class AuthorizeController {
     @Autowired
     private RefereeService refereeService;
 
+    /**
+     * 分页查询领队
+     * @param pageQueryDTO
+     * @return
+     */
     @ApiOperation(value="分页查询待审批的领队信息")
     @PostMapping("/page-leader")
-    public Result<PageResult> pageLeader(@RequestBody AuthorizeQueryDTO authorizeQueryDTO){
+    public Result<PageResult> pageLeader(@RequestBody PageQueryDTO pageQueryDTO){
         log.info("分页查询待审批的领队信息");
-        PageResult pageResult = leaderService.pageQuery(authorizeQueryDTO);
+        PageResult pageResult = leaderService.pageQuery(pageQueryDTO);
         return Result.success(pageResult);
     }
 
+    /**
+     * 分页查询裁判
+     * @param pageQueryDTO
+     * @return
+     */
     @ApiOperation(value="分页查询待审批的裁判信息")
     @PostMapping("/page-referee")
-    public Result<PageResult> pageReferee(@RequestBody AuthorizeQueryDTO authorizeQueryDTO){
+    public Result<PageResult> pageReferee(@RequestBody PageQueryDTO pageQueryDTO){
         log.info("分页查询待审批的裁判信息");
-        PageResult pageResult = refereeService.pageQuery(authorizeQueryDTO);
+        PageResult pageResult = refereeService.pageQuery(pageQueryDTO);
         return Result.success(pageResult);
     }
 
+    /**
+     * 批量通过裁判
+     * @param ids
+     * @return
+     */
     @ApiOperation(value="通过待审批的裁判信息")
     @PostMapping("/pass-referee")
     public Result<PageResult> passReferee(@RequestBody List<Integer> ids){
@@ -51,6 +66,11 @@ public class AuthorizeController {
         return Result.success();
     }
 
+    /**
+     * 批量通过领队
+     * @param ids
+     * @return
+     */
     @ApiOperation(value="通过待审批的领队信息")
     @PostMapping("/pass-leader")
     public Result<PageResult> passLeader(@RequestBody List<Integer> ids){

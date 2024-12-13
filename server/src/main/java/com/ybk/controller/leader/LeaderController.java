@@ -33,6 +33,11 @@ public class LeaderController {
     @Autowired
     private JwtProperties jwtProperties;
 
+    /**
+     * 领队登录
+     * @param leaderLoginDTO
+     * @return
+     */
     @ApiOperation(value="领队登录")
     @PostMapping("/login")
     public Result<LeaderLoginVO> login(@RequestBody LeaderLoginDTO leaderLoginDTO){
@@ -58,6 +63,11 @@ public class LeaderController {
         return Result.success(leaderLoginVo);
     }
 
+    /**
+     * 新增领队
+     * @param leaderDto
+     * @return
+     */
     @ApiOperation(value = "领队创建")
     @PostMapping("/save")
     public Result saveLeader(@RequestBody LeaderDTO leaderDto){
@@ -73,6 +83,11 @@ public class LeaderController {
         return Result.success();
     }
 
+    /**
+     * 修改领队
+     * @param leaderDTO
+     * @return
+     */
     @ApiOperation(value = "领队修改")
     @PostMapping("/update")
     public Result updateLeader(@RequestBody LeaderDTO leaderDTO){
