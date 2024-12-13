@@ -1,23 +1,11 @@
-package com.ybk.entity;
+package com.ybk.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-/**
- * 赛事
- */
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-@TableName("event")
-public class Event {
-    @TableId("event_id")
+public class EventDTO {
     private Long eventId;
     // 活动名称
     private String name;
@@ -35,6 +23,4 @@ public class Event {
     private LocalDate endTime;
     // 赛事类型 混团 1234
     private String matchType;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
 }
