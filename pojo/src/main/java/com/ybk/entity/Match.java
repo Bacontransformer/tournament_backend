@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 单场比赛
+ * Base Match Class
  */
 @Data
 @AllArgsConstructor
@@ -18,12 +18,12 @@ import java.time.LocalDateTime;
 public class Match {
     @TableId("match_id")
     private Long matchId;
-    private String place;
-    private Integer venue_id;
-    // 比赛开始时间
-    private LocalDateTime begin_time;
-    // 比赛的局数
-    private Integer match_round;
+    private Long eventId; // 关联到活动
+    private String matchType; // MatchA or MatchB
+    private LocalDateTime beginTime;
+    private Integer totalRounds; // 比赛总局数
+    private Long teamAId;
+    private Long teamBId;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
