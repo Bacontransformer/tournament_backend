@@ -1,12 +1,11 @@
 package com.ybk.service.impl;
 
-import com.ybk.mapper.MatchMapper;
-import com.ybk.service.MatchService;
+import com.ybk.service.MatchBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MatchServiceImpl implements MatchService {
+public class MatchBServiceImpl implements MatchBService {
     @Autowired
-    private MatchMapper matchMapper;
+    private MatchBService matchBService;
 }

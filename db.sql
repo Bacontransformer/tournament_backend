@@ -81,4 +81,70 @@ ALTER TABLE player MODIFY COLUMN player_id BIGINT NOT NULL COMMENT '选手ID';
 ALTER TABLE referee MODIFY COLUMN referee_id BIGINT AUTO_INCREMENT COMMENT '裁判ID';
 ALTER TABLE team MODIFY COLUMN team_id BIGINT AUTO_INCREMENT COMMENT '队伍ID';
 
+CREATE TABLE `match` (
+                         `match_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                         `event_id` BIGINT NOT NULL,
+                         `match_type` VARCHAR(50) NOT NULL COMMENT '比赛类型，MatchA 或 MatchB',
+                         `begin_time` DATETIME NOT NULL COMMENT '比赛开始时间',
+                         `total_rounds` INT DEFAULT 0 COMMENT '总局数',
+                         `team_a_id` BIGINT NOT NULL COMMENT '队伍A的ID',
+                         `team_b_id` BIGINT NOT NULL COMMENT '队伍B的ID',
+                         `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                         `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+);
 
+CREATE TABLE `match_a` (
+                           `match_id` BIGINT PRIMARY KEY COMMENT '逻辑关联 match 表的 ID',
+                           `modes` VARCHAR(255) COMMENT '比赛模式，例如：男单、女双等',
+                           `max_player_participation` INT DEFAULT 0 COMMENT '单个选手的最大参赛次数',
+                           `round_count` INT DEFAULT 1 COMMENT '每场比赛的局数',
+                           `win_score` INT DEFAULT 21 COMMENT '单局获胜分数'
+);
+
+CREATE TABLE `match_set` (
+                             `set_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                             `match_id` BIGINT NOT NULL COMMENT '逻辑关联 match 表的 ID',
+                             `set_number` INT NOT NULL COMMENT '当前局数',
+                             `team_a_score` INT DEFAULT 0 COMMENT '队伍A在当前局的得分',
+                             `team_b_score` INT DEFAULT 0 COMMENT '队伍B在当前局的得分',
+                             `winner_team_id` BIGINT COMMENT '当前局的获胜队伍ID'
+);
+
+CREATE TABLE `match_b` (
+                           `match_id` BIGINT PRIMARY KEY COMMENT '逻辑关联 match 表的 ID',
+                           `section_score` INT NOT NULL COMMENT '每小节获胜所需分数',
+                           `total_sections` INT DEFAULT 4 COMMENT '总小节数',
+                           `min_team_age_sum` INT COMMENT '队伍年龄和最小值（可选）',
+                           `max_team_age_sum` INT COMMENT '队伍年龄和最大值（可选）'
+);
+
+CREATE TABLE `match_b_section` (
+                                   `section_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                   `match_id` BIGINT NOT NULL COMMENT '逻辑关联 match 表的 ID',
+                                   `section_number` INT NOT NULL COMMENT '小节编号',
+                                   `team_a_score` INT DEFAULT 0 COMMENT '队伍A的得分',
+                                   `team_b_score` INT DEFAULT 0 COMMENT '队伍B的得分',
+                                   `next_team_a_score_to_win` INT DEFAULT 0 COMMENT '队伍A的下一目标获胜分数'
+);
+
+CREATE TABLE `match_player` (
+                                `assignment_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                `match_id` BIGINT NOT NULL COMMENT '逻辑关联 match 表的 ID',
+                                `team_id` BIGINT NOT NULL COMMENT '逻辑关联队伍的 ID',
+                                `player_id` BIGINT NOT NULL COMMENT '逻辑关联选手的 ID',
+                                `role` VARCHAR(50) COMMENT '选手角色，例如：1号、2号、队长',
+                                `is_captain` BOOLEAN DEFAULT FALSE COMMENT '是否为队长',
+                                `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+);
+
+CREATE TABLE team_registration (
+                                   registration_id BIGINT NOT NULL AUTO_INCREMENT, -- 主键ID
+                                   team_id BIGINT NOT NULL, -- 队伍ID
+                                   event_id BIGINT NOT NULL, -- 活动ID
+                                   team_name VARCHAR(255) NOT NULL, -- 队伍名称
+                                   event_name VARCHAR(255) NOT NULL, -- 活动名称
+                                   registration_time DATETIME NOT NULL, -- 报名时间
+                                   remark VARCHAR(500), -- 备注
+                                   PRIMARY KEY (registration_id) -- 主键
+);
