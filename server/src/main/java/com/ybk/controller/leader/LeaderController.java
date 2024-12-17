@@ -35,12 +35,13 @@ public class LeaderController {
 
     /**
      * 领队登录
+     *
      * @param leaderLoginDTO
      * @return
      */
-    @ApiOperation(value="领队登录")
+    @ApiOperation(value = "领队登录")
     @PostMapping("/login")
-    public Result<LeaderLoginVO> login(@RequestBody LeaderLoginDTO leaderLoginDTO){
+    public Result<LeaderLoginVO> login(@RequestBody LeaderLoginDTO leaderLoginDTO) {
         log.info("领队登录：{}", leaderService);
 
         Leader leader = leaderService.login(leaderLoginDTO);
@@ -65,16 +66,17 @@ public class LeaderController {
 
     /**
      * 新增领队
+     *
      * @param leaderDto
      * @return
      */
     @ApiOperation(value = "领队创建")
     @PostMapping("/save")
-    public Result saveLeader(@RequestBody LeaderDTO leaderDto){
+    public Result saveLeader(@RequestBody LeaderDTO leaderDto) {
         String passwordFirst = leaderDto.getPasswordFirst();
         String passwordSecond = leaderDto.getPasswordSecond();
         if (passwordFirst != null && passwordSecond != null) {
-            if (!passwordFirst.equals(passwordSecond)){
+            if (!passwordFirst.equals(passwordSecond)) {
                 return Result.error("两次输入的密码不一致");
             }
         }
@@ -85,16 +87,17 @@ public class LeaderController {
 
     /**
      * 修改领队
+     *
      * @param leaderDTO
      * @return
      */
     @ApiOperation(value = "领队修改")
     @PostMapping("/update")
-    public Result updateLeader(@RequestBody LeaderDTO leaderDTO){
+    public Result updateLeader(@RequestBody LeaderDTO leaderDTO) {
         String passwordFirst = leaderDTO.getPasswordFirst();
         String passwordSecond = leaderDTO.getPasswordSecond();
         if (passwordFirst != null && passwordSecond != null) {
-            if (!passwordFirst.equals(passwordSecond)){
+            if (!passwordFirst.equals(passwordSecond)) {
                 return Result.error("两次输入的密码不一致");
             }
         }

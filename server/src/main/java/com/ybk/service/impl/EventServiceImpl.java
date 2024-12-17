@@ -20,6 +20,7 @@ public class EventServiceImpl implements EventService {
 
     /**
      * 新建活动
+     *
      * @param eventDTO
      */
     @Override
@@ -41,34 +42,35 @@ public class EventServiceImpl implements EventService {
 
     /**
      * 修改活动
+     *
      * @param eventDTO
      */
     @Override
     public void update(EventDTO eventDTO) {
         Event event = new Event();
         event.setEventId(eventDTO.getEventId());
-        if(eventDTO.getName()!=null && !eventDTO.getName().isEmpty()){
+        if (eventDTO.getName() != null && !eventDTO.getName().isEmpty()) {
             event.setName(eventDTO.getName());
         }
-        if(eventDTO.getIntroduction()!=null && !eventDTO.getIntroduction().isEmpty()){
+        if (eventDTO.getIntroduction() != null && !eventDTO.getIntroduction().isEmpty()) {
             event.setIntroduction(eventDTO.getIntroduction());
         }
-        if(eventDTO.getStadium()!=null && !eventDTO.getStadium().isEmpty()){
+        if (eventDTO.getStadium() != null && !eventDTO.getStadium().isEmpty()) {
             event.setStadium(eventDTO.getStadium());
         }
-        if(eventDTO.getRequiredAreaCount()!=null){
+        if (eventDTO.getRequiredAreaCount() != null) {
             event.setRequiredAreaCount(eventDTO.getRequiredAreaCount());
         }
-        if(eventDTO.getRequiredRefereeCount()!=null){
+        if (eventDTO.getRequiredRefereeCount() != null) {
             event.setRequiredRefereeCount(eventDTO.getRequiredRefereeCount());
         }
-        if(eventDTO.getBeginTime()!=null){
+        if (eventDTO.getBeginTime() != null) {
             event.setBeginTime(eventDTO.getBeginTime());
         }
-        if(eventDTO.getEndTime()!=null){
+        if (eventDTO.getEndTime() != null) {
             event.setEndTime(eventDTO.getEndTime());
         }
-        if(eventDTO.getMatchType()!=null && !eventDTO.getMatchType().isEmpty()){
+        if (eventDTO.getMatchType() != null && !eventDTO.getMatchType().isEmpty()) {
             event.setMatchType(eventDTO.getMatchType());
         }
         event.setUpdateTime(LocalDateTime.now());
@@ -77,6 +79,7 @@ public class EventServiceImpl implements EventService {
 
     /**
      * 删除活动
+     *
      * @param id
      */
     @Override

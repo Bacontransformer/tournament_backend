@@ -33,12 +33,13 @@ public class AdminController {
 
     /**
      * 管理员登录
+     *
      * @param adminLoginDTO
      * @return
      */
-    @ApiOperation(value="管理员登录")
+    @ApiOperation(value = "管理员登录")
     @PostMapping("/login")
-    public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO){
+    public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO) {
         log.info("管理员登录：{}", adminLoginDTO);
 
         Admin admin = adminService.login(adminLoginDTO);

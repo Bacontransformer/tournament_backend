@@ -35,12 +35,13 @@ public class RefereeController {
 
     /**
      * 裁判登录
+     *
      * @param refereeLoginDTO
      * @return
      */
-    @ApiOperation(value="裁判登录")
+    @ApiOperation(value = "裁判登录")
     @PostMapping("/login")
-    public Result<RefereeLoginVO> login(@RequestBody RefereeLoginDTO refereeLoginDTO){
+    public Result<RefereeLoginVO> login(@RequestBody RefereeLoginDTO refereeLoginDTO) {
         log.info("裁判登录：{}", refereeLoginDTO);
 
         Referee referee = refereeService.login(refereeLoginDTO);
@@ -65,16 +66,17 @@ public class RefereeController {
 
     /**
      * 裁判创建
+     *
      * @param refereeDTO
      * @return
      */
     @ApiOperation(value = "裁判创建")
     @PostMapping("/save")
-    public Result saveReferee(@RequestBody RefereeDTO refereeDTO){
+    public Result saveReferee(@RequestBody RefereeDTO refereeDTO) {
         String passwordFirst = refereeDTO.getPasswordFirst();
         String passwordSecond = refereeDTO.getPasswordSecond();
         if (passwordFirst != null && passwordSecond != null) {
-            if (!passwordFirst.equals(passwordSecond)){
+            if (!passwordFirst.equals(passwordSecond)) {
                 return Result.error("两次输入的密码不一致");
             }
         }
@@ -85,16 +87,17 @@ public class RefereeController {
 
     /**
      * 裁判修改
+     *
      * @param refereeDTO
      * @return
      */
     @ApiOperation(value = "裁判修改")
     @PostMapping("/update")
-    public Result updateReferee(@RequestBody RefereeDTO refereeDTO){
+    public Result updateReferee(@RequestBody RefereeDTO refereeDTO) {
         String passwordFirst = refereeDTO.getPasswordFirst();
         String passwordSecond = refereeDTO.getPasswordSecond();
         if (passwordFirst != null && passwordSecond != null) {
-            if (!passwordFirst.equals(passwordSecond)){
+            if (!passwordFirst.equals(passwordSecond)) {
                 return Result.error("两次输入的密码不一致");
             }
         }

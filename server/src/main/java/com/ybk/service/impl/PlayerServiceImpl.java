@@ -28,7 +28,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void save(PlayerDTO playerDTO) {
         Player player = new Player();
-        Long leaderId =  BaseContext.getCurrentId();
+        Long leaderId = BaseContext.getCurrentId();
         // 查出对应的team_id
         QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("leader_id", leaderId);
@@ -36,6 +36,7 @@ public class PlayerServiceImpl implements PlayerService {
         player.setTeamId(team.getTeamId());
         player.setLeaderId(leaderId);
         player.setName(playerDTO.getName());
+        player.setAge(playerDTO.getAge());
         player.setDepartment(playerDTO.getDepartment());
         player.setGender(playerDTO.getGender());
         player.setPhone(playerDTO.getPhone());
@@ -57,6 +58,9 @@ public class PlayerServiceImpl implements PlayerService {
         }
         if (playerDTO.getGender() != null && !playerDTO.getGender().isEmpty()) {
             player.setGender(playerDTO.getGender());
+        }
+        if (playerDTO.getAge() != null) {
+            player.setAge(playerDTO.getAge());
         }
         if (playerDTO.getPhone() != null && !playerDTO.getPhone().isEmpty()) {
             player.setPhone(playerDTO.getPhone());

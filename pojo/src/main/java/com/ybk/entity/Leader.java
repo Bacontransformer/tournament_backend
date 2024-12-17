@@ -21,6 +21,8 @@ public class Leader {
     private Long leaderId;
     private String password;
     private String name;
+    private String gender;
+    private Integer age;
     private String username;
     private String department;
     private String phone;

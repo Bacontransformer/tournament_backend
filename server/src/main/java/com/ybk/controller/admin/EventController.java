@@ -24,41 +24,43 @@ public class EventController {
 
     /**
      * 活动创建
+     *
      * @param eventDTO
      * @return
      */
-    @ApiOperation(value="活动创建")
+    @ApiOperation(value = "活动创建")
     @RequestMapping("/save")
-    public Result saveEvent(@RequestBody EventDTO eventDTO){
-        log.info("活动创建:{}",eventDTO);
+    public Result saveEvent(@RequestBody EventDTO eventDTO) {
+        log.info("活动创建:{}", eventDTO);
         eventService.save(eventDTO);
         return Result.success();
     }
 
     /**
      * 活动修改
+     *
      * @param eventDTO
      * @return
      */
-    @ApiOperation(value="活动修改")
+    @ApiOperation(value = "活动修改")
     @RequestMapping("/update")
-    public Result updateEvent(@RequestBody EventDTO eventDTO){
-        log.info("活动修改:{}",eventDTO);
+    public Result updateEvent(@RequestBody EventDTO eventDTO) {
+        log.info("活动修改:{}", eventDTO);
         eventService.update(eventDTO);
         return Result.success();
     }
 
-    @ApiOperation(value="活动删除")
+    @ApiOperation(value = "活动删除")
     @PostMapping("/delete")
-    public Result deleteEvent(@RequestBody Integer id){
-        log.info("活动删除:{}",id);
+    public Result deleteEvent(@RequestBody Integer id) {
+        log.info("活动删除:{}", id);
         eventService.delete(id);
         return Result.success();
     }
 
-    @ApiOperation(value="分页查询活动信息")
+    @ApiOperation(value = "分页查询活动信息")
     @PostMapping("/page-event")
-    public Result<PageResult> pageEvent(@RequestBody PageQueryDTO pageQueryDTO){
+    public Result<PageResult> pageEvent(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询所有队员信息");
         PageResult pageResult = eventService.pageQuery(pageQueryDTO);
         return Result.success(pageResult);

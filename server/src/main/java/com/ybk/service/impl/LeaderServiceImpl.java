@@ -35,19 +35,22 @@ public class LeaderServiceImpl implements LeaderService {
 
     /**
      * 新增领队
+     *
      * @param leaderDTO
      */
     @Override
     public void save(LeaderDTO leaderDTO) {
         String username = leaderDTO.getUsername();
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         if (leaderMapper.selectOne(wrapper) != null) {
             throw new UsernameAlreadyExistedException("用户名已存在");
         }
         Leader leader = new Leader();
-        BeanUtils.copyProperties(leaderDTO,leader);
+        BeanUtils.copyProperties(leaderDTO, leader);
         leader.setIsPassed(false);
+        leader.setAge(leaderDTO.getAge());
+        leader.setGender(leaderDTO.getGender());
         leader.setCreateTime(LocalDateTime.now());
         leader.setUpdateTime(LocalDateTime.now());
         leader.setPassword(DigestUtils.md5DigestAsHex(leaderDTO.getPasswordFirst().getBytes()));
@@ -67,9 +70,9 @@ public class LeaderServiceImpl implements LeaderService {
     }
 
 
-
     /**
      * 领队登录
+     *
      * @param leaderLoginDTO
      * @return
      */
@@ -80,7 +83,7 @@ public class LeaderServiceImpl implements LeaderService {
 
         //1、根据用户名查询数据库中的数据
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         Leader leader = leaderMapper.selectOne(wrapper);
         //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
         if (leader == null) {
@@ -104,25 +107,32 @@ public class LeaderServiceImpl implements LeaderService {
 
     /**
      * 修改信息
+     *
      * @param leaderDTO
      */
     @Override
     public void udpate(LeaderDTO leaderDTO) {
         String username = leaderDTO.getUsername();
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         Leader leader = leaderMapper.selectOne(wrapper);
         leader.setUpdateTime(LocalDateTime.now());
-        if(leaderDTO.getPasswordFirst()!=null&&!leaderDTO.getPasswordFirst().isEmpty()){
+        if (leaderDTO.getPasswordFirst() != null && !leaderDTO.getPasswordFirst().isEmpty()) {
             leader.setPassword(leaderDTO.getPasswordFirst());
         }
-        if(leaderDTO.getName()!=null&&!leaderDTO.getName().isEmpty()){
+        if (leaderDTO.getName() != null && !leaderDTO.getName().isEmpty()) {
             leader.setName(leaderDTO.getName());
         }
-        if(leaderDTO.getDepartment()!=null&&!leaderDTO.getDepartment().isEmpty()){
+        if (leaderDTO.getGender() != null && !leaderDTO.getGender().isEmpty()) {
+            leader.setGender(leaderDTO.getGender());
+        }
+        if (leaderDTO.getAge() != null) {
+            leader.setAge(leaderDTO.getAge());
+        }
+        if (leaderDTO.getDepartment() != null && !leaderDTO.getDepartment().isEmpty()) {
             leader.setDepartment(leaderDTO.getDepartment());
         }
-        if(leaderDTO.getPhone()!=null&&!leaderDTO.getPhone().isEmpty()){
+        if (leaderDTO.getPhone() != null && !leaderDTO.getPhone().isEmpty()) {
             leader.setPhone(leaderDTO.getPhone());
         }
         leaderMapper.updateById(leader);
@@ -130,6 +140,7 @@ public class LeaderServiceImpl implements LeaderService {
 
     /**
      * 分页查询
+     *
      * @param pageQueryDTO
      * @return
      */

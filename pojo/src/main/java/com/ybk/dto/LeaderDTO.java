@@ -12,6 +12,8 @@ public class LeaderDTO {
     private String passwordSecond;
     private String username;
     private String name;
+    private String gender;
+    private Integer age;
     private String teamName;
     private String introduction;
     private String department;
