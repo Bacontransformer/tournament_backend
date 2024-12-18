@@ -11,6 +11,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/score")
 @Api(tags = "计分相关接口")
 public class ScoreController {
-    @Autowired
-    private MatchService matchService;
 }

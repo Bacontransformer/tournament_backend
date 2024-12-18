@@ -1,6 +1,6 @@
 package com.ybk.controller.admin;
 
-import com.ybk.dto.EventDTO;
+import com.ybk.dto.match.EventDTO;
 import com.ybk.dto.PageQueryDTO;
 import com.ybk.result.PageResult;
 import com.ybk.result.Result;

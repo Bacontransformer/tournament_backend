@@ -1,9 +1,14 @@
-package com.ybk.dto;
+package com.ybk.dto.match;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+/**
+ * leader对某一场Match某一比赛类型的队员任免数据传输对象
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +16,5 @@ public class PlayerAssignmentDTO {
     private Long matchId; // 比赛ID
     private Long teamId; // 队伍ID
     private Long playerId; // 选手ID
-    private String playerName; // 选手姓名
-    private String role; // 选手角色（如1号、2号、队长等）
-    private Boolean isCaptain; // 是否为队长
+    private Integer typeOrder; // 比赛类型序号
 }

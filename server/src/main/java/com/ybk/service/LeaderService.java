@@ -1,8 +1,8 @@
 package com.ybk.service;
 
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.LeaderDTO;
-import com.ybk.dto.LeaderLoginDTO;
+import com.ybk.dto.role.LeaderDTO;
+import com.ybk.dto.role.LeaderLoginDTO;
 import com.ybk.entity.Leader;
 import com.ybk.result.PageResult;
 

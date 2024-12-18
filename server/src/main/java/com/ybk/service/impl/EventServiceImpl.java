@@ -2,7 +2,7 @@ package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ybk.dto.EventDTO;
+import com.ybk.dto.match.EventDTO;
 import com.ybk.dto.PageQueryDTO;
 import com.ybk.entity.Event;
 import com.ybk.mapper.EventMapper;

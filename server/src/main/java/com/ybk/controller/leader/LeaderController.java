@@ -1,13 +1,12 @@
 package com.ybk.controller.leader;
 
 import com.ybk.constant.JwtClaimsConstant;
-import com.ybk.dto.LeaderDTO;
-import com.ybk.dto.LeaderLoginDTO;
+import com.ybk.dto.role.LeaderDTO;
+import com.ybk.dto.role.LeaderLoginDTO;
 import com.ybk.entity.Leader;
 import com.ybk.properties.JwtProperties;
 import com.ybk.result.Result;
 import com.ybk.service.LeaderService;
-import com.ybk.service.TeamService;
 import com.ybk.util.JwtUtil;
 import com.ybk.vo.LeaderLoginVO;
 import io.swagger.annotations.Api;

@@ -1,8 +1,8 @@
 package com.ybk.service;
 
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.RefereeDTO;
-import com.ybk.dto.RefereeLoginDTO;
+import com.ybk.dto.role.RefereeDTO;
+import com.ybk.dto.role.RefereeLoginDTO;
 import com.ybk.entity.Referee;
 import com.ybk.result.PageResult;
 

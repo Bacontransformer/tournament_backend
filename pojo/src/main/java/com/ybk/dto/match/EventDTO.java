@@ -1,9 +1,12 @@
-package com.ybk.dto;
+package com.ybk.dto.match;
 
 import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * admin编辑Event的数据传输对象
+ */
 @Data
 public class EventDTO {
     private Long eventId;

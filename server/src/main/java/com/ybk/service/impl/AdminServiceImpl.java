@@ -1,7 +1,7 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ybk.dto.AdminLoginDTO;
+import com.ybk.dto.role.AdminLoginDTO;
 import com.ybk.entity.Admin;
 import com.ybk.exception.AccountNotFoundException;
 import com.ybk.exception.PasswordErrorException;

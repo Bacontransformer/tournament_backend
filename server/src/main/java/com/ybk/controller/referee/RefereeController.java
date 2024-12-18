@@ -1,9 +1,8 @@
 package com.ybk.controller.referee;
 
 import com.ybk.constant.JwtClaimsConstant;
-import com.ybk.dto.LeaderDTO;
-import com.ybk.dto.RefereeDTO;
-import com.ybk.dto.RefereeLoginDTO;
+import com.ybk.dto.role.RefereeDTO;
+import com.ybk.dto.role.RefereeLoginDTO;
 import com.ybk.entity.Referee;
 import com.ybk.properties.JwtProperties;
 import com.ybk.result.Result;

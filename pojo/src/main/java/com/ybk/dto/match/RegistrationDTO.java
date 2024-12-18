@@ -1,16 +1,18 @@
-package com.ybk.dto;
+package com.ybk.dto.match;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * leader的比赛报名数据传输对象
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeamRegistrationDTO {
+public class RegistrationDTO {
     private Long teamId; // 队伍ID
-    private String teamName; // 队伍名称
     private Long eventId; // 活动ID
-    private String eventName; // 活动名称
-    private String remark; // 备注（可选）
+    private String teamName; // 队伍名称
+    private String comment; // 备注（可选）
 }

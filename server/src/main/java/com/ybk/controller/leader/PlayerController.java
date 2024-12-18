@@ -1,9 +1,7 @@
 package com.ybk.controller.leader;
 
-import com.ybk.dto.LeaderDTO;
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.PlayerDTO;
-import com.ybk.entity.Player;
+import com.ybk.dto.role.PlayerDTO;
 import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.PlayerService;

@@ -21,9 +21,4 @@ public class RefereeMatchController {
     @Autowired
     private MatchSetService matchSetService;
 
-    @Autowired
-    private MatchBSectionService matchBSectionService;
-
-    @Autowired
-    private MatchPlayerService matchPlayerService;
 }

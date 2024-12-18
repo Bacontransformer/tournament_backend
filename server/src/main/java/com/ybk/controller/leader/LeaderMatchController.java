@@ -22,11 +22,5 @@ public class LeaderMatchController {
     private MatchSetService matchSetService;
 
     @Autowired
-    private MatchBSectionService matchBSectionService;
-
-    @Autowired
-    private MatchPlayerService matchPlayerService;
-
-    @Autowired
-    private TeamRegistrationService teamRegistrationService;
+    private RegistrationService registrationService;
 }

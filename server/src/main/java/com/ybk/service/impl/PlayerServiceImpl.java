@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.context.BaseContext;
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.PlayerDTO;
+import com.ybk.dto.role.PlayerDTO;
 import com.ybk.entity.Player;
 import com.ybk.entity.Team;
 import com.ybk.mapper.PlayerMapper;

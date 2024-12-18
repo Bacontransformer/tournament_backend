@@ -1,7 +1,7 @@
 package com.ybk.controller.admin;
 
 import com.ybk.constant.JwtClaimsConstant;
-import com.ybk.dto.AdminLoginDTO;
+import com.ybk.dto.role.AdminLoginDTO;
 import com.ybk.entity.Admin;
 import com.ybk.properties.JwtProperties;
 import com.ybk.result.Result;

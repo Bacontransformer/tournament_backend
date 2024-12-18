@@ -1,4 +1,4 @@
-package com.ybk.dto;
+package com.ybk.dto.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefereeDTO {
+public class AdminDTO {
     private String passwordFirst;
     private String passwordSecond;
     private String name;
