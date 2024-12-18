@@ -16,7 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchBDTO {
+    private Long matchBId;
     private Long eventId; // 关联到活动表
+    private Integer venueNumber; // 场地编号
     private Integer sectionScore; // 每小节的获胜分数 x，一共有四个小节
     private Long teamAId; // teamA的编号
     private Long teamBId; // teamB的编号

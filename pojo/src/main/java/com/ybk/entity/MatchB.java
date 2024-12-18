@@ -27,6 +27,7 @@ public class MatchB{
     private Integer sectionScore; // 每小节的获胜分数 x，一共有四个小节
     private Long teamAId; // teamA的编号
     private Long teamBId; // teamB的编号
+    private Integer venueNumber; // 场地编号
     private LinkedList<Player> teamAPlayers; // teamA的1、2、3、4号选手
     private LinkedList<Player> teamBPlayers; // teamB的1、2、3、4号选手
     private List<Player> teamASubstitutePlayers; // teamA替补选手

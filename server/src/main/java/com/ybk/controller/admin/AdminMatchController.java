@@ -1,6 +1,7 @@
 package com.ybk.controller.admin;
 
 import com.ybk.dto.match.MatchADTO;
+import com.ybk.dto.match.MatchBDTO;
 import com.ybk.result.Result;
 import com.ybk.service.*;
 import io.swagger.annotations.Api;
@@ -23,10 +24,6 @@ public class AdminMatchController {
     @Autowired
     private MatchBService matchBService;
 
-    @Autowired
-    private MatchSetService matchSetService;
-
-
     /**
      * 比赛A创建
      * @param matchADTO
@@ -37,6 +34,71 @@ public class AdminMatchController {
     public Result saveMatchA(@RequestBody MatchADTO matchADTO) {
         log.info("比赛A创建:{}",matchADTO);
         matchAService.save(matchADTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛B创建
+     * @param matchBDTO
+     * @return
+     */
+    @ApiOperation(value = "比赛B创建")
+    @PostMapping("/save-b")
+    public Result saveMatchB(@RequestBody MatchBDTO matchBDTO) {
+        log.info("比赛B创建:{}",matchBDTO);
+        matchBService.save(matchBDTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛A修改
+     * @param matchADTO
+     * @return
+     */
+    @ApiOperation(value = "比赛A修改")
+    @PostMapping("/update-a")
+    public Result updateMatchA(@RequestBody MatchADTO matchADTO) {
+        log.info("比赛A修改:{}",matchADTO);
+        matchAService.update(matchADTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛B修改
+     * @param matchBDTO
+     * @return
+     */
+    @ApiOperation(value = "比赛B修改")
+    @PostMapping("/update-b")
+    public Result updateMatchB(@RequestBody MatchBDTO matchBDTO) {
+        log.info("比赛B修改:{}",matchBDTO);
+        matchBService.update(matchBDTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛A删除
+     * @param matchId
+     * @return
+     */
+    @ApiOperation(value = "比赛A删除")
+    @PostMapping("/delete-a")
+    public Result deleteMatchA(@RequestBody Long matchId) {
+        log.info("比赛A删除:{}",matchId);
+        matchAService.delete(matchId);
+        return Result.success();
+    }
+
+    /**
+     * 比赛B删除
+     * @param matchId
+     * @return
+     */
+    @ApiOperation(value = "比赛B删除")
+    @PostMapping("/delete-b")
+    public Result deleteMatchB(@RequestBody Long matchId) {
+        log.info("比赛B删除:{}",matchId);
+        matchBService.delete(matchId);
         return Result.success();
     }
 }
