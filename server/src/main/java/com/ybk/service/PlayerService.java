@@ -1,8 +1,7 @@
 package com.ybk.service;
 
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.PlayerDTO;
-import com.ybk.entity.Player;
+import com.ybk.dto.role.PlayerDTO;
 import com.ybk.result.PageResult;
 
 import java.util.List;

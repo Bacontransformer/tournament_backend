@@ -29,12 +29,13 @@ public class AuthorizeController {
 
     /**
      * 分页查询领队
+     *
      * @param pageQueryDTO
      * @return
      */
-    @ApiOperation(value="分页查询待审批的领队信息")
+    @ApiOperation(value = "分页查询待审批的领队信息")
     @PostMapping("/page-leader")
-    public Result<PageResult> pageLeader(@RequestBody PageQueryDTO pageQueryDTO){
+    public Result<PageResult> pageLeader(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询待审批的领队信息");
         PageResult pageResult = leaderService.pageQuery(pageQueryDTO);
         return Result.success(pageResult);
@@ -42,12 +43,13 @@ public class AuthorizeController {
 
     /**
      * 分页查询裁判
+     *
      * @param pageQueryDTO
      * @return
      */
-    @ApiOperation(value="分页查询待审批的裁判信息")
+    @ApiOperation(value = "分页查询待审批的裁判信息")
     @PostMapping("/page-referee")
-    public Result<PageResult> pageReferee(@RequestBody PageQueryDTO pageQueryDTO){
+    public Result<PageResult> pageReferee(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询待审批的裁判信息");
         PageResult pageResult = refereeService.pageQuery(pageQueryDTO);
         return Result.success(pageResult);
@@ -55,12 +57,13 @@ public class AuthorizeController {
 
     /**
      * 批量通过裁判
+     *
      * @param ids
      * @return
      */
-    @ApiOperation(value="通过待审批的裁判信息")
+    @ApiOperation(value = "通过待审批的裁判信息")
     @PostMapping("/pass-referee")
-    public Result<PageResult> passReferee(@RequestBody List<Integer> ids){
+    public Result passReferee(@RequestBody List<Integer> ids) {
         log.info("通过待审批的裁判信息");
         refereeService.passReferee(ids);
         return Result.success();
@@ -68,12 +71,13 @@ public class AuthorizeController {
 
     /**
      * 批量通过领队
+     *
      * @param ids
      * @return
      */
-    @ApiOperation(value="通过待审批的领队信息")
+    @ApiOperation(value = "通过待审批的领队信息")
     @PostMapping("/pass-leader")
-    public Result<PageResult> passLeader(@RequestBody List<Integer> ids){
+    public Result passLeader(@RequestBody List<Integer> ids) {
         log.info("通过待审批的领队信息");
         leaderService.passLeader(ids);
         return Result.success();

@@ -1,4 +1,4 @@
-package com.ybk.dto;
+package com.ybk.dto.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

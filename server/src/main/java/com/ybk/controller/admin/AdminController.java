@@ -1,7 +1,7 @@
 package com.ybk.controller.admin;
 
 import com.ybk.constant.JwtClaimsConstant;
-import com.ybk.dto.AdminLoginDTO;
+import com.ybk.dto.role.AdminLoginDTO;
 import com.ybk.entity.Admin;
 import com.ybk.properties.JwtProperties;
 import com.ybk.result.Result;
@@ -33,12 +33,13 @@ public class AdminController {
 
     /**
      * 管理员登录
+     *
      * @param adminLoginDTO
      * @return
      */
-    @ApiOperation(value="管理员登录")
+    @ApiOperation(value = "管理员登录")
     @PostMapping("/login")
-    public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO){
+    public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO) {
         log.info("管理员登录：{}", adminLoginDTO);
 
         Admin admin = adminService.login(adminLoginDTO);

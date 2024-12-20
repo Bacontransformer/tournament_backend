@@ -1,15 +1,12 @@
-package com.ybk.dto;
+package com.ybk.dto.role;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-@ApiModel(description = "员工登录时传递的数据模型")
-public class LeaderLoginDTO implements Serializable {
-
+@ApiModel(description = "裁判登录时传递的数据模型")
+public class RefereeLoginDTO {
     @ApiModelProperty("用户名")
     private String username;
 

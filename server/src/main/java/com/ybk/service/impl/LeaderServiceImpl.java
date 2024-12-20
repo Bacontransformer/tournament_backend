@@ -4,15 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.LeaderDTO;
-import com.ybk.dto.LeaderLoginDTO;
+import com.ybk.dto.role.LeaderDTO;
+import com.ybk.dto.role.LeaderLoginDTO;
 import com.ybk.entity.Leader;
+import com.ybk.entity.Player;
 import com.ybk.entity.Team;
 import com.ybk.exception.AccountLockedException;
 import com.ybk.exception.AccountNotFoundException;
 import com.ybk.exception.PasswordErrorException;
 import com.ybk.exception.UsernameAlreadyExistedException;
 import com.ybk.mapper.LeaderMapper;
+import com.ybk.mapper.PlayerMapper;
 import com.ybk.mapper.TeamMapper;
 import com.ybk.result.PageResult;
 import com.ybk.service.LeaderService;
@@ -33,43 +35,69 @@ public class LeaderServiceImpl implements LeaderService {
     @Autowired
     private LeaderMapper leaderMapper;
 
+    @Autowired
+    private PlayerMapper playerMapper;
+
     /**
      * 新增领队
+     *
      * @param leaderDTO
      */
     @Override
+    @Transactional
     public void save(LeaderDTO leaderDTO) {
         String username = leaderDTO.getUsername();
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         if (leaderMapper.selectOne(wrapper) != null) {
             throw new UsernameAlreadyExistedException("用户名已存在");
         }
+        // 新建一个leader记录
         Leader leader = new Leader();
-        BeanUtils.copyProperties(leaderDTO,leader);
+        BeanUtils.copyProperties(leaderDTO, leader);
         leader.setIsPassed(false);
+        leader.setAge(leaderDTO.getAge());
+        leader.setGender(leaderDTO.getGender());
         leader.setCreateTime(LocalDateTime.now());
         leader.setUpdateTime(LocalDateTime.now());
         leader.setPassword(DigestUtils.md5DigestAsHex(leaderDTO.getPasswordFirst().getBytes()));
         leaderMapper.insert(leader);
-        // 插入一条新的team记录
-        // 获取插入后自动生成的 leaderId
+        // 新建一个team记录
         Long leaderId = leader.getLeaderId();
-        Team team = new Team();
-        team.setLeaderId(leaderId);
-        team.setLeaderName(leaderDTO.getName());
-        team.setName(leaderDTO.getTeamName());
-        team.setIntroduction(leaderDTO.getIntroduction());
-        team.setDepartment(leaderDTO.getDepartment());
-        team.setCreateTime(LocalDateTime.now());
-        team.setUpdateTime(LocalDateTime.now());
+        Team team = Team.builder()
+                .leaderId(leaderId)
+                .LeaderName(leader.getName())
+                .name(leaderDTO.getTeamName())
+                .introduction(leaderDTO.getIntroduction())
+                .department(leaderDTO.getDepartment())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .build();
         teamMapper.insert(team);
-    }
+        // 将队伍id回设Leader实体
+        leader.setTeamId(team.getTeamId());
+        leaderMapper.updateById(leader);
 
+        // 插入第一条球员记录，领队自身也是球员
+        Player player = Player.builder()
+                .leaderId(leaderId)
+                .name(leaderDTO.getName())
+                .phone(leaderDTO.getPhone())
+                .department(leaderDTO.getDepartment())
+                .gender(leaderDTO.getGender())
+                .teamId(team.getTeamId())
+                .isActive(true)
+                .joinTime(LocalDateTime.now())
+                .role("leader")
+                .age(leaderDTO.getAge())
+                .build();
+        playerMapper.insert(player);
+    }
 
 
     /**
      * 领队登录
+     *
      * @param leaderLoginDTO
      * @return
      */
@@ -80,7 +108,7 @@ public class LeaderServiceImpl implements LeaderService {
 
         //1、根据用户名查询数据库中的数据
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         Leader leader = leaderMapper.selectOne(wrapper);
         //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
         if (leader == null) {
@@ -103,26 +131,33 @@ public class LeaderServiceImpl implements LeaderService {
     }
 
     /**
-     * 修改信息
+     * 修改领队信息
+     *
      * @param leaderDTO
      */
     @Override
     public void udpate(LeaderDTO leaderDTO) {
         String username = leaderDTO.getUsername();
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         Leader leader = leaderMapper.selectOne(wrapper);
         leader.setUpdateTime(LocalDateTime.now());
-        if(leaderDTO.getPasswordFirst()!=null&&!leaderDTO.getPasswordFirst().isEmpty()){
+        if (leaderDTO.getPasswordFirst() != null && !leaderDTO.getPasswordFirst().isEmpty()) {
             leader.setPassword(leaderDTO.getPasswordFirst());
         }
-        if(leaderDTO.getName()!=null&&!leaderDTO.getName().isEmpty()){
+        if (leaderDTO.getName() != null && !leaderDTO.getName().isEmpty()) {
             leader.setName(leaderDTO.getName());
         }
-        if(leaderDTO.getDepartment()!=null&&!leaderDTO.getDepartment().isEmpty()){
+        if (leaderDTO.getGender() != null && !leaderDTO.getGender().isEmpty()) {
+            leader.setGender(leaderDTO.getGender());
+        }
+        if (leaderDTO.getAge() != null) {
+            leader.setAge(leaderDTO.getAge());
+        }
+        if (leaderDTO.getDepartment() != null && !leaderDTO.getDepartment().isEmpty()) {
             leader.setDepartment(leaderDTO.getDepartment());
         }
-        if(leaderDTO.getPhone()!=null&&!leaderDTO.getPhone().isEmpty()){
+        if (leaderDTO.getPhone() != null && !leaderDTO.getPhone().isEmpty()) {
             leader.setPhone(leaderDTO.getPhone());
         }
         leaderMapper.updateById(leader);
@@ -130,6 +165,7 @@ public class LeaderServiceImpl implements LeaderService {
 
     /**
      * 分页查询
+     *
      * @param pageQueryDTO
      * @return
      */
@@ -149,6 +185,10 @@ public class LeaderServiceImpl implements LeaderService {
         return pageResult;
     }
 
+    /**
+     * 批量通过领队
+     * @param ids
+     */
     @Override
     @Transactional
     public void passLeader(List<Integer> ids) {

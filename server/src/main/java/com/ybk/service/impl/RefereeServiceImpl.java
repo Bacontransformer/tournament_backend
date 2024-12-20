@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.RefereeDTO;
-import com.ybk.dto.RefereeLoginDTO;
+import com.ybk.dto.role.RefereeDTO;
+import com.ybk.dto.role.RefereeLoginDTO;
 import com.ybk.entity.Referee;
 import com.ybk.exception.AccountLockedException;
 import com.ybk.exception.AccountNotFoundException;
@@ -31,6 +31,7 @@ public class RefereeServiceImpl implements RefereeService {
 
     /**
      * 裁判登录
+     *
      * @param refereeLoginDTO
      * @return
      */
@@ -40,7 +41,7 @@ public class RefereeServiceImpl implements RefereeService {
         String password = refereeLoginDTO.getPassword();
         //1、根据用户名查询数据库中的数据
         QueryWrapper<Referee> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         Referee referee = refereeMapper.selectOne(wrapper);
         //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
         if (referee == null) {
@@ -64,6 +65,7 @@ public class RefereeServiceImpl implements RefereeService {
 
     /**
      * 分页查询
+     *
      * @param pageQueryDTO
      * @return
      */
@@ -101,12 +103,12 @@ public class RefereeServiceImpl implements RefereeService {
     public void save(RefereeDTO refereeDTO) {
         String username = refereeDTO.getUsername();
         QueryWrapper<Referee> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         if (refereeMapper.selectOne(wrapper) != null) {
             throw new UsernameAlreadyExistedException("用户名已存在");
         }
         Referee referee = new Referee();
-        BeanUtils.copyProperties(refereeDTO,referee);
+        BeanUtils.copyProperties(refereeDTO, referee);
         referee.setIsPassed(false);
         referee.setCreateTime(LocalDateTime.now());
         referee.setUpdateTime(LocalDateTime.now());
@@ -118,19 +120,19 @@ public class RefereeServiceImpl implements RefereeService {
     public void udpate(RefereeDTO refereeDTO) {
         String username = refereeDTO.getUsername();
         QueryWrapper<Referee> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         Referee referee = refereeMapper.selectOne(wrapper);
         referee.setUpdateTime(LocalDateTime.now());
-        if(refereeDTO.getPasswordFirst()!=null&&!refereeDTO.getPasswordFirst().isEmpty()){
+        if (refereeDTO.getPasswordFirst() != null && !refereeDTO.getPasswordFirst().isEmpty()) {
             referee.setPassword(refereeDTO.getPasswordFirst());
         }
-        if(refereeDTO.getName()!=null&&!refereeDTO.getName().isEmpty()){
+        if (refereeDTO.getName() != null && !refereeDTO.getName().isEmpty()) {
             referee.setName(refereeDTO.getName());
         }
-        if(refereeDTO.getDepartment()!=null&&!refereeDTO.getDepartment().isEmpty()){
+        if (refereeDTO.getDepartment() != null && !refereeDTO.getDepartment().isEmpty()) {
             referee.setDepartment(refereeDTO.getDepartment());
         }
-        if(refereeDTO.getPhone()!=null&&!refereeDTO.getPhone().isEmpty()){
+        if (refereeDTO.getPhone() != null && !refereeDTO.getPhone().isEmpty()) {
             referee.setPhone(refereeDTO.getPhone());
         }
         refereeMapper.updateById(referee);

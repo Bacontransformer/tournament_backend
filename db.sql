@@ -1,84 +1,17 @@
-create table admin
-(
-    admin_id    int auto_increment comment '管理员ID'
-        primary key,
-    password    varchar(255)                       not null comment '密码',
-    username    varchar(100)                       not null comment '用户名',
-    name        varchar(100)                       not null comment '姓名',
-    phone       varchar(15)                        null comment '电话号码',
-    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-    update_time datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    constraint username
-        unique (username)
-)
-    comment '管理员表';
-
-create table leader
-(
-    leader_id   int auto_increment comment '领导ID'
-        primary key,
-    password    varchar(255)                         not null comment '密码',
-    name        varchar(100)                         not null comment '姓名',
-    username    varchar(100)                         not null comment '用户名',
-    department  varchar(100)                         null comment '部门',
-    phone       varchar(15)                          null comment '电话号码',
-    create_time datetime   default CURRENT_TIMESTAMP not null comment '创建时间',
-    update_time datetime   default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    is_passed   tinyint(1) default 0                 null,
-    constraint username
-        unique (username)
-)
-    comment '领队表';
-
-create table player
-(
-    player_id   int                                not null comment '选手ID'
-        primary key,
-    team_id     int                                not null comment '队伍ID',
-    gender      varchar(10)                        not null comment '性别',
-    name        varchar(50)                        not null comment '姓名',
-    department  varchar(100)                       not null comment '院系',
-    phone       varchar(15)                        not null comment '手机号',
-    create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
-    update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
-)
-    comment '选手表';
-
-create table referee
-(
-    referee_id  int auto_increment comment '裁判ID'
-        primary key,
-    password    varchar(255)                         not null comment '密码',
-    username    varchar(100)                         not null comment '用户名',
-    name        varchar(100)                         not null comment '姓名',
-    department  varchar(100)                         null comment '部门',
-    phone       varchar(15)                          null comment '电话号码',
-    is_passed   tinyint(1) default 0                 null comment '是否通过',
-    create_time datetime   default CURRENT_TIMESTAMP not null comment '创建时间',
-    update_time datetime   default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    constraint username
-        unique (username)
-)
-    comment '裁判表';
-
-create table team
-(
-    team_id      int auto_increment comment '队伍ID'
-        primary key,
-    leader_id    int                                not null comment '队伍领导ID',
-    name         varchar(255)                       not null comment '队伍名称',
-    leader_name  varchar(255)                       not null comment '队伍领导名称',
-    introduction text                               null comment '队伍简介，可以为空',
-    department   varchar(255)                       not null comment '队伍所属部门',
-    create_time  datetime default CURRENT_TIMESTAMP null comment '创建时间',
-    update_time  datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间'
-)
-    comment '队伍表';
-
-ALTER TABLE admin MODIFY COLUMN admin_id BIGINT AUTO_INCREMENT COMMENT '管理员ID';
-ALTER TABLE leader MODIFY COLUMN leader_id BIGINT AUTO_INCREMENT COMMENT '领导ID';
-ALTER TABLE player MODIFY COLUMN player_id BIGINT NOT NULL COMMENT '选手ID';
-ALTER TABLE referee MODIFY COLUMN referee_id BIGINT AUTO_INCREMENT COMMENT '裁判ID';
-ALTER TABLE team MODIFY COLUMN team_id BIGINT AUTO_INCREMENT COMMENT '队伍ID';
-
-
+CREATE TABLE match_a (
+                         match_a_id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '比赛的ID',
+                         event_id BIGINT NOT NULL COMMENT '活动ID',
+                         team_a_id BIGINT NOT NULL COMMENT '队伍A的ID',
+                         team_b_id BIGINT NOT NULL COMMENT '队伍B的ID',
+                         venue_number INT NOT NULL COMMENT '场地编号',
+                         modes VARCHAR(255) NOT NULL COMMENT '比赛模式（以逗号分隔存储）',
+                         round_count INT NOT NULL COMMENT '每个比赛模式的局数',
+                         win_score INT NOT NULL COMMENT '单局获胜分数',
+                         max_participation_times INT COMMENT '单个选手最大可参加比赛模式数量',
+                         min_team_age_sum INT COMMENT '最小队伍年龄和',
+                         max_team_age_sum INT COMMENT '最大队伍年龄和',
+                         max_substitute_player INT COMMENT '最大替补人数',
+                         begin_time DATETIME NOT NULL COMMENT '比赛开始时间',
+                         create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                         update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) COMMENT 'MatchA 比赛记录表';
