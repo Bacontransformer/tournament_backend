@@ -19,6 +19,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private LeaderMapper leaderMapper;
 
+    /**
+     * 队伍报名赛事
+     * @param registrationDTO
+     */
     @Override
     public void register(RegistrationDTO registrationDTO) {
         Long leaderId = BaseContext.getCurrentId();

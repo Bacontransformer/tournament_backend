@@ -85,6 +85,10 @@ public class RefereeServiceImpl implements RefereeService {
         return pageResult;
     }
 
+    /**
+     * 审核通过referee注册信息
+     * @param ids
+     */
     @Override
     @Transactional
     public void passReferee(List<Integer> ids) {
@@ -99,6 +103,10 @@ public class RefereeServiceImpl implements RefereeService {
         refereeMapper.update(updatedReferee, updateWrapper);
     }
 
+    /**
+     * 保存referee注册信息
+     * @param refereeDTO
+     */
     @Override
     public void save(RefereeDTO refereeDTO) {
         String username = refereeDTO.getUsername();
@@ -116,6 +124,10 @@ public class RefereeServiceImpl implements RefereeService {
         refereeMapper.insert(referee);
     }
 
+    /**
+     * 更新referee注册信息
+     * @param refereeDTO
+     */
     @Override
     public void udpate(RefereeDTO refereeDTO) {
         String username = refereeDTO.getUsername();

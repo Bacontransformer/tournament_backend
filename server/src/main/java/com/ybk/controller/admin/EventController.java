@@ -50,6 +50,11 @@ public class EventController {
         return Result.success();
     }
 
+    /**
+     * 活动删除
+     * @param id
+     * @return
+     */
     @ApiOperation(value = "活动删除")
     @PostMapping("/delete")
     public Result deleteEvent(@RequestBody Integer id) {
@@ -58,6 +63,11 @@ public class EventController {
         return Result.success();
     }
 
+    /**
+     * 分页查询所有活动信息
+     * @param pageQueryDTO
+     * @return
+     */
     @ApiOperation(value = "分页查询活动信息")
     @PostMapping("/page-event")
     public Result<PageResult> pageEvent(@RequestBody PageQueryDTO pageQueryDTO) {

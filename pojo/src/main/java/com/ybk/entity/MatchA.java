@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MatchA: Configurable Traditional Match
+ * MatchA: 传统比赛【可配置】
  */
 @Data
 @Builder

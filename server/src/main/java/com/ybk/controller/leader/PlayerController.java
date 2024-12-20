@@ -24,6 +24,11 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    /**
+     * 分页查询所有队员信息
+     * @param pageQueryDTO
+     * @return
+     */
     @ApiOperation(value = "分页查询所有队员信息")
     @PostMapping("/page-player")
     public Result<PageResult> pagePlayer(@RequestBody PageQueryDTO pageQueryDTO) {

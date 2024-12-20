@@ -33,6 +33,10 @@ public class MatchBServiceImpl implements MatchBService {
     @Autowired
     private AssignmentMapper assignmentMapper;
 
+    /**
+     * 验证比赛建立请求
+     * @param matchBDTO
+     */
     private void validateMatchBDTO(MatchBDTO matchBDTO) {
         if (matchBDTO.getTeamAId() == null || matchBDTO.getTeamBId() == null) {
             throw new MatchCreateException("请选择两支球队");
@@ -56,6 +60,11 @@ public class MatchBServiceImpl implements MatchBService {
             throw new MatchCreateException("请选择比赛所属活动");
         }
     }
+
+    /**
+     * 保存比赛信息
+     * @param matchBDTO
+     */
     @Override
     public void save(MatchBDTO matchBDTO) {
         validateMatchBDTO(matchBDTO);
@@ -88,6 +97,10 @@ public class MatchBServiceImpl implements MatchBService {
         matchBMapper.insert(matchB);
     }
 
+    /**
+     * 更新比赛信息
+     * @param matchBDTO
+     */
     @Override
     public void update(MatchBDTO matchBDTO) {
         MatchB matchB = new MatchB();
@@ -120,11 +133,19 @@ public class MatchBServiceImpl implements MatchBService {
         matchBMapper.updateById(matchB);
     }
 
+    /**
+     * 删除比赛信息
+     * @param matchId
+     */
     @Override
     public void delete(Long matchId) {
         matchBMapper.deleteById(matchId);
     }
 
+    /**
+     * 设置比赛球员
+     * @param assignmentDTO
+     */
     @Override
     public void setMatchBPlayer(AssignmentDTO assignmentDTO) {
         MatchB matchB = matchBMapper.selectById(assignmentDTO.getMatchId());
@@ -156,6 +177,10 @@ public class MatchBServiceImpl implements MatchBService {
         assignmentMapper.insert(assignment);
     }
 
+    /**
+     * 更新比赛球员
+     * @param assignmentDTO
+     */
     @Override
     public void updateMatchBPlayer(AssignmentDTO assignmentDTO) {
         Assignment assignment = assignmentMapper.selectById(assignmentDTO.getAssignmentId());
@@ -194,6 +219,10 @@ public class MatchBServiceImpl implements MatchBService {
         assignmentMapper.updateById(assignment);
     }
 
+    /**
+     * 删除比赛球员
+     * @param assignmentId
+     */
     @Override
     public void deleteMatchBPlayer(Long assignmentId) {
         assignmentMapper.deleteById(assignmentId);
