@@ -63,7 +63,7 @@ public class AuthorizeController {
      */
     @ApiOperation(value = "通过待审批的裁判信息")
     @PostMapping("/pass-referee")
-    public Result<PageResult> passReferee(@RequestBody List<Integer> ids) {
+    public Result passReferee(@RequestBody List<Integer> ids) {
         log.info("通过待审批的裁判信息");
         refereeService.passReferee(ids);
         return Result.success();
@@ -77,7 +77,7 @@ public class AuthorizeController {
      */
     @ApiOperation(value = "通过待审批的领队信息")
     @PostMapping("/pass-leader")
-    public Result<PageResult> passLeader(@RequestBody List<Integer> ids) {
+    public Result passLeader(@RequestBody List<Integer> ids) {
         log.info("通过待审批的领队信息");
         leaderService.passLeader(ids);
         return Result.success();

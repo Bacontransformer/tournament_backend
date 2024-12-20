@@ -7,12 +7,14 @@ import com.ybk.dto.PageQueryDTO;
 import com.ybk.dto.role.LeaderDTO;
 import com.ybk.dto.role.LeaderLoginDTO;
 import com.ybk.entity.Leader;
+import com.ybk.entity.Player;
 import com.ybk.entity.Team;
 import com.ybk.exception.AccountLockedException;
 import com.ybk.exception.AccountNotFoundException;
 import com.ybk.exception.PasswordErrorException;
 import com.ybk.exception.UsernameAlreadyExistedException;
 import com.ybk.mapper.LeaderMapper;
+import com.ybk.mapper.PlayerMapper;
 import com.ybk.mapper.TeamMapper;
 import com.ybk.result.PageResult;
 import com.ybk.service.LeaderService;
@@ -33,12 +35,16 @@ public class LeaderServiceImpl implements LeaderService {
     @Autowired
     private LeaderMapper leaderMapper;
 
+    @Autowired
+    private PlayerMapper playerMapper;
+
     /**
      * 新增领队
      *
      * @param leaderDTO
      */
     @Override
+    @Transactional
     public void save(LeaderDTO leaderDTO) {
         String username = leaderDTO.getUsername();
         QueryWrapper<Leader> wrapper = new QueryWrapper<>();
@@ -46,6 +52,7 @@ public class LeaderServiceImpl implements LeaderService {
         if (leaderMapper.selectOne(wrapper) != null) {
             throw new UsernameAlreadyExistedException("用户名已存在");
         }
+        // 新建一个leader记录
         Leader leader = new Leader();
         BeanUtils.copyProperties(leaderDTO, leader);
         leader.setIsPassed(false);
@@ -55,18 +62,36 @@ public class LeaderServiceImpl implements LeaderService {
         leader.setUpdateTime(LocalDateTime.now());
         leader.setPassword(DigestUtils.md5DigestAsHex(leaderDTO.getPasswordFirst().getBytes()));
         leaderMapper.insert(leader);
-        // 插入一条新的team记录
-        // 获取插入后自动生成的 leaderId
+        // 新建一个team记录
         Long leaderId = leader.getLeaderId();
-        Team team = new Team();
-        team.setLeaderId(leaderId);
-        team.setLeaderName(leaderDTO.getName());
-        team.setName(leaderDTO.getTeamName());
-        team.setIntroduction(leaderDTO.getIntroduction());
-        team.setDepartment(leaderDTO.getDepartment());
-        team.setCreateTime(LocalDateTime.now());
-        team.setUpdateTime(LocalDateTime.now());
+        Team team = Team.builder()
+                .leaderId(leaderId)
+                .LeaderName(leader.getName())
+                .name(leaderDTO.getTeamName())
+                .introduction(leaderDTO.getIntroduction())
+                .department(leaderDTO.getDepartment())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .build();
         teamMapper.insert(team);
+        // 将队伍id回设Leader实体
+        leader.setTeamId(team.getTeamId());
+        leaderMapper.updateById(leader);
+
+        // 插入第一条球员记录，领队自身也是球员
+        Player player = Player.builder()
+                .leaderId(leaderId)
+                .name(leaderDTO.getName())
+                .phone(leaderDTO.getPhone())
+                .department(leaderDTO.getDepartment())
+                .gender(leaderDTO.getGender())
+                .teamId(team.getTeamId())
+                .isActive(true)
+                .joinTime(LocalDateTime.now())
+                .role("leader")
+                .age(leaderDTO.getAge())
+                .build();
+        playerMapper.insert(player);
     }
 
 
@@ -106,7 +131,7 @@ public class LeaderServiceImpl implements LeaderService {
     }
 
     /**
-     * 修改信息
+     * 修改领队信息
      *
      * @param leaderDTO
      */
@@ -160,6 +185,10 @@ public class LeaderServiceImpl implements LeaderService {
         return pageResult;
     }
 
+    /**
+     * 批量通过领队
+     * @param ids
+     */
     @Override
     @Transactional
     public void passLeader(List<Integer> ids) {

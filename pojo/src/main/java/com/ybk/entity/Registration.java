@@ -1,5 +1,6 @@
 package com.ybk.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,12 +9,16 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * 球队报名记录
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("registration")
 public class Registration {
+    @TableId("registration_id")
     private Long registrationId; // 主键ID
     private Long teamId; // 队伍ID
     private Long eventId; // 活动ID

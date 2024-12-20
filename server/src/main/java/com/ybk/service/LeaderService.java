@@ -5,6 +5,7 @@ import com.ybk.dto.role.LeaderDTO;
 import com.ybk.dto.role.LeaderLoginDTO;
 import com.ybk.entity.Leader;
 import com.ybk.result.PageResult;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface LeaderService {
     PageResult pageQuery(PageQueryDTO pageQueryDTO);
 
     void passLeader(List<Integer> ids);
+
 }

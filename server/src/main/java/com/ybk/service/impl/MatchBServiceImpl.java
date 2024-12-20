@@ -1,9 +1,18 @@
 package com.ybk.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ybk.context.BaseContext;
+import com.ybk.dto.match.AssignmentDTO;
 import com.ybk.dto.match.MatchBDTO;
+import com.ybk.entity.Assignment;
+import com.ybk.entity.Leader;
 import com.ybk.entity.MatchB;
+import com.ybk.entity.Player;
 import com.ybk.exception.MatchCreateException;
+import com.ybk.mapper.AssignmentMapper;
+import com.ybk.mapper.LeaderMapper;
 import com.ybk.mapper.MatchBMapper;
+import com.ybk.mapper.PlayerMapper;
 import com.ybk.service.MatchBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +22,16 @@ import java.time.LocalDateTime;
 @Service
 public class MatchBServiceImpl implements MatchBService {
     @Autowired
+    private LeaderMapper leaderMapper;
+
+    @Autowired
     private MatchBMapper matchBMapper;
+
+    @Autowired
+    private PlayerMapper playerMapper;
+
+    @Autowired
+    private AssignmentMapper assignmentMapper;
 
     private void validateMatchBDTO(MatchBDTO matchBDTO) {
         if (matchBDTO.getTeamAId() == null || matchBDTO.getTeamBId() == null) {
@@ -105,5 +123,79 @@ public class MatchBServiceImpl implements MatchBService {
     @Override
     public void delete(Long matchId) {
         matchBMapper.deleteById(matchId);
+    }
+
+    @Override
+    public void setMatchBPlayer(AssignmentDTO assignmentDTO) {
+        MatchB matchB = matchBMapper.selectById(assignmentDTO.getMatchId());
+        if(matchB == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        Player player = playerMapper.selectById(assignmentDTO.getPlayerId());
+        if(player == null){
+            throw new MatchCreateException("球员不存在");
+        }
+        Long leaderId = player.getLeaderId();
+        if(!leaderId.equals(BaseContext.getCurrentId())){
+            throw new MatchCreateException("非此领队球员");
+        }
+        Long teamId = leaderMapper.selectOne(
+                new LambdaQueryWrapper<Leader>()
+                        .select(Leader::getTeamId)
+                        .eq(Leader::getLeaderId, leaderId)
+        ).getTeamId();
+        Assignment assignment = Assignment.builder()
+                .playerId(assignmentDTO.getPlayerId())
+                .teamId(teamId)
+                .isSubstitute(assignmentDTO.getIsSubstitute())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .matchId(assignmentDTO.getMatchId())
+                .typeOrder(assignmentDTO.getTypeOrder())
+                .build();
+        assignmentMapper.insert(assignment);
+    }
+
+    @Override
+    public void updateMatchBPlayer(AssignmentDTO assignmentDTO) {
+        Assignment assignment = assignmentMapper.selectById(assignmentDTO.getAssignmentId());
+        if(assignment == null){
+            throw new MatchCreateException("信息不存在");
+        }
+        MatchB matchB = matchBMapper.selectById(assignmentDTO.getMatchId());
+        if(matchB == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        Player player = playerMapper.selectById(assignmentDTO.getPlayerId());
+        if(player == null){
+            throw new MatchCreateException("球员不存在");
+        }
+        Long leaderId = player.getLeaderId();
+        if(!leaderId.equals(BaseContext.getCurrentId())){
+            throw new MatchCreateException("非此领队球员");
+        }
+        // 使用 Lambda查询只获取 teamId
+        Leader leader = leaderMapper.selectOne(
+                new LambdaQueryWrapper<Leader>()
+                        .select(Leader::getTeamId)
+                        .eq(Leader::getLeaderId, leaderId)
+        );
+        assignment.setTeamId(leader.getTeamId());
+        if(assignmentDTO.getPlayerId() != null){
+            assignment.setPlayerId(assignmentDTO.getPlayerId());
+        }
+        if(assignmentDTO.getIsSubstitute() != null){
+            assignment.setIsSubstitute(assignmentDTO.getIsSubstitute());
+        }
+        if(assignmentDTO.getTypeOrder() != null){
+            assignment.setTypeOrder(assignmentDTO.getTypeOrder());
+        }
+        assignment.setUpdateTime(LocalDateTime.now());
+        assignmentMapper.updateById(assignment);
+    }
+
+    @Override
+    public void deleteMatchBPlayer(Long assignmentId) {
+        assignmentMapper.deleteById(assignmentId);
     }
 }
