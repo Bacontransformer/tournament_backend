@@ -98,6 +98,9 @@ public class PlayerServiceImpl implements PlayerService {
      */
     @Override
     public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
+        // 设置默认值
+        pageQueryDTO.setPage(pageQueryDTO.getPage() == 0 ? 1 : pageQueryDTO.getPage());
+        pageQueryDTO.setPageSize(pageQueryDTO.getPageSize() == 0 ? 10 : pageQueryDTO.getPageSize());
         // 查询当前leaderId下的所有队员
         Page<Player> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         QueryWrapper<Player> queryWrapper = new QueryWrapper<>();

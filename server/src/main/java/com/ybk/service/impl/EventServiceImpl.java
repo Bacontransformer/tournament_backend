@@ -83,12 +83,15 @@ public class EventServiceImpl implements EventService {
      * @param id
      */
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         eventMapper.deleteById(id);
     }
 
     @Override
     public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
+        // 设置默认值
+        pageQueryDTO.setPage(pageQueryDTO.getPage() == 0 ? 1 : pageQueryDTO.getPage());
+        pageQueryDTO.setPageSize(pageQueryDTO.getPageSize() == 0 ? 10 : pageQueryDTO.getPageSize());
         // 分页查询尚未结束的活动，也就是活动endTime大于等于当前日期的活动
         Page<Event> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         QueryWrapper<Event> queryWrapper = new QueryWrapper<>();

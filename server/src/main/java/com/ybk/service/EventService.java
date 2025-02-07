@@ -9,7 +9,7 @@ public interface EventService {
 
     void update(EventDTO eventDTO);
 
-    void delete(Integer id);
+    void delete(Long id);
 
     PageResult pageQuery(PageQueryDTO pageQueryDTO);
 }

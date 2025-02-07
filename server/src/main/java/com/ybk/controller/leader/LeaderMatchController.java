@@ -27,22 +27,6 @@ public class LeaderMatchController {
     @Autowired
     private MatchSetService matchSetService;
 
-    @Autowired
-    private RegistrationService registrationService;
-
-    /**
-     * 报名比赛
-     * @param registrationDTO
-     * @return
-     */
-    @ApiOperation(value = "报名比赛")
-    @PostMapping("/registration")
-    public Result registration(@RequestBody RegistrationDTO registrationDTO){
-        log.info("报名比赛:{}",registrationDTO);
-        registrationService.register(registrationDTO);
-        return Result.success();
-    }
-
     /**
      * 设置MatchA上场球员
      * @param assignmentDTO

@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -29,7 +26,7 @@ public class EventController {
      * @return
      */
     @ApiOperation(value = "活动创建")
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public Result saveEvent(@RequestBody EventDTO eventDTO) {
         log.info("活动创建:{}", eventDTO);
         eventService.save(eventDTO);
@@ -43,7 +40,7 @@ public class EventController {
      * @return
      */
     @ApiOperation(value = "活动修改")
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public Result updateEvent(@RequestBody EventDTO eventDTO) {
         log.info("活动修改:{}", eventDTO);
         eventService.update(eventDTO);
@@ -57,7 +54,7 @@ public class EventController {
      */
     @ApiOperation(value = "活动删除")
     @PostMapping("/delete")
-    public Result deleteEvent(@RequestBody Integer id) {
+    public Result deleteEvent(@RequestBody Long id) {
         log.info("活动删除:{}", id);
         eventService.delete(id);
         return Result.success();

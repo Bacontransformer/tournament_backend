@@ -71,6 +71,9 @@ public class RefereeServiceImpl implements RefereeService {
      */
     @Override
     public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
+        // 设置默认值
+        pageQueryDTO.setPage(pageQueryDTO.getPage() == 0 ? 1 : pageQueryDTO.getPage());
+        pageQueryDTO.setPageSize(pageQueryDTO.getPageSize() == 0 ? 10 : pageQueryDTO.getPageSize());
         // 创建分页对象
         Page<Referee> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         // 构造查询条件
@@ -91,14 +94,14 @@ public class RefereeServiceImpl implements RefereeService {
      */
     @Override
     @Transactional
-    public void passReferee(List<Integer> ids) {
+    public void passReferee(List<Long> ids) {
         // 构造需要更新的 Referee 实体
         Referee updatedReferee = new Referee();
         updatedReferee.setIsPassed(true);
         updatedReferee.setUpdateTime(LocalDateTime.now());
         // 更新条件：通过 ids 筛选
         UpdateWrapper<Referee> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.in("refereeId", ids);
+        updateWrapper.in("referee_id", ids);
         // 调用 Mapper 批量更新
         refereeMapper.update(updatedReferee, updateWrapper);
     }
