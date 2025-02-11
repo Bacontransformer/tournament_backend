@@ -66,7 +66,7 @@ public class EventController {
      * @return
      */
     @ApiOperation(value = "分页查询活动信息")
-    @PostMapping("/page-event")
+    @GetMapping("/page-event")
     public Result<PageResult> pageEvent(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询所有活动信息");
         PageResult pageResult = eventService.pageQuery(pageQueryDTO);

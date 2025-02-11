@@ -24,9 +24,12 @@ public class MatchB{
     @TableId("match_b_id")
     private Long matchBId; // 比赛编号
     private Long eventId; // 关联到活动表
+    private Integer status; // 比赛状态
     private Integer sectionScore; // 每小节的获胜分数 x，一共有四个小节
     private Long teamAId; // teamA的编号
     private Long teamBId; // teamB的编号
+    private String teamADepartment; // teamA的部门
+    private String teamBDepartment; // teamB的部门
     private Integer venueNumber; // 场地编号
     private LinkedList<Player> teamAPlayers; // teamA的1、2、3、4号选手
     private LinkedList<Player> teamBPlayers; // teamB的1、2、3、4号选手
@@ -34,7 +37,8 @@ public class MatchB{
     private List<Player> teamBSubstitutePlayers; // teamB替补选手
     private Integer teamAScore; // teamA的总分数
     private Integer teamBScore; // teamB的总分数
-    private List<Boolean> scoreList; // 0代表 teamA 1代表 teamB
+    private Long winnerTeamId; // 获胜队伍编号
+    private List<Boolean> scoreList; // 得分详情，0代表 teamA 1代表 teamB
     private Integer maxSubstitutePlayer; // 最大替补人数
     private Integer minTeamAgeSum; // 最小队伍年龄和（可选规则）
     private Integer maxTeamAgeSum; // 最大队伍年龄和（可选规则）

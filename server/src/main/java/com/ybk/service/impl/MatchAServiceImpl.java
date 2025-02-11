@@ -3,7 +3,9 @@ package com.ybk.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ybk.constant.StatusConstant;
 import com.ybk.context.BaseContext;
+import com.ybk.dto.PageQueryDTO;
 import com.ybk.dto.match.MatchADTO;
 import com.ybk.dto.match.AssignmentDTO;
 import com.ybk.dto.match.RegistrationPageDTO;
@@ -16,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 @Service
 public class MatchAServiceImpl implements MatchAService {
@@ -29,11 +34,10 @@ public class MatchAServiceImpl implements MatchAService {
     private PlayerMapper playerMapper;
 
     @Autowired
-    private RegistrationMapper registrationMapper;
-
-    @Autowired
     private AssignmentMapper assignmentMapper;
 
+    @Autowired
+    private MatchSetMapper matchSetMapper;
     /**
      * 校验matchA编辑请求体
      * @param matchADTO
@@ -160,21 +164,6 @@ public class MatchAServiceImpl implements MatchAService {
     }
 
     /**
-     * 分页查询matchA报名队伍信息
-     * @param registrationPageDTO
-     * @return
-     */
-    @Override
-    public PageResult pageTeam(RegistrationPageDTO registrationPageDTO) {
-        Page<Registration> page = new Page<>(registrationPageDTO.getPage(), registrationPageDTO.getPageSize());
-        QueryWrapper<Registration> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("event_id", registrationPageDTO.getEventId());
-        page = registrationMapper.selectPage(page, queryWrapper);
-        PageResult pageResult = new PageResult(page.getTotal(), page.getRecords());
-        return pageResult;
-    }
-
-    /**
      * 设置matchA比赛选手
      * @param assignmentDTO
      */
@@ -268,5 +257,73 @@ public class MatchAServiceImpl implements MatchAService {
             throw new MatchCreateException("参赛选手不存在");
         }
         assignmentMapper.deleteById(assignmentId);
+    }
+
+
+    /**
+     * 获取正在进行的某一MatchA详细比赛信息
+     * @param matchAId
+     * @return
+     */
+    @Override
+    public MatchA getDoingMatchADetail(Long matchAId) {
+        MatchA matchA = matchAMapper.selectById(matchAId);
+        if(matchA == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        if(!matchA.getStatus().equals(StatusConstant.DOING)){
+            throw new MatchCreateException("比赛未开始");
+        }
+        LinkedList<String> modes = matchA.getModes();
+        Integer roundCount = matchA.getRoundCount();
+        // 从数据库中查询出各个mode的各个count的具体信息
+        for (String mode : modes ){
+            Map<Integer, MatchSet> matchSetMap = new HashMap<>();
+            for (int i = 0; i < roundCount; i++) {
+                MatchSet matchSet = matchSetMapper.selectOne(
+                        new LambdaQueryWrapper<MatchSet>()
+                                .eq(MatchSet::getMatchAId, matchA.getMatchAId())
+                                .eq(MatchSet::getMode, mode)
+                                .eq(MatchSet::getRoundCount, i)
+                );
+                matchSetMap.put(i,matchSet);
+            }
+            matchA.getMatchSets().put(mode,matchSetMap);
+        }
+        return matchA;
+    }
+
+    /**
+     * 获取所有未开始的比赛简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult getUnStartMatchABrief(PageQueryDTO pageQueryDTO) {
+        Page<MatchA> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        page = matchAMapper.selectPage(page,
+                new LambdaQueryWrapper<MatchA>()
+                        .eq(MatchA::getStatus, StatusConstant.UNSTART)
+                        .ge(MatchA::getBeginTime, LocalDateTime.now())
+                        .orderByAsc(MatchA::getBeginTime)
+        );
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 获取所有进行中的比赛简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult getDoingMatchABrief(PageQueryDTO pageQueryDTO) {
+        Page<MatchA> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        page = matchAMapper.selectPage(page,
+                new LambdaQueryWrapper<MatchA>()
+                        .eq(MatchA::getStatus, StatusConstant.DOING)
+                        .ge(MatchA::getBeginTime, LocalDateTime.now())
+                        .orderByAsc(MatchA::getBeginTime)
+        );
+        return new PageResult(page.getTotal(),page.getRecords());
     }
 }

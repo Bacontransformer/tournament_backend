@@ -15,6 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchSet {
+    private Long matchAId;
+    private String mode; // 比赛模式
+    private Integer roundCount; // 第几局
     private Long teamAScore; // teamA当局总得分
     private Long teamBScore; // teamB当局总得分
     private List<Boolean> teamScoreList; // 得分情况 0代表teamA得分，1代表teamB得分

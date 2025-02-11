@@ -2,8 +2,6 @@ package com.ybk.controller.admin;
 
 import com.ybk.dto.match.MatchADTO;
 import com.ybk.dto.match.MatchBDTO;
-import com.ybk.dto.match.RegistrationPageDTO;
-import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.*;
 import io.swagger.annotations.Api;
@@ -104,16 +102,4 @@ public class AdminMatchController {
         return Result.success();
     }
 
-    /**
-     * 查询报名的参赛队伍
-     * @param registrationPageDTO
-     * @return
-     */
-    @ApiOperation(value = "查询报名的参赛队伍")
-    @PostMapping("/page-team")
-    public Result<PageResult> pageTeam(@RequestBody RegistrationPageDTO registrationPageDTO) {
-        log.info("查询报名的参赛队伍:{}", registrationPageDTO);
-        PageResult pageResult = matchAService.pageTeam(registrationPageDTO);
-        return Result.success(pageResult);
-    }
 }
