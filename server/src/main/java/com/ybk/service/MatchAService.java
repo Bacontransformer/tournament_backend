@@ -1,9 +1,7 @@
 package com.ybk.service;
 
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.match.MatchADTO;
-import com.ybk.dto.match.AssignmentDTO;
-import com.ybk.dto.match.RegistrationPageDTO;
+import com.ybk.dto.match.*;
 import com.ybk.entity.MatchA;
 import com.ybk.result.PageResult;
 
@@ -25,4 +23,12 @@ public interface MatchAService {
     PageResult getUnStartMatchABrief(PageQueryDTO pageQueryDTO);
 
     PageResult getDoingMatchABrief(PageQueryDTO pageQueryDTO);
+
+    void endMatchA(EndMatchDTO endMatchDTO);
+
+    PageResult getRefereeMatchABrief(PageQueryDTO pageQueryDTO);
+
+    void beginMatchA(BeginMatchDTO beginMatchDTO);
+
+    void matchAScore(MatchAScoreDTO scoreDTO);
 }

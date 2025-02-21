@@ -2,9 +2,11 @@ package com.ybk.controller;
 
 import com.ybk.dto.PageQueryDTO;
 import com.ybk.entity.MatchA;
+import com.ybk.entity.MatchB;
 import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.MatchAService;
+import com.ybk.service.MatchBService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class CommonController {
 
     @Autowired
     private MatchAService matchAService;
+
+    @Autowired
+    private MatchBService matchBService;
 
     /**
      * 获取"进行中"的某个MatchA的详细比赛信息
@@ -39,12 +44,46 @@ public class CommonController {
         return Result.success(pageResult);
     }
 
-    // 获取所有正在进行的MatchA的简略信息
+    /**
+     * 获取所有进行中的MatchA的简略信息
+     * @param pageQueryDTO
+     * @return
+     */
     @GetMapping("/doing-matchA-brief")
     public Result<PageResult> getDoingMatchABrief(@RequestBody PageQueryDTO pageQueryDTO) {
         PageResult pageResult = matchAService.getDoingMatchABrief(pageQueryDTO);
         return Result.success(pageResult);
     }
 
+    /**
+     * 获取"进行中"的某个MatchB的详细比赛信息
+     * @param matchBId
+     * @return
+     */
+    @GetMapping("/matchB-detail/{matchBId}")
+    public Result<MatchB> getDoingMatchBDetail(@PathVariable Long matchBId) {
+        return Result.success(matchBService.getDoingMatchBDetail(matchBId));
+    }
 
+    /**
+     * 获取所有未开始的MatchB的简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @GetMapping("/un-start-matchB-brief")
+    public Result<PageResult> getMatchBBrief(@RequestBody PageQueryDTO pageQueryDTO) {
+        PageResult pageResult = matchBService.getUnStartMatchBBrief(pageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    /**
+     * 获取所有进行中的MatchB的简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @GetMapping("/doing-matchB-brief")
+    public Result<PageResult> getDoingMatchBBrief(@RequestBody PageQueryDTO pageQueryDTO) {
+        PageResult pageResult = matchBService.getDoingMatchBBrief(pageQueryDTO);
+        return Result.success(pageResult);
+    }
 }

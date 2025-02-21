@@ -1,14 +1,11 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.constant.StatusConstant;
 import com.ybk.context.BaseContext;
 import com.ybk.dto.PageQueryDTO;
-import com.ybk.dto.match.MatchADTO;
-import com.ybk.dto.match.AssignmentDTO;
-import com.ybk.dto.match.RegistrationPageDTO;
+import com.ybk.dto.match.*;
 import com.ybk.entity.*;
 import com.ybk.exception.MatchCreateException;
 import com.ybk.mapper.*;
@@ -18,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -37,7 +35,11 @@ public class MatchAServiceImpl implements MatchAService {
     private AssignmentMapper assignmentMapper;
 
     @Autowired
-    private MatchSetMapper matchSetMapper;
+    private MatchModeMapper matchModeMapper;
+
+    @Autowired
+    private TeamMapper teamMapper;
+
     /**
      * 校验matchA编辑请求体
      * @param matchADTO
@@ -46,7 +48,7 @@ public class MatchAServiceImpl implements MatchAService {
         if (matchADTO.getTeamAId() == null || matchADTO.getTeamBId() == null) {
             throw new MatchCreateException("请选择两支球队");
         }
-        if(matchADTO.getRoundCount()==null){
+        if(matchADTO.getGameCount()==null){
             throw new MatchCreateException("请输入比赛轮数");
         }
         if (matchADTO.getVenueNumber() == null) {
@@ -98,7 +100,7 @@ public class MatchAServiceImpl implements MatchAService {
                 .maxTeamAgeSum(matchADTO.getMaxTeamAgeSum())
                 .maxSubstitutePlayer(matchADTO.getMaxSubstitutePlayer())
                 .beginTime(matchADTO.getBeginTime())
-                .roundCount(matchADTO.getRoundCount())
+                .gameCount(matchADTO.getGameCount())
                 .winScore(matchADTO.getWinScore())
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
@@ -144,8 +146,8 @@ public class MatchAServiceImpl implements MatchAService {
         if(matchADTO.getBeginTime()!=null){
             matchA.setBeginTime(matchADTO.getBeginTime());
         }
-        if(matchADTO.getRoundCount()!=null) {
-            matchA.setRoundCount(matchADTO.getRoundCount());
+        if(matchADTO.getGameCount()!=null) {
+            matchA.setGameCount(matchADTO.getGameCount());
         }
         if(matchADTO.getWinScore()!=null) {
             matchA.setWinScore(matchADTO.getWinScore());
@@ -275,18 +277,18 @@ public class MatchAServiceImpl implements MatchAService {
             throw new MatchCreateException("比赛未开始");
         }
         LinkedList<String> modes = matchA.getModes();
-        Integer roundCount = matchA.getRoundCount();
+        Integer roundCount = matchA.getGameCount();
         // 从数据库中查询出各个mode的各个count的具体信息
         for (String mode : modes ){
-            Map<Integer, MatchSet> matchSetMap = new HashMap<>();
+            Map<Integer, MatchMode> matchSetMap = new HashMap<>();
             for (int i = 0; i < roundCount; i++) {
-                MatchSet matchSet = matchSetMapper.selectOne(
-                        new LambdaQueryWrapper<MatchSet>()
-                                .eq(MatchSet::getMatchAId, matchA.getMatchAId())
-                                .eq(MatchSet::getMode, mode)
-                                .eq(MatchSet::getRoundCount, i)
+                MatchMode matchMode = matchModeMapper.selectOne(
+                        new LambdaQueryWrapper<MatchMode>()
+                                .eq(MatchMode::getMatchAId, matchA.getMatchAId())
+                                .eq(MatchMode::getMode, mode)
+                                .eq(MatchMode::getCurrentGame, i)
                 );
-                matchSetMap.put(i,matchSet);
+                matchSetMap.put(i, matchMode);
             }
             matchA.getMatchSets().put(mode,matchSetMap);
         }
@@ -325,5 +327,155 @@ public class MatchAServiceImpl implements MatchAService {
                         .orderByAsc(MatchA::getBeginTime)
         );
         return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 判决matchA结束
+     * @param endMatchDTO
+     */
+    @Override
+    public void endMatchA(EndMatchDTO endMatchDTO) {
+        Long matchAId = endMatchDTO.getMatchId();
+        Long teamId = endMatchDTO.getTeamId();
+        MatchA matchA = matchAMapper.selectById(matchAId);
+        matchA.setWinnerTeamId(teamId);
+        Team team = teamMapper.selectById(teamId);
+        matchA.setWinnerTeamDepartment(team.getDepartment());
+        matchA.setStatus(StatusConstant.END);
+        matchAMapper.updateById(matchA);
+    }
+
+    /**
+     * 查看判分的matchA简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult getRefereeMatchABrief(PageQueryDTO pageQueryDTO) {
+        Page<MatchA> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        // 筛选出refereeId为当前referee的id的matchA
+        // 并且状态为UNSTART或者DOING
+        // 最后按早时间从近到远排序
+        page = matchAMapper.selectPage(page,
+                new LambdaQueryWrapper<MatchA>()
+                        .eq(MatchA::getRefereeId, BaseContext.getCurrentId())
+                        .and(i -> i.eq(MatchA::getStatus, StatusConstant.UNSTART)
+                                .or()
+                                .eq(MatchA::getStatus, StatusConstant.DOING))
+                        .orderByAsc(MatchA::getBeginTime)
+        );
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 开始matchA
+     * @param beginMatchDTO
+     */
+    @Override
+    public void beginMatchA(BeginMatchDTO beginMatchDTO) {
+        MatchA matchA = matchAMapper.selectById(beginMatchDTO.getMatchId());
+        if(matchA == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        if(!matchA.getStatus().equals(StatusConstant.UNSTART)){
+            throw new MatchCreateException("比赛已开始");
+        }
+        // 比赛状态设置为进行中
+        matchA.setStatus(StatusConstant.DOING);
+        matchAMapper.updateById(matchA);
+        for (String mode : matchA.getModes()) {
+            for (int i = 0; i < matchA.getGameCount(); i++) {
+                MatchMode matchMode = MatchMode.builder()
+                        .matchAId(matchA.getMatchAId())
+                        .mode(mode)
+                        .currentGame(i)
+                        .currentRound(1)
+                        .teamAGameScore(0)
+                        .teamBGameScore(0)
+                        .teamScoreList(new ArrayList<>())
+                        .winnerTeamId(null)
+                        .build();
+                matchModeMapper.insert(matchMode);
+            }
+        }
+    }
+
+    /**
+     * 对matchA某一模式的某一轮的某一回合进行判分
+     *
+     * @param scoreDTO
+     */
+    @Override
+    public void matchAScore(MatchAScoreDTO scoreDTO) {
+        Long matchModeId = scoreDTO.getMatchModeId();
+        Long matchAId = scoreDTO.getMatchAId();
+        Long teamId = scoreDTO.getTeamId();
+        Integer currentGame = scoreDTO.getCurrentGame();
+        Integer plusOrMinus = scoreDTO.getPlusOrMinus();
+        MatchA matchA = matchAMapper.selectById(matchAId);
+        MatchMode matchMode = matchModeMapper.selectById(matchModeId);
+        if (matchMode == null) {
+            throw new MatchCreateException("matchMode不存在");
+        }
+        if (teamId.equals(matchA.getTeamAId())) {
+            if (currentGame == 1) {
+                matchMode.setTeamARoundScore1(matchMode.getTeamARoundScore1() + plusOrMinus);
+            } else if (currentGame == 2) {
+                matchMode.setTeamARoundScore2(matchMode.getTeamARoundScore2() + plusOrMinus);
+            } else {
+                matchMode.setTeamARoundScore3(matchMode.getTeamARoundScore3() + plusOrMinus);
+            }
+        } else {
+            if (currentGame == 1) {
+                matchMode.setTeamBRoundScore1(matchMode.getTeamBRoundScore1() + plusOrMinus);
+            } else if (currentGame == 2) {
+                matchMode.setTeamBRoundScore2(matchMode.getTeamBRoundScore2() + plusOrMinus);
+            } else {
+                matchMode.setTeamBRoundScore3(matchMode.getTeamBRoundScore3() + plusOrMinus);
+            }
+        }
+        // 判断本局是否结束
+        Integer winScore = matchA.getWinScore();
+        if(currentGame == 1){
+            Integer teamARoundScore1 = matchMode.getTeamARoundScore1();
+            Integer teamBRoundScore1 = matchMode.getTeamBRoundScore1();
+            // 有一队伍的分数达到winScore并且两个队伍的差距大于1就是本局结束
+            if(teamARoundScore1 >= winScore || teamBRoundScore1 >= winScore){
+                if(teamARoundScore1-teamBRoundScore1>1){
+                    matchMode.setTeamAGameScore(1);
+                }else{
+                    matchMode.setTeamBGameScore(1);
+                }
+            }
+        }
+        else if(currentGame == 2){
+            Integer teamARoundScore2 = matchMode.getTeamARoundScore2();
+            Integer teamBRoundScore2 = matchMode.getTeamBRoundScore2();
+            if(teamARoundScore2 >= winScore || teamBRoundScore2 >= winScore){
+                if(teamARoundScore2-teamBRoundScore2>1){
+                    matchMode.setTeamAGameScore(matchMode.getTeamAGameScore()+1);
+                }else{
+                    matchMode.setTeamBGameScore(matchMode.getTeamBGameScore()+1);
+                }
+            }
+        }
+        else if(currentGame == 3){
+            Integer teamARoundScore3 = matchMode.getTeamARoundScore3();
+            Integer teamBRoundScore3 = matchMode.getTeamBRoundScore3();
+            if(teamARoundScore3 >= winScore || teamBRoundScore3 >= winScore){
+                if(teamARoundScore3-teamBRoundScore3>1){
+                    matchMode.setTeamAGameScore(matchMode.getTeamAGameScore()+1);
+                }else{
+                    matchMode.setTeamBGameScore(matchMode.getTeamBGameScore()+1);
+                }
+            }
+        }
+        // 判断整个比赛是否结束
+        if(matchMode.getTeamAGameScore() == matchA.getGameCount()/2+1){
+            matchA.setWinnerTeamId(matchA.getTeamAId());
+        }
+        if(matchMode.getTeamBGameScore() == matchA.getGameCount()/2+1){
+            matchA.setWinnerTeamId(matchA.getTeamBId());
+        }
     }
 }

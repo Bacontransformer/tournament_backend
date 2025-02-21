@@ -1,23 +1,21 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ybk.constant.StatusConstant;
 import com.ybk.context.BaseContext;
-import com.ybk.dto.match.AssignmentDTO;
-import com.ybk.dto.match.MatchBDTO;
-import com.ybk.entity.Assignment;
-import com.ybk.entity.Leader;
-import com.ybk.entity.MatchB;
-import com.ybk.entity.Player;
+import com.ybk.dto.PageQueryDTO;
+import com.ybk.dto.match.*;
+import com.ybk.entity.*;
 import com.ybk.exception.MatchCreateException;
-import com.ybk.mapper.AssignmentMapper;
-import com.ybk.mapper.LeaderMapper;
-import com.ybk.mapper.MatchBMapper;
-import com.ybk.mapper.PlayerMapper;
+import com.ybk.mapper.*;
+import com.ybk.result.PageResult;
 import com.ybk.service.MatchBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 public class MatchBServiceImpl implements MatchBService {
@@ -32,6 +30,9 @@ public class MatchBServiceImpl implements MatchBService {
 
     @Autowired
     private AssignmentMapper assignmentMapper;
+
+    @Autowired
+    private TeamMapper teamMapper;
 
     /**
      * 验证比赛建立请求
@@ -226,5 +227,174 @@ public class MatchBServiceImpl implements MatchBService {
     @Override
     public void deleteMatchBPlayer(Long assignmentId) {
         assignmentMapper.deleteById(assignmentId);
+    }
+
+    @Override
+    public MatchB getDoingMatchBDetail(Long matchBId) {
+        return null;
+    }
+
+    /**
+     * 获取未开始的比赛信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult getUnStartMatchBBrief(PageQueryDTO pageQueryDTO) {
+        Page<MatchB> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        page = matchBMapper.selectPage(page,
+                new LambdaQueryWrapper<MatchB>()
+                        .eq(MatchB::getStatus, StatusConstant.UNSTART)
+                        .ge(MatchB::getBeginTime, LocalDateTime.now())
+                        .orderByAsc(MatchB::getBeginTime)
+        );
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 获取进行中的比赛信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult getDoingMatchBBrief(PageQueryDTO pageQueryDTO) {
+        Page<MatchB> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        page = matchBMapper.selectPage(page,
+                new LambdaQueryWrapper<MatchB>()
+                        .eq(MatchB::getStatus, StatusConstant.DOING)
+                        .ge(MatchB::getBeginTime, LocalDateTime.now())
+                        .orderByAsc(MatchB::getBeginTime)
+        );
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 判决matchB结束
+     * @param endMatchDTO
+     */
+    @Override
+    public void endMatchB(EndMatchDTO endMatchDTO) {
+        Long matchBId = endMatchDTO.getMatchId();
+        Long teamId = endMatchDTO.getTeamId();
+        MatchB matchB = matchBMapper.selectById(matchBId);
+        matchB.setWinnerTeamId(teamId);
+        Team team = teamMapper.selectById(teamId);
+        matchB.setWinnerTeamDepartment(team.getDepartment());
+        matchB.setStatus(StatusConstant.END);
+        matchBMapper.updateById(matchB);
+    }
+
+    /**
+     * 宣布matchB开始
+     * @param beginMatchDTO
+     */
+    @Override
+    public void beginMatchB(BeginMatchDTO beginMatchDTO) {
+        MatchB matchB = matchBMapper.selectById(beginMatchDTO.getMatchId());
+        if(matchB == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        if(matchB.getStatus().equals(StatusConstant.DOING)){
+            throw new MatchCreateException("比赛已开始");
+        }
+        matchB.setStatus(StatusConstant.DOING);
+        matchB.setScoreList(new ArrayList<>());
+        matchB.setTeamAScore(0);
+        matchB.setTeamBScore(0);
+        matchBMapper.updateById(matchB);
+    }
+
+    /**
+     *
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult getRefereeMatchBBrief(PageQueryDTO pageQueryDTO) {
+        Page<MatchB> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        page = matchBMapper.selectPage(page,
+                new LambdaQueryWrapper<MatchB>()
+                        .and(i -> i.eq(MatchB::getStatus, StatusConstant.UNSTART)
+                                .or()
+                                .eq(MatchB::getStatus, StatusConstant.DOING))
+                        .eq(MatchB::getRefereeId, BaseContext.getCurrentId())
+                        .orderByAsc(MatchB::getBeginTime)
+        );
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 对matchB某一回合进行判分
+     * @param scoreDTO
+     */
+    @Override
+    public void matchBScore(MatchBScoreDTO scoreDTO) {
+        Integer plusOrMinus = scoreDTO.getPlusOrMinus();
+        Long teamId = scoreDTO.getTeamId();
+        Long matchBId = scoreDTO.getMatchBId();
+        MatchB matchB = matchBMapper.selectById(matchBId);
+        if(matchB == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        Integer sectionScore = matchB.getSectionScore();
+        Integer currentSection = matchB.getCurrentSection();
+        Integer teamAScore = matchB.getTeamAScore();
+        Integer teamBScore = matchB.getTeamBScore();
+        Long teamAId = matchB.getTeamAId();
+        Long teamBId = matchB.getTeamBId();
+        if(teamId.equals(teamAId)){
+            Integer teamAScoreTemp = teamAScore + plusOrMinus;
+            if( currentSection.equals(1)&&teamAScoreTemp.equals(sectionScore)) {
+                matchB.setCurrentSection(2);
+                matchB.setCurrentTeamAPlayerId1(matchB.getTeamAPlayerId2());
+                matchB.setCurrentTeamAPlayerId2(matchB.getTeamAPlayerId3());
+                matchB.setCurrentTeamBPlayerId1(matchB.getTeamBPlayerId2());
+                matchB.setCurrentTeamBPlayerId2(matchB.getTeamBPlayerId3());
+            }else if( currentSection.equals(2)&&teamAScoreTemp.equals(sectionScore*2)){
+                matchB.setCurrentSection(3);
+                matchB.setCurrentTeamAPlayerId1(matchB.getTeamAPlayerId3());
+                matchB.setCurrentTeamAPlayerId2(matchB.getTeamAPlayerId4());
+                matchB.setCurrentTeamBPlayerId1(matchB.getTeamBPlayerId3());
+                matchB.setCurrentTeamBPlayerId2(matchB.getTeamBPlayerId4());
+            }else if( currentSection.equals(3)&&teamAScoreTemp.equals(sectionScore*3)){
+                matchB.setCurrentSection(4);
+                matchB.setCurrentTeamAPlayerId1(matchB.getTeamAPlayerId4());
+                matchB.setCurrentTeamAPlayerId2(matchB.getTeamAPlayerId1());
+                matchB.setCurrentTeamBPlayerId1(matchB.getTeamBPlayerId4());
+                matchB.setCurrentTeamBPlayerId2(matchB.getTeamBPlayerId1());
+            }else if( currentSection.equals(4)&&teamAScoreTemp.equals(sectionScore*4)){
+                matchB.setWinnerTeamId(teamAId);
+                matchB.setWinnerTeamDepartment(matchB.getTeamADepartment());
+                matchB.setStatus(StatusConstant.END);
+            }
+        }else {
+            Integer teamBScoreTemp = teamBScore + plusOrMinus;
+            if( currentSection.equals(1)&&teamBScoreTemp.equals(sectionScore)){
+                matchB.setCurrentSection(2);
+                matchB.setCurrentTeamAPlayerId1(matchB.getTeamAPlayerId2());
+                matchB.setCurrentTeamAPlayerId2(matchB.getTeamAPlayerId3());
+                matchB.setCurrentTeamBPlayerId1(matchB.getTeamBPlayerId2());
+                matchB.setCurrentTeamBPlayerId2(matchB.getTeamBPlayerId3());
+            }
+            if( currentSection.equals(2)&&teamBScoreTemp.equals(sectionScore*2)){
+                matchB.setCurrentSection(3);
+                matchB.setCurrentTeamAPlayerId1(matchB.getTeamAPlayerId3());
+                matchB.setCurrentTeamAPlayerId2(matchB.getTeamAPlayerId4());
+                matchB.setCurrentTeamBPlayerId1(matchB.getTeamBPlayerId3());
+                matchB.setCurrentTeamBPlayerId2(matchB.getTeamBPlayerId4());
+            }
+            if( currentSection.equals(3)&&teamBScoreTemp.equals(sectionScore*3)){
+                matchB.setCurrentSection(4);
+                matchB.setCurrentTeamAPlayerId1(matchB.getTeamAPlayerId4());
+                matchB.setCurrentTeamAPlayerId2(matchB.getTeamAPlayerId1());
+                matchB.setCurrentTeamBPlayerId1(matchB.getTeamBPlayerId4());
+                matchB.setCurrentTeamBPlayerId2(matchB.getTeamBPlayerId1());
+            }
+            if( currentSection.equals(4)&&teamBScoreTemp.equals(sectionScore*4)){
+                matchB.setWinnerTeamId(teamBId);
+                matchB.setWinnerTeamDepartment(matchB.getTeamBDepartment());
+                matchB.setStatus(StatusConstant.END);
+            }
+        }
     }
 }

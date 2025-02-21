@@ -1,16 +1,17 @@
 package com.ybk.controller.referee;
 
-import com.ybk.entity.MatchA;
+import com.ybk.dto.PageQueryDTO;
+import com.ybk.dto.match.BeginMatchDTO;
+import com.ybk.dto.match.EndMatchDTO;
+import com.ybk.dto.match.MatchAScoreDTO;
+import com.ybk.dto.match.MatchBScoreDTO;
+import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -23,14 +24,91 @@ public class RefereeMatchController {
     @Autowired
     private MatchBService matchBService;
 
-    @Autowired
-    private MatchSetService matchSetService;
+    /**
+     * 查看判分的matchA简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @GetMapping("referee-match-a-brief")
+    public Result<PageResult> getRefereeMatchABrief(@RequestBody PageQueryDTO pageQueryDTO) {
+        PageResult pageResult = matchAService.getRefereeMatchABrief(pageQueryDTO);
+        return Result.success(pageResult);
+    }
 
-    // 查看自己审理的所有比赛，按照时间从近到远进行排序
-//    @GetMapping("/a/{refereeId}")
-//    @ApiOperation(value = "查看审理的matchA")
-//    public Result<MatchA> getRefereeMatchA(@PathVariable Long refereeId) {
-//        return Result.success(matchAService.getRefereeMatchA(refereeId));
-//    }
+    /**
+     * 查看判分的matchB简略信息
+     * @param pageQueryDTO
+     * @return
+     */
+    @GetMapping("referee-match-b-brief")
+    public Result<PageResult> getRefereeMatchBBrief(@RequestBody PageQueryDTO pageQueryDTO) {
+        PageResult pageResult = matchBService.getRefereeMatchBBrief(pageQueryDTO);
+        return Result.success(pageResult);
+    }
 
+    /**
+     * 对matchA某一模式的某一轮的分数变化
+     * @param scoreDTO
+     * @return
+     */
+    @PostMapping("/match-a-score")
+    public Result matchAScore(@RequestBody MatchAScoreDTO scoreDTO) {
+        matchAService.matchAScore(scoreDTO);
+        return Result.success();
+    }
+
+    /**
+     * 对matchB某一回合的分数变化
+     * @param scoreDTO
+     * @return
+     */
+    @PostMapping("/match-b-score")
+    public Result matchBScore(@RequestBody MatchBScoreDTO scoreDTO) {
+        matchBService.matchBScore(scoreDTO);
+        return Result.success();
+    }
+
+    /**
+     * 宣布matchA开始
+     * @param beginMatchDTO
+     * @return
+     */
+    @PostMapping("/begin-matchA")
+    public Result beginMatchA(@RequestBody BeginMatchDTO beginMatchDTO) {
+        matchAService.beginMatchA(beginMatchDTO);
+        return Result.success();
+    }
+
+    /**
+     * 宣布matchB开始
+     * @param beginMatchDTO
+     * @return
+     */
+    @PostMapping("/begin-matchB")
+    public Result beginMatchB(@RequestBody BeginMatchDTO beginMatchDTO) {
+        matchBService.beginMatchB(beginMatchDTO);
+        return Result.success();
+    }
+
+    /**
+     * 对matchA宣布比赛结束
+     * @param endMatchDTO
+     * @return
+     */
+    @PostMapping("/end-matchA")
+    public Result endMatchA(@RequestBody EndMatchDTO endMatchDTO) {
+        matchAService.endMatchA(endMatchDTO);
+        return Result.success();
+    }
+
+    /**
+     * 对matchB宣布比赛结束
+     * @param endMatchDTO
+     * @return
+     */
+    @PostMapping("/end-matchB")
+    public Result endMatchB(@RequestBody EndMatchDTO endMatchDTO) {
+        matchBService.endMatchB(endMatchDTO);
+        return Result.success();
+    }
 }

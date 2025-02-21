@@ -1,7 +1,6 @@
 package com.ybk.controller.leader;
 
 import com.ybk.dto.match.AssignmentDTO;
-import com.ybk.dto.match.RegistrationDTO;
 import com.ybk.result.Result;
 import com.ybk.service.*;
 import io.swagger.annotations.Api;
@@ -25,7 +24,7 @@ public class LeaderMatchController {
     private MatchBService matchBService;
 
     @Autowired
-    private MatchSetService matchSetService;
+    private MatchModeService matchModeService;
 
     /**
      * 设置MatchA上场球员
