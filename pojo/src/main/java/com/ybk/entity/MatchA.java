@@ -27,7 +27,6 @@ public class MatchA {
     private String teamADepartment;
     private String teamBDepartment;
     private String winnerTeamDepartment; // 最终获胜队伍部门
-    private Integer status; // 0:未开始，1:进行中，2:已结束
     private Integer gameCount; // 赛制局数目（1或者3）
     private Integer winScore; // 获胜基础比分（通常是21分）
     private Integer maxParticipationTimes; // 同一个人最多参加次数
@@ -36,7 +35,6 @@ public class MatchA {
     private Integer maxSubstitutePlayer; // 最大替补人数
     private Integer teamAModeScore; // A队模式大比分
     private Integer teamBModeScore; // B队模式大比分
-
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

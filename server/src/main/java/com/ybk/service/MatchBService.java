@@ -12,11 +12,7 @@ public interface MatchBService {
 
     void delete(Long matchId);
 
-    void setMatchBPlayer(AssignmentDTO assignmentDTO);
-
-    void updateMatchBPlayer(AssignmentDTO assignmentDTO);
-
-    void deleteMatchBPlayer(Long assignmentId);
+    void setMatchBPlayer(MatchBPlayerDTO matchBPlayerDTO);
 
     MatchB getDoingMatchBDetail(Long matchBId);
 
@@ -24,11 +20,11 @@ public interface MatchBService {
 
     PageResult getDoingMatchBBrief(PageQueryDTO pageQueryDTO);
 
-    void endMatchB(EndMatchDTO endMatchDTO);
+    void endMatchB(Long matchBId);
 
-    void beginMatchB(BeginMatchDTO beginMatchDTO);
+    void beginMatchB(Long matchBId);
 
-    PageResult getRefereeMatchBBrief(PageQueryDTO pageQueryDTO);
+    PageResult getRefereeMatchB(PageQueryDTO pageQueryDTO);
 
     void matchBScore(MatchBScoreDTO scoreDTO);
 }

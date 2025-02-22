@@ -1,6 +1,7 @@
 package com.ybk.controller.admin;
 
 import com.ybk.dto.match.MatchADTO;
+import com.ybk.dto.match.MatchAModeDTO;
 import com.ybk.dto.match.MatchBDTO;
 import com.ybk.result.Result;
 import com.ybk.service.*;
@@ -34,6 +35,32 @@ public class AdminMatchController {
     public Result saveMatchA(@RequestBody MatchADTO matchADTO) {
         log.info("比赛A创建:{}",matchADTO);
         matchAService.save(matchADTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛A模式创建
+     * @param matchAModeDTO
+     * @return
+     */
+    @ApiOperation(value = "比赛A各种模式创建")
+    @PostMapping("/save-a-mode")
+    public Result saveMatchAMode(@RequestBody MatchAModeDTO matchAModeDTO) {
+        log.info("比赛A模式创建:{}",matchAModeDTO);
+        matchAService.saveMode(matchAModeDTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛A模式删除
+     * @param matchModeId
+     * @return
+     */
+    @ApiOperation(value = "比赛A模式删除")
+    @PostMapping("/delete-a-mode")
+    public Result deleteMatchAMode(@RequestBody Long matchModeId) {
+        log.info("比赛A模式删除:{}",matchModeId);
+        matchAService.deleteMode(matchModeId);
         return Result.success();
     }
 

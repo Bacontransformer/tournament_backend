@@ -3,6 +3,7 @@ package com.ybk.service;
 import com.ybk.dto.PageQueryDTO;
 import com.ybk.dto.match.*;
 import com.ybk.entity.MatchA;
+import com.ybk.entity.MatchMode;
 import com.ybk.result.PageResult;
 
 public interface MatchAService {
@@ -12,23 +13,25 @@ public interface MatchAService {
 
     void delete(Long matchId);
 
-    void setMatchAPlayer(AssignmentDTO playerAssignmentDTO);
+    void setMatchAPlayer(MatchAPlayerDTO matchAPlayerDTO);
 
-    void updateMatchAPlayer(AssignmentDTO assignmentDTO);
+    void deleteMatchAPlayer(ClearMatchAPlayerDTO clearMatchAPlayerDTO);
 
-    void deleteMatchAPlayer(Long assignmentId);
-
-    MatchA getDoingMatchADetail(Long matchAId);
+    MatchMode getDoingMatchADetail(Long matchModeId);
 
     PageResult getUnStartMatchABrief(PageQueryDTO pageQueryDTO);
 
     PageResult getDoingMatchABrief(PageQueryDTO pageQueryDTO);
 
-    void endMatchA(EndMatchDTO endMatchDTO);
+    void endMatchA(Long matchModeId);
 
-    PageResult getRefereeMatchABrief(PageQueryDTO pageQueryDTO);
+    PageResult getRefereeMatchMode(PageQueryDTO pageQueryDTO);
 
-    void beginMatchA(BeginMatchDTO beginMatchDTO);
+    void beginMatchA(Long matchModeId);
 
     void matchAScore(MatchAScoreDTO scoreDTO);
+
+    void saveMode(MatchAModeDTO matchAModeDTO);
+
+    void deleteMode(Long matchModeId);
 }

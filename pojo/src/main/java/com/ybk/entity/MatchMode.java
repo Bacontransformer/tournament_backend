@@ -29,7 +29,8 @@ public class MatchMode {
     private Long teamAId; // a队id
     private Long teamBId; // b队id
     private Long modeWinnerTeamId; // 该模式获胜的队伍id
-    private LocalDateTime beginTimes; // 比赛开始时间
+    private LocalDateTime beginTime; // 比赛开始时间
+    private Integer status; // 0:未开始，1:进行中，2:已结束
     private Long teamAPlayer1; // a队参赛队员1号
     private Long teamAPlayer2; // a队参赛队员2号(不一定有)
     private Long teamBPlayer1; // b队参赛队员1号

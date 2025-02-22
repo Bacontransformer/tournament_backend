@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * admin编辑MatchA的数据传输对象
@@ -19,7 +20,6 @@ public class MatchADTO {
     private Long teamAId; // 队伍A的id
     private Long teamBId; // 队伍B的id
     private Integer venueNumber; // 场地编号
-    private LinkedList<String> modes; // 比赛模式,例如男单、女单等,通过有序列表来存储,有先后顺序
     private Integer gameCount; // 每一个比赛模式的局数
     private Integer winScore; // 单局获胜分数
     private Integer maxParticipationTimes; // 单个选手的最大可参加比赛模式的数量

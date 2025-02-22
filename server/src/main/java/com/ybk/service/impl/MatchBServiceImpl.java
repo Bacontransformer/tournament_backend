@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Service
 public class MatchBServiceImpl implements MatchBService {
@@ -63,7 +62,7 @@ public class MatchBServiceImpl implements MatchBService {
     }
 
     /**
-     * 保存比赛信息
+     * 保存比赛b信息
      * @param matchBDTO
      */
     @Override
@@ -81,11 +80,21 @@ public class MatchBServiceImpl implements MatchBService {
             matchBDTO.setMinTeamAgeSum(0);
         }
 
+        Team teamA = teamMapper.selectById(matchBDTO.getTeamAId());
+        String teamADepartment = teamA.getDepartment();
+
+        Team teamB = teamMapper.selectById(matchBDTO.getTeamBId());
+        String teamBDepartment = teamB.getDepartment();
+
+        // 别漏了裁判
         MatchB matchB = MatchB.builder()
                 .eventId(matchBDTO.getEventId())
                 .sectionScore(matchBDTO.getSectionScore())
                 .teamAId(matchBDTO.getTeamAId())
                 .teamBId(matchBDTO.getTeamBId())
+                .teamADepartment(teamADepartment)
+                .teamBDepartment(teamBDepartment)
+                .refereeId(matchBDTO.getRefereeId())
                 .venueNumber(matchBDTO.getVenueNumber())
                 .maxSubstitutePlayer(matchBDTO.getMaxSubstitutePlayer())
                 .minTeamAgeSum(matchBDTO.getMinTeamAgeSum())
@@ -99,7 +108,7 @@ public class MatchBServiceImpl implements MatchBService {
     }
 
     /**
-     * 更新比赛信息
+     * 更新比赛b信息
      * @param matchBDTO
      */
     @Override
@@ -114,9 +123,18 @@ public class MatchBServiceImpl implements MatchBService {
         }
         if(matchBDTO.getTeamAId()!=null){
             matchB.setTeamAId(matchBDTO.getTeamAId());
+            Team teamA = teamMapper.selectById(matchBDTO.getTeamAId());
+            String teamADepartment = teamA.getDepartment();
+            matchB.setTeamADepartment(teamADepartment);
         }
         if(matchBDTO.getTeamBId()!=null){
             matchB.setTeamBId(matchBDTO.getTeamBId());
+            Team teamB = teamMapper.selectById(matchBDTO.getTeamBId());
+            String teamBDepartment = teamB.getDepartment();
+            matchB.setTeamBDepartment(teamBDepartment);
+        }
+        if(matchBDTO.getRefereeId()!=null){
+            matchB.setRefereeId(matchBDTO.getRefereeId());
         }
         if(matchBDTO.getVenueNumber()!=null){
             matchB.setVenueNumber(matchBDTO.getVenueNumber());
@@ -135,7 +153,7 @@ public class MatchBServiceImpl implements MatchBService {
     }
 
     /**
-     * 删除比赛信息
+     * 删除matchB信息
      * @param matchId
      */
     @Override
@@ -144,98 +162,70 @@ public class MatchBServiceImpl implements MatchBService {
     }
 
     /**
-     * 设置比赛球员
-     * @param assignmentDTO
+     * 设置matchB比赛球员
+     * @param matchBPlayerDTO
      */
     @Override
-    public void setMatchBPlayer(AssignmentDTO assignmentDTO) {
-        MatchB matchB = matchBMapper.selectById(assignmentDTO.getMatchId());
+    public void setMatchBPlayer(MatchBPlayerDTO matchBPlayerDTO) {
+        MatchB matchB = matchBMapper.selectById(matchBPlayerDTO.getMatchBId());
         if(matchB == null){
             throw new MatchCreateException("比赛不存在");
         }
-        Player player = playerMapper.selectById(assignmentDTO.getPlayerId());
-        if(player == null){
-            throw new MatchCreateException("球员不存在");
+        Long teamId = matchBPlayerDTO.getTeamId();
+        if(teamId.equals(matchB.getTeamAId())){
+            if(matchBPlayerDTO.getTeamAPlayerId1()!=null){
+                matchB.setTeamAPlayerId1(matchBPlayerDTO.getTeamAPlayerId1());
+            }
+            if(matchBPlayerDTO.getTeamAPlayerId2()!=null){
+                matchB.setTeamAPlayerId2(matchBPlayerDTO.getTeamAPlayerId2());
+            }
+            if(matchBPlayerDTO.getTeamAPlayerId3()!=null){
+                matchB.setTeamAPlayerId3(matchBPlayerDTO.getTeamAPlayerId3());
+            }
+            if(matchBPlayerDTO.getTeamAPlayerId4()!=null){
+                matchB.setTeamAPlayerId4(matchBPlayerDTO.getTeamAPlayerId4());
+            }
+            if(matchBPlayerDTO.getTeamASubstitutePlayerId1()!=null){
+                matchB.setTeamASubstitutePlayerId1(matchBPlayerDTO.getTeamASubstitutePlayerId1());
+            }
+            if(matchBPlayerDTO.getTeamASubstitutePlayerId2()!=null){
+                matchB.setTeamASubstitutePlayerId2(matchBPlayerDTO.getTeamASubstitutePlayerId2());
+            }
+            if(matchBPlayerDTO.getTeamASubstitutePlayerId3()!=null){
+                matchB.setTeamASubstitutePlayerId3(matchBPlayerDTO.getTeamASubstitutePlayerId3());
+            }
+            if(matchBPlayerDTO.getTeamASubstitutePlayerId4()!=null){
+                matchB.setTeamASubstitutePlayerId4(matchBPlayerDTO.getTeamASubstitutePlayerId4());
+            }
+        }else{
+            if(matchBPlayerDTO.getTeamBPlayerId1()!=null){
+                matchB.setTeamBPlayerId1(matchBPlayerDTO.getTeamBPlayerId1());
+            }
+            if(matchBPlayerDTO.getTeamBPlayerId2()!=null){
+                matchB.setTeamBPlayerId2(matchBPlayerDTO.getTeamBPlayerId2());
+            }
+            if(matchBPlayerDTO.getTeamBPlayerId3()!=null){
+                matchB.setTeamBPlayerId3(matchBPlayerDTO.getTeamBPlayerId3());
+            }
+            if(matchBPlayerDTO.getTeamBPlayerId4()!=null){
+                matchB.setTeamBPlayerId4(matchBPlayerDTO.getTeamBPlayerId4());
+            }
         }
-        Long leaderId = player.getLeaderId();
-        if(!leaderId.equals(BaseContext.getCurrentId())){
-            throw new MatchCreateException("非此领队球员");
-        }
-        Long teamId = leaderMapper.selectOne(
-                new LambdaQueryWrapper<Leader>()
-                        .select(Leader::getTeamId)
-                        .eq(Leader::getLeaderId, leaderId)
-        ).getTeamId();
-        Assignment assignment = Assignment.builder()
-                .playerId(assignmentDTO.getPlayerId())
-                .teamId(teamId)
-                .isSubstitute(assignmentDTO.getIsSubstitute())
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                .matchId(assignmentDTO.getMatchId())
-                .typeOrder(assignmentDTO.getTypeOrder())
-                .build();
-        assignmentMapper.insert(assignment);
+        matchBMapper.updateById(matchB);
     }
 
     /**
-     * 更新比赛球员
-     * @param assignmentDTO
+     * 获取某个DOING的比赛b详细信息
+     * @param matchBId
+     * @return
      */
-    @Override
-    public void updateMatchBPlayer(AssignmentDTO assignmentDTO) {
-        Assignment assignment = assignmentMapper.selectById(assignmentDTO.getAssignmentId());
-        if(assignment == null){
-            throw new MatchCreateException("信息不存在");
-        }
-        MatchB matchB = matchBMapper.selectById(assignmentDTO.getMatchId());
-        if(matchB == null){
-            throw new MatchCreateException("比赛不存在");
-        }
-        Player player = playerMapper.selectById(assignmentDTO.getPlayerId());
-        if(player == null){
-            throw new MatchCreateException("球员不存在");
-        }
-        Long leaderId = player.getLeaderId();
-        if(!leaderId.equals(BaseContext.getCurrentId())){
-            throw new MatchCreateException("非此领队球员");
-        }
-        // 使用 Lambda查询只获取 teamId
-        Leader leader = leaderMapper.selectOne(
-                new LambdaQueryWrapper<Leader>()
-                        .select(Leader::getTeamId)
-                        .eq(Leader::getLeaderId, leaderId)
-        );
-        assignment.setTeamId(leader.getTeamId());
-        if(assignmentDTO.getPlayerId() != null){
-            assignment.setPlayerId(assignmentDTO.getPlayerId());
-        }
-        if(assignmentDTO.getIsSubstitute() != null){
-            assignment.setIsSubstitute(assignmentDTO.getIsSubstitute());
-        }
-        if(assignmentDTO.getTypeOrder() != null){
-            assignment.setTypeOrder(assignmentDTO.getTypeOrder());
-        }
-        assignment.setUpdateTime(LocalDateTime.now());
-        assignmentMapper.updateById(assignment);
-    }
-
-    /**
-     * 删除比赛球员
-     * @param assignmentId
-     */
-    @Override
-    public void deleteMatchBPlayer(Long assignmentId) {
-        assignmentMapper.deleteById(assignmentId);
-    }
-
     @Override
     public MatchB getDoingMatchBDetail(Long matchBId) {
-        return null;
+       return matchBMapper.selectById(matchBId);
     }
 
     /**
-     * 获取未开始的比赛信息
+     * 获取未开始的比赛b信息
      * @param pageQueryDTO
      * @return
      */
@@ -252,7 +242,7 @@ public class MatchBServiceImpl implements MatchBService {
     }
 
     /**
-     * 获取进行中的比赛信息
+     * 获取进行中的比赛b信息
      * @param pageQueryDTO
      * @return
      */
@@ -270,27 +260,32 @@ public class MatchBServiceImpl implements MatchBService {
 
     /**
      * 判决matchB结束
-     * @param endMatchDTO
+     * @param matchBId
      */
     @Override
-    public void endMatchB(EndMatchDTO endMatchDTO) {
-        Long matchBId = endMatchDTO.getMatchId();
-        Long teamId = endMatchDTO.getTeamId();
+    public void endMatchB(Long matchBId) {
         MatchB matchB = matchBMapper.selectById(matchBId);
-        matchB.setWinnerTeamId(teamId);
-        Team team = teamMapper.selectById(teamId);
-        matchB.setWinnerTeamDepartment(team.getDepartment());
+        if(matchB == null){
+            throw new MatchCreateException("比赛不存在");
+        }
+        if(matchB.getTeamAScore()==matchB.getSectionScore()*4){
+            matchB.setWinnerTeamId(matchB.getTeamAId());
+            matchB.setWinnerTeamDepartment(matchB.getTeamADepartment());
+        } else if(matchB.getTeamBScore()==matchB.getSectionScore()*4){
+            matchB.setWinnerTeamId(matchB.getTeamBId());
+            matchB.setWinnerTeamDepartment(matchB.getTeamBDepartment());
+        }
         matchB.setStatus(StatusConstant.END);
         matchBMapper.updateById(matchB);
     }
 
     /**
      * 宣布matchB开始
-     * @param beginMatchDTO
+     * @param matchBId
      */
     @Override
-    public void beginMatchB(BeginMatchDTO beginMatchDTO) {
-        MatchB matchB = matchBMapper.selectById(beginMatchDTO.getMatchId());
+    public void beginMatchB(Long matchBId) {
+        MatchB matchB = matchBMapper.selectById(matchBId);
         if(matchB == null){
             throw new MatchCreateException("比赛不存在");
         }
@@ -298,19 +293,18 @@ public class MatchBServiceImpl implements MatchBService {
             throw new MatchCreateException("比赛已开始");
         }
         matchB.setStatus(StatusConstant.DOING);
-        matchB.setScoreList(new ArrayList<>());
         matchB.setTeamAScore(0);
         matchB.setTeamBScore(0);
         matchBMapper.updateById(matchB);
     }
 
     /**
-     *
+     * 裁判查看判决的matchB
      * @param pageQueryDTO
      * @return
      */
     @Override
-    public PageResult getRefereeMatchBBrief(PageQueryDTO pageQueryDTO) {
+    public PageResult getRefereeMatchB(PageQueryDTO pageQueryDTO) {
         Page<MatchB> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
         page = matchBMapper.selectPage(page,
                 new LambdaQueryWrapper<MatchB>()

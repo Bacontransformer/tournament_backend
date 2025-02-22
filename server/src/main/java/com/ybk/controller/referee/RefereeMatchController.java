@@ -25,29 +25,29 @@ public class RefereeMatchController {
     private MatchBService matchBService;
 
     /**
-     * 查看判分的matchA简略信息
+     * 查看判分的matchMode信息
      * @param pageQueryDTO
      * @return
      */
-    @GetMapping("referee-match-a-brief")
-    public Result<PageResult> getRefereeMatchABrief(@RequestBody PageQueryDTO pageQueryDTO) {
-        PageResult pageResult = matchAService.getRefereeMatchABrief(pageQueryDTO);
+    @GetMapping("referee-match-mode")
+    public Result<PageResult> getRefereeMatchMode(@RequestBody PageQueryDTO pageQueryDTO) {
+        PageResult pageResult = matchAService.getRefereeMatchMode(pageQueryDTO);
         return Result.success(pageResult);
     }
 
     /**
-     * 查看判分的matchB简略信息
+     * 查看判分的matchB信息
      * @param pageQueryDTO
      * @return
      */
-    @GetMapping("referee-match-b-brief")
-    public Result<PageResult> getRefereeMatchBBrief(@RequestBody PageQueryDTO pageQueryDTO) {
-        PageResult pageResult = matchBService.getRefereeMatchBBrief(pageQueryDTO);
+    @GetMapping("referee-match-b")
+    public Result<PageResult> getRefereeMatchB(@RequestBody PageQueryDTO pageQueryDTO) {
+        PageResult pageResult = matchBService.getRefereeMatchB(pageQueryDTO);
         return Result.success(pageResult);
     }
 
     /**
-     * 对matchA某一模式的某一轮的分数变化
+     * 对matchMode的某一局的分数变化
      * @param scoreDTO
      * @return
      */
@@ -69,46 +69,46 @@ public class RefereeMatchController {
     }
 
     /**
-     * 宣布matchA开始
-     * @param beginMatchDTO
+     * 宣布matchMode开始
+     * @param matchModeId
      * @return
      */
     @PostMapping("/begin-matchA")
-    public Result beginMatchA(@RequestBody BeginMatchDTO beginMatchDTO) {
-        matchAService.beginMatchA(beginMatchDTO);
+    public Result beginMatchA(@RequestBody Long matchModeId) {
+        matchAService.beginMatchA(matchModeId);
         return Result.success();
     }
 
     /**
      * 宣布matchB开始
-     * @param beginMatchDTO
+     * @param matchBId
      * @return
      */
     @PostMapping("/begin-matchB")
-    public Result beginMatchB(@RequestBody BeginMatchDTO beginMatchDTO) {
-        matchBService.beginMatchB(beginMatchDTO);
+    public Result beginMatchB(@RequestBody Long matchBId) {
+        matchBService.beginMatchB(matchBId);
         return Result.success();
     }
 
     /**
      * 对matchA宣布比赛结束
-     * @param endMatchDTO
+     * @param matchModeId
      * @return
      */
     @PostMapping("/end-matchA")
-    public Result endMatchA(@RequestBody EndMatchDTO endMatchDTO) {
-        matchAService.endMatchA(endMatchDTO);
+    public Result endMatchA(@RequestBody Long matchModeId) {
+        matchAService.endMatchA(matchModeId);
         return Result.success();
     }
 
     /**
      * 对matchB宣布比赛结束
-     * @param endMatchDTO
+     * @param matchBId
      * @return
      */
     @PostMapping("/end-matchB")
-    public Result endMatchB(@RequestBody EndMatchDTO endMatchDTO) {
-        matchBService.endMatchB(endMatchDTO);
+    public Result endMatchB(@RequestBody Long matchBId) {
+        matchBService.endMatchB(matchBId);
         return Result.success();
     }
 }
