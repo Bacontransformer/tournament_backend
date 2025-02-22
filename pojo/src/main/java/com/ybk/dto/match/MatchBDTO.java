@@ -22,6 +22,7 @@ public class MatchBDTO {
     private Integer sectionScore; // 每小节的获胜分数 x，一共有四个小节
     private Long teamAId; // teamA的编号
     private Long teamBId; // teamB的编号
+    private Long refereeId; // 裁判的id
     private Integer maxSubstitutePlayer; // 最大替补人数
     private Integer minTeamAgeSum; // 最小队伍年龄和（可选规则）
     private Integer maxTeamAgeSum; // 最大队伍年龄和（可选规则）

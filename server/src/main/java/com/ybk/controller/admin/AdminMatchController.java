@@ -1,9 +1,8 @@
 package com.ybk.controller.admin;
 
 import com.ybk.dto.match.MatchADTO;
+import com.ybk.dto.match.MatchAModeDTO;
 import com.ybk.dto.match.MatchBDTO;
-import com.ybk.dto.match.RegistrationPageDTO;
-import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.*;
 import io.swagger.annotations.Api;
@@ -36,6 +35,32 @@ public class AdminMatchController {
     public Result saveMatchA(@RequestBody MatchADTO matchADTO) {
         log.info("比赛A创建:{}",matchADTO);
         matchAService.save(matchADTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛A模式创建
+     * @param matchAModeDTO
+     * @return
+     */
+    @ApiOperation(value = "比赛A各种模式创建")
+    @PostMapping("/save-a-mode")
+    public Result saveMatchAMode(@RequestBody MatchAModeDTO matchAModeDTO) {
+        log.info("比赛A模式创建:{}",matchAModeDTO);
+        matchAService.saveMode(matchAModeDTO);
+        return Result.success();
+    }
+
+    /**
+     * 比赛A模式删除
+     * @param matchModeId
+     * @return
+     */
+    @ApiOperation(value = "比赛A模式删除")
+    @PostMapping("/delete-a-mode")
+    public Result deleteMatchAMode(@RequestBody Long matchModeId) {
+        log.info("比赛A模式删除:{}",matchModeId);
+        matchAService.deleteMode(matchModeId);
         return Result.success();
     }
 
@@ -104,16 +129,4 @@ public class AdminMatchController {
         return Result.success();
     }
 
-    /**
-     * 查询报名的参赛队伍
-     * @param registrationPageDTO
-     * @return
-     */
-    @ApiOperation(value = "查询报名的参赛队伍")
-    @PostMapping("/page-team")
-    public Result<PageResult> pageTeam(@RequestBody RegistrationPageDTO registrationPageDTO) {
-        log.info("查询报名的参赛队伍:{}", registrationPageDTO);
-        PageResult pageResult = matchAService.pageTeam(registrationPageDTO);
-        return Result.success(pageResult);
-    }
 }

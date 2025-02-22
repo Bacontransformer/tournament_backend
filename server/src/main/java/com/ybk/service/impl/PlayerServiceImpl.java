@@ -25,6 +25,10 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private TeamMapper teamMapper;
 
+    /**
+     * 添加队员
+     * @param playerDTO
+     */
     @Override
     public void save(PlayerDTO playerDTO) {
         Player player = new Player();
@@ -46,6 +50,10 @@ public class PlayerServiceImpl implements PlayerService {
         playerMapper.insert(player);
     }
 
+    /**
+     * 更新队员信息
+     * @param playerDTO
+     */
     @Override
     public void update(PlayerDTO playerDTO) {
         Player player = new Player();
@@ -74,13 +82,25 @@ public class PlayerServiceImpl implements PlayerService {
         playerMapper.updateById(player);
     }
 
+    /**
+     * 删除队员
+     * @param ids
+     */
     @Override
     public void delete(List<Long> ids) {
         playerMapper.deleteBatchIds(ids);
     }
 
+    /**
+     * 分页查询当前leaderId下的所有队员
+     * @param pageQueryDTO
+     * @return
+     */
     @Override
     public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
+        // 设置默认值
+        pageQueryDTO.setPage(pageQueryDTO.getPage() == 0 ? 1 : pageQueryDTO.getPage());
+        pageQueryDTO.setPageSize(pageQueryDTO.getPageSize() == 0 ? 10 : pageQueryDTO.getPageSize());
         // 查询当前leaderId下的所有队员
         Page<Player> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         QueryWrapper<Player> queryWrapper = new QueryWrapper<>();

@@ -13,7 +13,7 @@ public interface RefereeService {
 
     PageResult pageQuery(PageQueryDTO pageQueryDTO);
 
-    void passReferee(List<Integer> ids);
+    void passReferee(List<Long> ids);
 
     void save(RefereeDTO refereeDTO);
 

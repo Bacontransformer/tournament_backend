@@ -1,7 +1,9 @@
 package com.ybk.controller.leader;
 
 import com.ybk.dto.match.AssignmentDTO;
-import com.ybk.dto.match.RegistrationDTO;
+import com.ybk.dto.match.ClearMatchAPlayerDTO;
+import com.ybk.dto.match.MatchAPlayerDTO;
+import com.ybk.dto.match.MatchBPlayerDTO;
 import com.ybk.result.Result;
 import com.ybk.service.*;
 import io.swagger.annotations.Api;
@@ -24,100 +26,43 @@ public class LeaderMatchController {
     @Autowired
     private MatchBService matchBService;
 
-    @Autowired
-    private MatchSetService matchSetService;
-
-    @Autowired
-    private RegistrationService registrationService;
-
-    /**
-     * 报名比赛
-     * @param registrationDTO
-     * @return
-     */
-    @ApiOperation(value = "报名比赛")
-    @PostMapping("/registration")
-    public Result registration(@RequestBody RegistrationDTO registrationDTO){
-        log.info("报名比赛:{}",registrationDTO);
-        registrationService.register(registrationDTO);
-        return Result.success();
-    }
-
     /**
      * 设置MatchA上场球员
-     * @param assignmentDTO
+     * @param matchAPlayerDTO
      * @return
      */
     @ApiOperation(value = "设置MatchA上场球员")
     @PostMapping("/set-match-a-player")
-    public Result setMatchAPlayer(@RequestBody AssignmentDTO assignmentDTO){
-        log.info("设置上场球员:{}", assignmentDTO);
-        matchAService.setMatchAPlayer(assignmentDTO);
+    public Result setMatchAPlayer(@RequestBody MatchAPlayerDTO matchAPlayerDTO){
+        log.info("设置上场球员:{}", matchAPlayerDTO);
+        matchAService.setMatchAPlayer(matchAPlayerDTO);
         return Result.success();
     }
 
     /**
-     * 删除MatchA上场球员
-     * @param assignmentId
+     * 清空MatchA某一模式上场球员
+     * @param clearMatchAPlayerDTO
      * @return
      */
     @ApiOperation(value = "删除MatchA上场球员")
     @PostMapping("/delete-match-a-player")
-    public Result deleteMatchAPlayer(Long assignmentId){
-        log.info("删除上场球员:{}", assignmentId);
-        matchAService.deleteMatchAPlayer(assignmentId);
+    public Result deleteMatchAPlayer(@RequestBody ClearMatchAPlayerDTO clearMatchAPlayerDTO){
+        log.info("删除上场球员:{}", clearMatchAPlayerDTO);
+        matchAService.deleteMatchAPlayer(clearMatchAPlayerDTO);
         return Result.success();
     }
 
-    /**
-     * 修改MatchA上场球员
-     * @param assignmentDTO
-     * @return
-     */
-    @ApiOperation(value = "修改MatchA上场球员")
-    @PostMapping("/update-match-a-player")
-    public Result updateMatchAPlayer(@RequestBody AssignmentDTO assignmentDTO){
-        log.info("修改上场球员:{}", assignmentDTO);
-        matchAService.updateMatchAPlayer(assignmentDTO);
-        return Result.success();
-    }
 
     /**
      * 设置MatchB上场球员
-     * @param assignmentDTO
+     * @param matchBPlayerDTO
      * @return
      */
     @ApiOperation(value = "设置MatchB上场球员")
     @PostMapping("/set-match-b-player")
-    public Result setMatchBPlayer(@RequestBody AssignmentDTO assignmentDTO){
-        log.info("设置上场球员:{}", assignmentDTO);
-        matchBService.setMatchBPlayer(assignmentDTO);
-        return Result.success();
-    }
-
-    /**
-     * 修改MatchB上场球员
-     * @param assignmentDTO
-     * @return
-     */
-    @ApiOperation(value = "修改MatchB上场球员")
-    @PostMapping("/update-match-b-player")
-    public Result updateMatchBPlayer(@RequestBody AssignmentDTO assignmentDTO){
-        log.info("修改上场球员:{}", assignmentDTO);
-        matchBService.updateMatchBPlayer(assignmentDTO);
-        return Result.success();
-    }
-
-    /**
-     * 删除MatchB上场球员
-     * @param assignmentId
-     * @return
-     */
-    @ApiOperation(value = "删除MatchB上场球员")
-    @PostMapping("/delete-match-b-player")
-    public Result deleteMatchBPlayer(Long assignmentId){
-        log.info("删除上场球员:{}", assignmentId);
-        matchBService.deleteMatchBPlayer(assignmentId);
+    public Result setMatchBPlayer(@RequestBody MatchBPlayerDTO matchBPlayerDTO){
+        log.info("设置上场球员:{}", matchBPlayerDTO);
+        matchBService.setMatchBPlayer(matchBPlayerDTO);
         return Result.success();
     }
 

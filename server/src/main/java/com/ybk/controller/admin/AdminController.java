@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/admin")
-@Api(tags = "管理员相关接口")
+@Api(tags = "管理员信息相关接口")
 public class AdminController {
     @Autowired
     private JwtProperties jwtProperties;

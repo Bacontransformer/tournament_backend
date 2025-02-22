@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * leader对某一场Match某一比赛类型的队员任免数据传输对象
+ * leader对Match某一比赛类型的队员任免数据传输对象
  */
 @Data
 @AllArgsConstructor

@@ -1,7 +1,9 @@
 package com.ybk.service;
 
-import com.ybk.dto.match.AssignmentDTO;
-import com.ybk.dto.match.MatchBDTO;
+import com.ybk.dto.PageQueryDTO;
+import com.ybk.dto.match.*;
+import com.ybk.entity.MatchB;
+import com.ybk.result.PageResult;
 
 public interface MatchBService {
     void save(MatchBDTO matchBDTO);
@@ -10,9 +12,19 @@ public interface MatchBService {
 
     void delete(Long matchId);
 
-    void setMatchBPlayer(AssignmentDTO assignmentDTO);
+    void setMatchBPlayer(MatchBPlayerDTO matchBPlayerDTO);
 
-    void updateMatchBPlayer(AssignmentDTO assignmentDTO);
+    MatchB getDoingMatchBDetail(Long matchBId);
 
-    void deleteMatchBPlayer(Long assignmentId);
+    PageResult getUnStartMatchBBrief(PageQueryDTO pageQueryDTO);
+
+    PageResult getDoingMatchBBrief(PageQueryDTO pageQueryDTO);
+
+    void endMatchB(Long matchBId);
+
+    void beginMatchB(Long matchBId);
+
+    PageResult getRefereeMatchB(PageQueryDTO pageQueryDTO);
+
+    void matchBScore(MatchBScoreDTO scoreDTO);
 }

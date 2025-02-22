@@ -18,6 +18,6 @@ public interface LeaderService {
 
     PageResult pageQuery(PageQueryDTO pageQueryDTO);
 
-    void passLeader(List<Integer> ids);
+    void passLeader(List<Long> ids);
 
 }

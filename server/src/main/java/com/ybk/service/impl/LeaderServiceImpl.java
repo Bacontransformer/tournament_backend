@@ -171,6 +171,9 @@ public class LeaderServiceImpl implements LeaderService {
      */
     @Override
     public PageResult pageQuery(PageQueryDTO pageQueryDTO) {
+        // 设置默认值
+        pageQueryDTO.setPage(pageQueryDTO.getPage() == 0 ? 1 : pageQueryDTO.getPage());
+        pageQueryDTO.setPageSize(pageQueryDTO.getPageSize() == 0 ? 10 : pageQueryDTO.getPageSize());
         // 创建分页对象
         Page<Leader> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         // 构造查询条件
@@ -191,13 +194,13 @@ public class LeaderServiceImpl implements LeaderService {
      */
     @Override
     @Transactional
-    public void passLeader(List<Integer> ids) {
+    public void passLeader(List<Long> ids) {
         Leader updatedLeader = new Leader();
         updatedLeader.setIsPassed(true);
         updatedLeader.setUpdateTime(LocalDateTime.now());
         // 更新条件：通过 ids 筛选
         UpdateWrapper<Leader> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.in("LeaderId", ids);
+        updateWrapper.in("Leader_id", ids);
         // 调用 Mapper 批量更新
         leaderMapper.update(updatedLeader, updateWrapper);
     }

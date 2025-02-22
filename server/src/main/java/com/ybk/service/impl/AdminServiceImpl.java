@@ -16,6 +16,11 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
+    /**
+     * 管理员登录
+     * @param adminLoginDTO
+     * @return
+     */
     @Override
     public Admin login(AdminLoginDTO adminLoginDTO) {
         String username = adminLoginDTO.getUsername();

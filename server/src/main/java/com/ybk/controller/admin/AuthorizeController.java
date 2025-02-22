@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class AuthorizeController {
      * @return
      */
     @ApiOperation(value = "分页查询待审批的领队信息")
-    @PostMapping("/page-leader")
+    @GetMapping("/page-leader")
     public Result<PageResult> pageLeader(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询待审批的领队信息");
         PageResult pageResult = leaderService.pageQuery(pageQueryDTO);
@@ -48,7 +45,7 @@ public class AuthorizeController {
      * @return
      */
     @ApiOperation(value = "分页查询待审批的裁判信息")
-    @PostMapping("/page-referee")
+    @GetMapping("/page-referee")
     public Result<PageResult> pageReferee(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询待审批的裁判信息");
         PageResult pageResult = refereeService.pageQuery(pageQueryDTO);
@@ -63,7 +60,7 @@ public class AuthorizeController {
      */
     @ApiOperation(value = "通过待审批的裁判信息")
     @PostMapping("/pass-referee")
-    public Result passReferee(@RequestBody List<Integer> ids) {
+    public Result passReferee(@RequestBody List<Long> ids) {
         log.info("通过待审批的裁判信息");
         refereeService.passReferee(ids);
         return Result.success();
@@ -77,7 +74,7 @@ public class AuthorizeController {
      */
     @ApiOperation(value = "通过待审批的领队信息")
     @PostMapping("/pass-leader")
-    public Result passLeader(@RequestBody List<Integer> ids) {
+    public Result passLeader(@RequestBody List<Long> ids) {
         log.info("通过待审批的领队信息");
         leaderService.passLeader(ids);
         return Result.success();
