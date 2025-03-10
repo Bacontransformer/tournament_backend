@@ -56,12 +56,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addPathPatterns("/leader/**")
                 .addPathPatterns("/player/**")
                 .addPathPatterns("/team/**")
-                .excludePathPatterns("/leader/save")
+                .excludePathPatterns("/leader/register")
                 .excludePathPatterns("/leader/login");
         registry.addInterceptor(jwtTokenRefereeInterceptor)
                 .addPathPatterns("/referee/**")
                 .addPathPatterns("/score/**")
-                .excludePathPatterns("/referee/save")
+                .excludePathPatterns("/referee/register")
                 .excludePathPatterns("/referee/login");
     }
 //401是因为login被拦截，WebMvcConfiguration中的放行指令没有生效，将excludePathPatterns("/user/user/login")改为/**/**/login

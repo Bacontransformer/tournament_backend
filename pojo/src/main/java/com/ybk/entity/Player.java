@@ -19,15 +19,17 @@ import java.time.LocalDateTime;
 @TableName("player")
 public class Player {
     @TableId("player_id")
-    private Long playerId;
-    private Long teamId;
-    private Long leaderId;
-    private String gender;
-    private String name;
-    private Integer age;
-    private String department;
-    private String phone;
-    private String role; // 队员角色（如：队长、副队长、队员）
-    private Boolean isActive; // 是否活跃
-    private LocalDateTime joinTime; // 加入队伍时间
+    private Long playerId; // 主键 自增
+    private Long teamId; // 逻辑关联队伍id 非空
+    private Long leaderId; // 逻辑关联领队id 非空
+    private String gender; // 性别 非空
+    private String name; // 姓名 非空
+    private Integer age; // 年龄 非空
+    private String department; // 部门 可空
+    private String phone; // 电话 可空
+    private String role; // 队员角色（如：队长、副队长、队员） 可空
+    private Boolean isActive; // 是否活跃 不可空
+    private LocalDateTime joinTime; // 加入队伍时间 可空
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

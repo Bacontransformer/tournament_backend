@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 @TableName("team")
 public class Team {
     @TableId("team_id")
-    private Long teamId;
-    private Long leaderId;
-    private String name;
-    private String LeaderName;
-    private String introduction; // 数据库中可以为空
-    private String department;
+    private Long teamId; // 主键 自增
+    private Long leaderId; // 逻辑管理领队id 非空
+    private String name; // 队伍名 非空
+    private String LeaderName; // 领队名 可空
+    private String introduction; // 简介 可空
+    private String department; // 部门 非空
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

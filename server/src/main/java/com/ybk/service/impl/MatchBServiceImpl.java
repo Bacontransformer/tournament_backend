@@ -27,8 +27,6 @@ public class MatchBServiceImpl implements MatchBService {
     @Autowired
     private PlayerMapper playerMapper;
 
-    @Autowired
-    private AssignmentMapper assignmentMapper;
 
     @Autowired
     private TeamMapper teamMapper;

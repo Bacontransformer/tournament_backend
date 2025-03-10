@@ -20,16 +20,17 @@ import java.time.LocalDateTime;
 @TableName("leader")
 public class Leader {
     @TableId(value = "leader_id", type = IdType.AUTO)
-    private Long leaderId;
-    private Long teamId;
-    private String password;
-    private String name;
-    private String gender;
-    private Integer age;
-    private String username;
-    private String department;
-    private String phone;
+    private Long leaderId; // 主键 自增
+    private Long teamId; // 逻辑关联队伍id 非空
+    private String username; // 用户名 非空 唯一
+    private String phone; // 手机号 非空 唯一
+    private String password; // 密码 非空
+    private String name; // 姓名 非空
+    private String teamName; // 队伍名 非空
+    private String gender; // 性别 非空
+    private Integer age; // 年龄 非空
+    private String department; // 部门 非空
+    private Boolean isPassed; // 是否被审核通过 默认唯false
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    private Boolean isPassed;
 }
