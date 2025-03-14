@@ -70,7 +70,7 @@ public class RefereeController {
      * @return
      */
     @ApiOperation(value = "裁判创建")
-    @PostMapping("/save")
+    @PostMapping("/register")
     public Result saveReferee(@RequestBody RefereeDTO refereeDTO) {
         String passwordFirst = refereeDTO.getPasswordFirst();
         String passwordSecond = refereeDTO.getPasswordSecond();

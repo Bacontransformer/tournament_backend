@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @TableName("admin")
 public class Admin {
     @TableId("admin_id")
-    private Long adminId; // 主键 自增
+    private Integer adminId; // 主键 自增
     private String password; // 密码 非空
     private String username; // 用户名 非空
     private String name; // 姓名 非空

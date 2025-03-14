@@ -95,7 +95,7 @@ public class EventServiceImpl implements EventService {
         // 分页查询尚未结束的活动，也就是活动endTime大于等于当前日期的活动
         Page<Event> page = new Page<>(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         QueryWrapper<Event> queryWrapper = new QueryWrapper<>();
-        queryWrapper.gt("end_time", LocalDateTime.now());
+        // queryWrapper.gt("end_time", LocalDateTime.now());
         Page<Event> eventPage = eventMapper.selectPage(page, queryWrapper);
         PageResult pageResult = new PageResult(eventPage.getTotal(), eventPage.getRecords());
         return pageResult;

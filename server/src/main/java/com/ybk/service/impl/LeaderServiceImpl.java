@@ -164,7 +164,7 @@ public class LeaderServiceImpl implements LeaderService {
     }
 
     /**
-     * 分页查询
+     * 分页查询领队
      *
      * @param pageQueryDTO
      * @return

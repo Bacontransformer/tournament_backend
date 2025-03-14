@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("referee")
 public class Referee {
-    @TableId("refereeId")
+    @TableId("referee_id")
     private Long refereeId; // 主键 自增
     private String password; // 密码 不可空
     private String username; // 用户名 不可空 唯一
