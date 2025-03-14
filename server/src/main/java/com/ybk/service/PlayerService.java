@@ -11,7 +11,7 @@ public interface PlayerService {
 
     void update(PlayerDTO playerDTO);
 
-    void delete(List<Long> ids);
+    void delete(List<Integer> ids);
 
 
     PageResult pageQuery(PageQueryDTO pageQueryDTO);

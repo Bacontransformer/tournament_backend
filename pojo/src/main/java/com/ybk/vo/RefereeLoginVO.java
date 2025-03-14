@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @ApiModel(description = "裁判登录返回的数据格式")
 public class RefereeLoginVO {
     @ApiModelProperty("主键值")
-    private Long refereeId;
+    private Integer refereeId;
 
     @ApiModelProperty("用户名")
     private String userName;

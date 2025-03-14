@@ -145,7 +145,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchId
      */
     @Override
-    public void delete(Long matchId) {
+    public void delete(Integer matchId) {
         matchAMapper.deleteById(matchId);
         // matchModeMapper删除对应的matchAId字段的数据
         matchModeMapper.delete(
@@ -168,7 +168,7 @@ public class MatchAServiceImpl implements MatchAService {
         if(player == null){
             throw new MatchCreateException("球员不存在");
         }
-        Long leaderId = player.getLeaderId();
+        Integer leaderId = player.getLeaderId();
         if(leaderId.equals(BaseContext.getCurrentId())){
             throw new MatchCreateException("非此领队球员");
         }
@@ -178,7 +178,7 @@ public class MatchAServiceImpl implements MatchAService {
                         .select(Leader::getTeamId)
                         .eq(Leader::getLeaderId, leaderId)
         );
-        Long teamId = leader.getTeamId();
+        Integer teamId = leader.getTeamId();
         MatchMode matchMode = matchModeMapper.selectById(matchAPlayerDTO.getMatchModeId());
         if(teamId.equals(matchMode.getTeamAId())){
             if(!matchAPlayerDTO.getIsSubstitute()){
@@ -216,8 +216,8 @@ public class MatchAServiceImpl implements MatchAService {
      */
     @Override
     public void deleteMatchAPlayer(ClearMatchAPlayerDTO clearMatchAPlayerDTO) {
-        Long matchModeId = clearMatchAPlayerDTO.getMatchModeId();
-        Long teamId = clearMatchAPlayerDTO.getTeamId();
+        Integer matchModeId = clearMatchAPlayerDTO.getMatchModeId();
+        Integer teamId = clearMatchAPlayerDTO.getTeamId();
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         if(teamId.equals(matchMode.getTeamAId())){
             matchMode.setTeamAPlayer1(null);
@@ -238,7 +238,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @return
      */
     @Override
-    public MatchMode getDoingMatchADetail(Long matchModeId) {
+    public MatchMode getDoingMatchADetail(Integer matchModeId) {
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         if(!matchMode.getStatus().equals(StatusConstant.DOING)){
             return null;
@@ -285,7 +285,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchModeId
      */
     @Override
-    public void endMatchA(Long matchModeId) {
+    public void endMatchA(Integer matchModeId) {
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         matchMode.setStatus(StatusConstant.END);
         matchModeMapper.updateById(matchMode);
@@ -323,14 +323,14 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchModeId
      */
     @Override
-    public void beginMatchA(Long matchModeId) {
+    public void beginMatchA(Integer matchModeId) {
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         matchMode.setCurrentGame(1);
         matchMode.setStatus(StatusConstant.DOING);
         // 局比分
         matchMode.setTeamAGameScore(0);
         matchMode.setTeamBGameScore(0);
-        Long matchAId = matchMode.getMatchAId();
+        Integer matchAId = matchMode.getMatchAId();
         MatchA matchA = matchAMapper.selectById(matchAId);
         Integer gameCount = matchA.getGameCount();
         // 局内比分
@@ -353,9 +353,9 @@ public class MatchAServiceImpl implements MatchAService {
      */
     @Override
     public void matchAScore(MatchAScoreDTO scoreDTO) {
-        Long matchModeId = scoreDTO.getMatchModeId();
-        Long matchAId = scoreDTO.getMatchAId();
-        Long teamId = scoreDTO.getTeamId();
+        Integer matchModeId = scoreDTO.getMatchModeId();
+        Integer matchAId = scoreDTO.getMatchAId();
+        Integer teamId = scoreDTO.getTeamId();
         Integer currentGame = scoreDTO.getCurrentGame();
         Integer plusOrMinus = scoreDTO.getPlusOrMinus();
         MatchA matchA = matchAMapper.selectById(matchAId);
@@ -430,7 +430,7 @@ public class MatchAServiceImpl implements MatchAService {
      */
     @Override
     public void saveMode(MatchAModeDTO matchAModeDTO) {
-        Long matchAId = matchAModeDTO.getMatchAId();
+        Integer matchAId = matchAModeDTO.getMatchAId();
         String mode = matchAModeDTO.getMode();
         LocalDateTime beginTime = matchAModeDTO.getBeginTime();
         Integer venueNumber = matchAModeDTO.getVenueNumber();
@@ -456,7 +456,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchModeId
      */
     @Override
-    public void deleteMode(Long matchModeId) {
+    public void deleteMode(Integer matchModeId) {
         matchModeMapper.deleteById(matchModeId);
     }
 }

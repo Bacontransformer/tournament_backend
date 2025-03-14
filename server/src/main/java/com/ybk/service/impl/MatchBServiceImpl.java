@@ -155,7 +155,7 @@ public class MatchBServiceImpl implements MatchBService {
      * @param matchId
      */
     @Override
-    public void delete(Long matchId) {
+    public void delete(Integer matchId) {
         matchBMapper.deleteById(matchId);
     }
 
@@ -169,7 +169,7 @@ public class MatchBServiceImpl implements MatchBService {
         if(matchB == null){
             throw new MatchCreateException("比赛不存在");
         }
-        Long teamId = matchBPlayerDTO.getTeamId();
+        Integer teamId = matchBPlayerDTO.getTeamId();
         if(teamId.equals(matchB.getTeamAId())){
             if(matchBPlayerDTO.getTeamAPlayerId1()!=null){
                 matchB.setTeamAPlayerId1(matchBPlayerDTO.getTeamAPlayerId1());
@@ -218,7 +218,7 @@ public class MatchBServiceImpl implements MatchBService {
      * @return
      */
     @Override
-    public MatchB getDoingMatchBDetail(Long matchBId) {
+    public MatchB getDoingMatchBDetail(Integer matchBId) {
        return matchBMapper.selectById(matchBId);
     }
 
@@ -261,7 +261,7 @@ public class MatchBServiceImpl implements MatchBService {
      * @param matchBId
      */
     @Override
-    public void endMatchB(Long matchBId) {
+    public void endMatchB(Integer matchBId) {
         MatchB matchB = matchBMapper.selectById(matchBId);
         if(matchB == null){
             throw new MatchCreateException("比赛不存在");
@@ -282,7 +282,7 @@ public class MatchBServiceImpl implements MatchBService {
      * @param matchBId
      */
     @Override
-    public void beginMatchB(Long matchBId) {
+    public void beginMatchB(Integer matchBId) {
         MatchB matchB = matchBMapper.selectById(matchBId);
         if(matchB == null){
             throw new MatchCreateException("比赛不存在");
@@ -322,8 +322,8 @@ public class MatchBServiceImpl implements MatchBService {
     @Override
     public void matchBScore(MatchBScoreDTO scoreDTO) {
         Integer plusOrMinus = scoreDTO.getPlusOrMinus();
-        Long teamId = scoreDTO.getTeamId();
-        Long matchBId = scoreDTO.getMatchBId();
+        Integer teamId = scoreDTO.getTeamId();
+        Integer matchBId = scoreDTO.getMatchBId();
         MatchB matchB = matchBMapper.selectById(matchBId);
         if(matchB == null){
             throw new MatchCreateException("比赛不存在");
@@ -332,8 +332,8 @@ public class MatchBServiceImpl implements MatchBService {
         Integer currentSection = matchB.getCurrentSection();
         Integer teamAScore = matchB.getTeamAScore();
         Integer teamBScore = matchB.getTeamBScore();
-        Long teamAId = matchB.getTeamAId();
-        Long teamBId = matchB.getTeamBId();
+        Integer teamAId = matchB.getTeamAId();
+        Integer teamBId = matchB.getTeamBId();
         if(teamId.equals(teamAId)){
             Integer teamAScoreTemp = teamAScore + plusOrMinus;
             if( currentSection.equals(1)&&teamAScoreTemp.equals(sectionScore)) {

@@ -94,7 +94,7 @@ public class RefereeServiceImpl implements RefereeService {
      */
     @Override
     @Transactional
-    public void passReferee(List<Long> ids) {
+    public void passReferee(List<Integer> ids) {
         // 构造需要更新的 Referee 实体
         Referee updatedReferee = new Referee();
         updatedReferee.setIsPassed(true);

@@ -74,7 +74,7 @@ public class RefereeMatchController {
      * @return
      */
     @PostMapping("/begin-matchA")
-    public Result beginMatchA(@RequestBody Long matchModeId) {
+    public Result beginMatchA(@RequestBody Integer matchModeId) {
         matchAService.beginMatchA(matchModeId);
         return Result.success();
     }
@@ -85,7 +85,7 @@ public class RefereeMatchController {
      * @return
      */
     @PostMapping("/begin-matchB")
-    public Result beginMatchB(@RequestBody Long matchBId) {
+    public Result beginMatchB(@RequestBody Integer matchBId) {
         matchBService.beginMatchB(matchBId);
         return Result.success();
     }
@@ -96,7 +96,7 @@ public class RefereeMatchController {
      * @return
      */
     @PostMapping("/end-matchA")
-    public Result endMatchA(@RequestBody Long matchModeId) {
+    public Result endMatchA(@RequestBody Integer matchModeId) {
         matchAService.endMatchA(matchModeId);
         return Result.success();
     }
@@ -107,7 +107,7 @@ public class RefereeMatchController {
      * @return
      */
     @PostMapping("/end-matchB")
-    public Result endMatchB(@RequestBody Long matchBId) {
+    public Result endMatchB(@RequestBody Integer matchBId) {
         matchBService.endMatchB(matchBId);
         return Result.success();
     }

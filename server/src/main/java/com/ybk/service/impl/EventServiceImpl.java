@@ -83,7 +83,7 @@ public class EventServiceImpl implements EventService {
      * @param id
      */
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         eventMapper.deleteById(id);
     }
 

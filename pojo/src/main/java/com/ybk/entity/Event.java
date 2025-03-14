@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @TableName("event")
 public class Event {
     @TableId("event_id")
-    private Long eventId; // 主键 自增
+    private Integer eventId; // 主键 自增
     private String name; // 活动名称 非空
     private String introduction; // 活动介绍 可为空
     private String stadium; // 体育馆 非空

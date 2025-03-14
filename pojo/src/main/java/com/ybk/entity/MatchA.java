@@ -19,11 +19,11 @@ import java.time.LocalDateTime;
 @TableName("match_a")
 public class MatchA {
     @TableId("match_a_id")
-    private Long matchAId; // 主键 自增
-    private Long eventId; // 逻辑关联活动id 非空
-    private Long teamAId; // 队伍a的id 非空
-    private Long teamBId; // 队伍b的id 非空
-    private Long winnerTeamId; // 最终获胜队伍id 可为空
+    private Integer matchAId; // 主键 自增
+    private Integer eventId; // 逻辑关联活动id 非空
+    private Integer teamAId; // 队伍a的id 非空
+    private Integer teamBId; // 队伍b的id 非空
+    private Integer winnerTeamId; // 最终获胜队伍id 可为空
     private String teamADepartment; // 队伍a的部门 可为空
     private String teamBDepartment; // 队伍b的部门 可为空
     private String winnerTeamDepartment; // 最终获胜队伍部门 可为空

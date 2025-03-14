@@ -15,10 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchADTO {
-    private Long matchAId;
-    private Long eventId; // 活动的id
-    private Long teamAId; // 队伍A的id
-    private Long teamBId; // 队伍B的id
+    private Integer matchAId;
+    private Integer eventId; // 活动的id
+    private Integer teamAId; // 队伍A的id
+    private Integer teamBId; // 队伍B的id
     private Integer venueNumber; // 场地编号
     private Integer gameCount; // 每一个比赛模式的局数
     private Integer winScore; // 单局获胜分数

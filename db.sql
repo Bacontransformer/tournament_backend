@@ -1,6 +1,6 @@
 create table tournament.admin
 (
-    admin_id    bigint auto_increment comment '管理员ID'
+    admin_id    int auto_increment comment '管理员ID'
         primary key,
     password    varchar(255)                       not null comment '密码',
     username    varchar(100)                       not null comment '用户名',
@@ -15,7 +15,7 @@ create table tournament.admin
 
 create table tournament.event
 (
-    event_id              bigint auto_increment comment '主键'
+    event_id              int auto_increment comment '主键'
         primary key,
     name                  varchar(255) not null comment '活动名称',
     introduction          text         null comment '活动介绍',
@@ -32,9 +32,9 @@ create table tournament.event
 
 create table tournament.leader
 (
-    leader_id   bigint auto_increment comment '主键'
+    leader_id   int auto_increment comment '主键'
         primary key,
-    team_id     bigint                             null,
+    team_id     int                             null,
     username    varchar(100)                       not null comment '用户名',
     phone       varchar(15)                        not null comment '手机号',
     password    varchar(255)                       not null comment '密码',
@@ -53,16 +53,14 @@ create table tournament.leader
 )
     comment '领队表';
 
-
-
 create table tournament.match_a
 (
-    match_a_id             bigint auto_increment comment '主键'
+    match_a_id             int auto_increment comment '主键'
         primary key,
-    event_id               bigint          not null comment '逻辑关联活动id',
-    team_a_id              bigint          not null comment '队伍a的id',
-    team_b_id              bigint          not null comment '队伍b的id',
-    winner_team_id         bigint          null comment '最终获胜队伍id',
+    event_id               int          not null comment '逻辑关联活动id',
+    team_a_id              int          not null comment '队伍a的id',
+    team_b_id              int          not null comment '队伍b的id',
+    winner_team_id         int          null comment '最终获胜队伍id',
     team_a_department      varchar(255)    null comment '队伍a的部门',
     team_b_department      varchar(255)    null comment '队伍b的部门',
     winner_team_department varchar(255)    null comment '最终获胜队伍部门',
@@ -79,44 +77,43 @@ create table tournament.match_a
 )
     comment '传统比赛表';
 
-
 create table tournament.match_b
 (
-    match_b_id                  bigint auto_increment comment '主键'
+    match_b_id                  int auto_increment comment '主键'
         primary key,
-    event_id                    bigint          not null comment '逻辑关联活动id',
+    event_id                    int          not null comment '逻辑关联活动id',
     status                      int default 0   not null comment '比赛状态',
     section_score               int             not null comment '每小节的获胜分数',
     current_section             int default 1   not null comment '当前小节',
-    team_a_id                   bigint          not null comment 'teamA的编号',
-    team_b_id                   bigint          not null comment 'teamB的编号',
-    winner_team_id              bigint          null comment '获胜队伍编号',
-    referee_id                  bigint          not null comment '裁判的id',
-    substitute_referee_id       bigint          null comment '替补裁判的id',
+    team_a_id                   int          not null comment 'teamA的编号',
+    team_b_id                   int          not null comment 'teamB的编号',
+    winner_team_id              int          null comment '获胜队伍编号',
+    referee_id                  int          not null comment '裁判的id',
+    substitute_referee_id       int          null comment '替补裁判的id',
     team_a_department           varchar(255)    null comment 'teamA的部门',
     team_b_department           varchar(255)    null comment 'teamB的部门',
     winner_team_department      varchar(255)    null comment '胜者队伍的部门',
     venue_number                int             not null comment '场地编号',
-    team_a_player_id1           bigint          null comment 'teamA的1号选手',
-    team_a_player_id2           bigint          null comment 'teamA的2号选手',
-    team_a_player_id3           bigint          null comment 'teamA的3号选手',
-    team_a_player_id4           bigint          null comment 'teamA的4号选手',
-    team_b_player_id1           bigint          null comment 'teamB的1号选手',
-    team_b_player_id2           bigint          null comment 'teamB的2号选手',
-    team_b_player_id3           bigint          null comment 'teamB的3号选手',
-    team_b_player_id4           bigint          null comment 'teamB的4号选手',
-    team_a_substitute_player_id1 bigint         null comment 'teamA替补选手1',
-    team_a_substitute_player_id2 bigint         null comment 'teamA替补选手2',
-    team_a_substitute_player_id3 bigint         null comment 'teamA替补选手3',
-    team_a_substitute_player_id4 bigint         null comment 'teamA替补选手4',
-    team_b_substitute_player_id1 bigint         null comment 'teamB替补选手1',
-    team_b_substitute_player_id2 bigint         null comment 'teamB替补选手2',
-    team_b_substitute_player_id3 bigint         null comment 'teamB替补选手3',
-    team_b_substitute_player_id4 bigint         null comment 'teamB替补选手4',
-    current_team_a_player_id1   bigint          null comment '当前teamA的1号选手',
-    current_team_a_player_id2   bigint          null comment '当前teamA的2号选手',
-    current_team_b_player_id1   bigint          null comment '当前teamB的1号选手',
-    current_team_b_player_id2   bigint          null comment '当前teamB的2号选手',
+    team_a_player_id1           int          null comment 'teamA的1号选手',
+    team_a_player_id2           int          null comment 'teamA的2号选手',
+    team_a_player_id3           int          null comment 'teamA的3号选手',
+    team_a_player_id4           int          null comment 'teamA的4号选手',
+    team_b_player_id1           int          null comment 'teamB的1号选手',
+    team_b_player_id2           int          null comment 'teamB的2号选手',
+    team_b_player_id3           int          null comment 'teamB的3号选手',
+    team_b_player_id4           int          null comment 'teamB的4号选手',
+    team_a_substitute_player_id1 int         null comment 'teamA替补选手1',
+    team_a_substitute_player_id2 int         null comment 'teamA替补选手2',
+    team_a_substitute_player_id3 int         null comment 'teamA替补选手3',
+    team_a_substitute_player_id4 int         null comment 'teamA替补选手4',
+    team_b_substitute_player_id1 int         null comment 'teamB替补选手1',
+    team_b_substitute_player_id2 int         null comment 'teamB替补选手2',
+    team_b_substitute_player_id3 int         null comment 'teamB替补选手3',
+    team_b_substitute_player_id4 int         null comment 'teamB替补选手4',
+    current_team_a_player_id1   int          null comment '当前teamA的1号选手',
+    current_team_a_player_id2   int          null comment '当前teamA的2号选手',
+    current_team_b_player_id1   int          null comment '当前teamB的1号选手',
+    current_team_b_player_id2   int          null comment '当前teamB的2号选手',
     team_a_score                int default 0   not null comment 'teamA的总分数',
     team_b_score                int default 0   not null comment 'teamB的总分数',
     max_substitute_player       int default 10  not null comment '最大替补人数',
@@ -130,26 +127,26 @@ create table tournament.match_b
 
 create table tournament.match_mode
 (
-    match_mode_id             bigint auto_increment comment '主键'
+    match_mode_id             int auto_increment comment '主键'
         primary key,
-    match_a_id                bigint          not null comment '逻辑关联match-a的id',
+    match_a_id                int          not null comment '逻辑关联match-a的id',
     mode                      varchar(50)     not null comment '模式',
     venue_number              int             not null comment '场地编号',
-    referee_id                bigint          not null comment '裁判id',
-    substitute_referee_id     bigint          null comment '替补裁判id',
-    team_a_id                 bigint          not null comment 'a队id',
-    team_b_id                 bigint          not null comment 'b队id',
-    mode_winner_team_id       bigint          null comment '该模式获胜的队伍id',
+    referee_id                int          not null comment '裁判id',
+    substitute_referee_id     int          null comment '替补裁判id',
+    team_a_id                 int          not null comment 'a队id',
+    team_b_id                 int          not null comment 'b队id',
+    mode_winner_team_id       int          null comment '该模式获胜的队伍id',
     begin_time                datetime        not null comment '比赛开始时间',
     status                    int default 0   not null comment '0:未开始，1:进行中，2:已结束',
-    team_a_player1            bigint          null comment 'a队参赛队员1号',
-    team_a_player2            bigint          null comment 'a队参赛队员2号',
-    team_b_player1            bigint          null comment 'b队参赛队员1号',
-    team_b_player2            bigint          null comment 'b队参赛队员2号',
-    team_a_substitute_player1 bigint          null comment 'a队替补1号',
-    team_a_substitute_player2 bigint          null comment 'a队替补2号',
-    team_b_substitute_player1 bigint          null comment 'b队替补1号',
-    team_b_substitute_player2 bigint          null comment 'b队替补2号',
+    team_a_player1            int          null comment 'a队参赛队员1号',
+    team_a_player2            int          null comment 'a队参赛队员2号',
+    team_b_player1            int          null comment 'b队参赛队员1号',
+    team_b_player2            int          null comment 'b队参赛队员2号',
+    team_a_substitute_player1 int          null comment 'a队替补1号',
+    team_a_substitute_player2 int          null comment 'a队替补2号',
+    team_b_substitute_player1 int          null comment 'b队替补1号',
+    team_b_substitute_player2 int          null comment 'b队替补2号',
     team_a_round_score1       int default 0   not null comment 'teamA第1局的得分',
     team_a_round_score2       int             null comment 'teamA第2局的得分',
     team_a_round_score3       int             null comment 'teamA第3局的得分',
@@ -167,10 +164,10 @@ create table tournament.match_mode
 
 create table tournament.player
 (
-    player_id    bigint auto_increment comment '主键'
+    player_id    int auto_increment comment '主键'
         primary key,
-    team_id      bigint          not null comment '逻辑关联队伍id',
-    leader_id    bigint          not null comment '逻辑关联领队id',
+    team_id      int          not null comment '逻辑关联队伍id',
+    leader_id    int          not null comment '逻辑关联领队id',
     gender       varchar(10)     not null comment '性别',
     name         varchar(100)    not null comment '姓名',
     age          int             not null comment '年龄',
@@ -186,7 +183,7 @@ create table tournament.player
 
 create table tournament.referee
 (
-    referee_id     bigint auto_increment comment '主键'
+    referee_id     int auto_increment comment '主键'
         primary key,
     password       varchar(255)    not null comment '密码',
     username       varchar(100)    not null comment '用户名',
@@ -205,9 +202,9 @@ create table tournament.referee
 
 create table tournament.team
 (
-    team_id        bigint auto_increment comment '主键'
+    team_id        int auto_increment comment '主键'
         primary key,
-    leader_id      bigint          not null comment '逻辑管理领队id',
+    leader_id      int          not null comment '逻辑管理领队id',
     name           varchar(255)    not null comment '队伍名',
     leader_name    varchar(100)    null comment '领队名',
     introduction   text            null comment '简介',

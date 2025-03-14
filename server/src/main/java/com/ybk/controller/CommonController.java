@@ -31,7 +31,7 @@ public class CommonController {
      * @return
      */
     @GetMapping("/matchA-detail/{matchAId}")
-    public Result<MatchMode> getDoingMatchADetail(@RequestBody Long matchModeId) {
+    public Result<MatchMode> getDoingMatchADetail(@RequestBody Integer matchModeId) {
         return Result.success(matchAService.getDoingMatchADetail(matchModeId));
     }
 
@@ -62,7 +62,7 @@ public class CommonController {
      * @return
      */
     @GetMapping("/matchB-detail/{matchBId}")
-    public Result<MatchB> getDoingMatchBDetail(@PathVariable Long matchBId) {
+    public Result<MatchB> getDoingMatchBDetail(@PathVariable Integer matchBId) {
         return Result.success(matchBService.getDoingMatchBDetail(matchBId));
     }
 

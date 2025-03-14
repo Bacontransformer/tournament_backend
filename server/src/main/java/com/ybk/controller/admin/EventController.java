@@ -54,7 +54,7 @@ public class EventController {
 
     @ApiOperation(value = "查询某一id的活动详情")
     @GetMapping("/{eventId}")
-    public Result<Event> getEvent(@PathVariable Long eventId) {
+    public Result<Event> getEvent(@PathVariable Integer eventId) {
         log.info("查询某一id的活动详情:{}", eventId);
         Event event = eventMapper.selectById(eventId);
         return Result.success(event);
@@ -67,7 +67,7 @@ public class EventController {
      */
     @ApiOperation(value = "活动删除")
     @PostMapping("/delete")
-    public Result deleteEvent(@RequestBody Long id) {
+    public Result deleteEvent(@RequestBody Integer id) {
         log.info("活动删除:{}", id);
         eventService.delete(id);
         return Result.success();

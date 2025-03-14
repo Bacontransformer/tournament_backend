@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClearMatchAPlayerDTO {
-    private Long matchModeId;
-    private Long teamId;
+    private Integer matchModeId;
+    private Integer teamId;
 }

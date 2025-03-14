@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 @TableName("leader")
 public class Leader {
     @TableId(value = "leader_id", type = IdType.AUTO)
-    private Long leaderId; // 主键 自增
-    private Long teamId; // 逻辑关联队伍id 非空
+    private Integer leaderId; // 主键 自增
+    private Integer teamId; // 逻辑关联队伍id 非空
     private String username; // 用户名 非空 唯一
     private String phone; // 手机号 非空 唯一
     private String password; // 密码 非空

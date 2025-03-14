@@ -10,19 +10,19 @@ public interface MatchBService {
 
     void update(MatchBDTO matchBDTO);
 
-    void delete(Long matchId);
+    void delete(Integer matchId);
 
     void setMatchBPlayer(MatchBPlayerDTO matchBPlayerDTO);
 
-    MatchB getDoingMatchBDetail(Long matchBId);
+    MatchB getDoingMatchBDetail(Integer matchBId);
 
     PageResult getUnStartMatchBBrief(PageQueryDTO pageQueryDTO);
 
     PageResult getDoingMatchBBrief(PageQueryDTO pageQueryDTO);
 
-    void endMatchB(Long matchBId);
+    void endMatchB(Integer matchBId);
 
-    void beginMatchB(Long matchBId);
+    void beginMatchB(Integer matchBId);
 
     PageResult getRefereeMatchB(PageQueryDTO pageQueryDTO);
 

@@ -79,7 +79,7 @@ public class RefereeController {
                 return Result.error("两次输入的密码不一致");
             }
         }
-        log.info("领队创建：{}", refereeDTO);
+        log.info("裁判创建：{}", refereeDTO);
         refereeService.save(refereeDTO);
         return Result.success();
     }

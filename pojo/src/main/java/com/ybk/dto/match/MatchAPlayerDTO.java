@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchAPlayerDTO {
-    private Long assignmentId;
-    private Long matchAId;
-    private Long matchModeId;
-    private Long teamId; // 队伍ID
-    private Long playerId; // 选手ID
+    private Integer assignmentId;
+    private Integer matchAId;
+    private Integer matchModeId;
+    private Integer teamId; // 队伍ID
+    private Integer playerId; // 选手ID
     private String mode;
     private Boolean isSubstitute; // 是否替补
 }

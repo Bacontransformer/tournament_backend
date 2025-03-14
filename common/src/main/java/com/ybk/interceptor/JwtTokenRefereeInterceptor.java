@@ -50,7 +50,7 @@ public class JwtTokenRefereeInterceptor implements HandlerInterceptor {
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getRefereeSecretKey(), token);
-            Long refereeId = Long.valueOf(claims.get(JwtClaimsConstant.REFEREE_ID).toString());
+            Integer refereeId = Integer.valueOf(claims.get(JwtClaimsConstant.REFEREE_ID).toString());
             BaseContext.setCurrentId(refereeId);
             log.info("当前裁判id：", refereeId);
             //3、通过，放行

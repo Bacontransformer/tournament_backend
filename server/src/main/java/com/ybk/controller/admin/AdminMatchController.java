@@ -58,7 +58,7 @@ public class AdminMatchController {
      */
     @ApiOperation(value = "比赛A模式删除")
     @PostMapping("/delete-a-mode")
-    public Result deleteMatchAMode(@RequestBody Long matchModeId) {
+    public Result deleteMatchAMode(@RequestBody Integer matchModeId) {
         log.info("比赛A模式删除:{}",matchModeId);
         matchAService.deleteMode(matchModeId);
         return Result.success();
@@ -110,7 +110,7 @@ public class AdminMatchController {
      */
     @ApiOperation(value = "比赛A删除")
     @PostMapping("/delete-a")
-    public Result deleteMatchA(@RequestBody Long matchId) {
+    public Result deleteMatchA(@RequestBody Integer matchId) {
         log.info("比赛A删除:{}",matchId);
         matchAService.delete(matchId);
         return Result.success();
@@ -123,7 +123,7 @@ public class AdminMatchController {
      */
     @ApiOperation(value = "比赛B删除")
     @PostMapping("/delete-b")
-    public Result deleteMatchB(@RequestBody Long matchId) {
+    public Result deleteMatchB(@RequestBody Integer matchId) {
         log.info("比赛B删除:{}",matchId);
         matchBService.delete(matchId);
         return Result.success();

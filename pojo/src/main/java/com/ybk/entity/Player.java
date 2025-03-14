@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 @TableName("player")
 public class Player {
     @TableId("player_id")
-    private Long playerId; // 主键 自增
-    private Long teamId; // 逻辑关联队伍id 非空
-    private Long leaderId; // 逻辑关联领队id 非空
+    private Integer playerId; // 主键 自增
+    private Integer teamId; // 逻辑关联队伍id 非空
+    private Integer leaderId; // 逻辑关联领队id 非空
     private String gender; // 性别 非空
     private String name; // 姓名 非空
     private Integer age; // 年龄 非空

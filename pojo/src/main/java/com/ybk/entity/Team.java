@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @TableName("team")
 public class Team {
     @TableId("team_id")
-    private Long teamId; // 主键 自增
-    private Long leaderId; // 逻辑管理领队id 非空
+    private Integer teamId; // 主键 自增
+    private Integer leaderId; // 逻辑管理领队id 非空
     private String name; // 队伍名 非空
     private String LeaderName; // 领队名 可空
     private String introduction; // 简介 可空
