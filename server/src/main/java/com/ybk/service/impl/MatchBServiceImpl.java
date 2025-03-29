@@ -1,6 +1,8 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.Query;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.constant.StatusConstant;
 import com.ybk.context.BaseContext;
@@ -388,5 +390,25 @@ public class MatchBServiceImpl implements MatchBService {
                 matchB.setStatus(StatusConstant.END);
             }
         }
+    }
+
+    /**
+     * 分页查询比赛B
+     * @param matchQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult queryPage(MatchQueryDTO matchQueryDTO) {
+        Page<MatchB> page = new Page<>(matchQueryDTO.getPage(),matchQueryDTO.getPageSize());
+        QueryWrapper<MatchB> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("event_id",matchQueryDTO.getEventId());
+        if (matchQueryDTO.getDepartment() != null) {
+            queryWrapper
+                    .eq("team_a_department",matchQueryDTO.getDepartment())
+                    .or()
+                    .eq("team_b_department",matchQueryDTO.getDepartment());
+        }
+        matchBMapper.selectPage(page,queryWrapper);
+        return new PageResult(page.getTotal(),page.getRecords());
     }
 }

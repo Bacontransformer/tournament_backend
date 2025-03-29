@@ -34,4 +34,10 @@ public interface MatchAService {
     void saveMode(MatchAModeDTO matchAModeDTO);
 
     void deleteMode(Integer matchModeId);
+
+    PageResult queryPage(MatchQueryDTO matchQueryDTO);
+
+    void updateMode(MatchAModeDTO matchAModeDTO);
+
+    PageResult pageMatchAMode(PageQueryDTO pageQueryDTO);
 }

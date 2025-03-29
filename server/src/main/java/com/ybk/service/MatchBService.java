@@ -27,4 +27,6 @@ public interface MatchBService {
     PageResult getRefereeMatchB(PageQueryDTO pageQueryDTO);
 
     void matchBScore(MatchBScoreDTO scoreDTO);
+
+    PageResult queryPage(MatchQueryDTO matchQueryDTO);
 }

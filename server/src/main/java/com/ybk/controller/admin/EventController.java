@@ -67,7 +67,7 @@ public class EventController {
      */
     @ApiOperation(value = "活动删除")
     @PostMapping("/delete")
-    public Result deleteEvent(@RequestBody Integer id) {
+    public Result deleteEvent( Integer id) {
         log.info("活动删除:{}", id);
         eventService.delete(id);
         return Result.success();

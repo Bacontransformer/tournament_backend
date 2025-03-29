@@ -1,6 +1,7 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.constant.StatusConstant;
 import com.ybk.context.BaseContext;
@@ -48,17 +49,8 @@ public class MatchAServiceImpl implements MatchAService {
         if(matchADTO.getGameCount()==null){
             throw new MatchCreateException("请输入比赛轮数");
         }
-        if (matchADTO.getVenueNumber() == null) {
-            throw new MatchCreateException("请选择比赛场地");
-        }
         if (matchADTO.getWinScore() == null) {
             throw new MatchCreateException("请输入每局胜分线");
-        }
-        if (matchADTO.getBeginTime() == null) {
-            throw new MatchCreateException("请选择比赛开始时间");
-        }
-        if (matchADTO.getBeginTime().isBefore(LocalDateTime.now())) {
-            throw new MatchCreateException("比赛开始时间不能早于当前时间");
         }
         if (matchADTO.getMinTeamAgeSum() > matchADTO.getMaxTeamAgeSum()) {
             throw new MatchCreateException("球队年龄范围不正确");
@@ -85,10 +77,16 @@ public class MatchAServiceImpl implements MatchAService {
         if (matchADTO.getMinTeamAgeSum() == null) {
             matchADTO.setMinTeamAgeSum(0);
         }
+        Team teamA = teamMapper.selectById(matchADTO.getTeamAId());
+        String teamADepartment = teamA.getDepartment();
+        Team teamB = teamMapper.selectById(matchADTO.getTeamBId());
+        String teamBDepartment = teamB.getDepartment();
         MatchA matchA = MatchA.builder()
                 .eventId(matchADTO.getEventId())
                 .teamAId(matchADTO.getTeamAId())
                 .teamBId(matchADTO.getTeamBId())
+                .teamADepartment(teamADepartment)
+                .teamBDepartment(teamBDepartment)
                 .maxParticipationTimes(matchADTO.getMaxParticipationTimes())
                 .minTeamAgeSum(matchADTO.getMinTeamAgeSum())
                 .maxTeamAgeSum(matchADTO.getMaxTeamAgeSum())
@@ -451,6 +449,47 @@ public class MatchAServiceImpl implements MatchAService {
     }
 
     /**
+     * 比赛A模式修改
+     * @param matchAModeDTO
+     */
+    @Override
+    public void updateMode(MatchAModeDTO matchAModeDTO) {
+        Integer matchModeId = matchAModeDTO.getMatchModeId();
+        MatchMode matchMode = matchModeMapper.selectById(matchModeId);
+        if(matchMode == null){
+            throw new MatchCreateException("matchMode不存在");
+        }
+        MatchA matchA = matchAMapper.selectById(matchMode.getMatchAId());
+        if(matchA == null){
+            throw new MatchCreateException("matchA不存在");
+        }
+        if(matchAModeDTO.getMode()!=null){
+            matchMode.setMode(matchAModeDTO.getMode());
+        }
+        if(matchAModeDTO.getBeginTime()!=null){
+            matchMode.setBeginTime(matchAModeDTO.getBeginTime());
+        }
+        if(matchAModeDTO.getVenueNumber()!=null){
+            matchMode.setVenueNumber(matchAModeDTO.getVenueNumber());
+        }
+        matchModeMapper.updateById(matchMode);
+    }
+
+    /**
+     * 分页查询比赛A模式
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageMatchAMode(PageQueryDTO pageQueryDTO) {
+        Page<MatchMode> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        QueryWrapper<MatchMode> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("match_a_id",matchAModeDTO.getMatchAId());
+        matchModeMapper.selectPage(page,queryWrapper);
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
      * 删除一个matchA的模式
      *
      * @param matchModeId
@@ -458,5 +497,25 @@ public class MatchAServiceImpl implements MatchAService {
     @Override
     public void deleteMode(Integer matchModeId) {
         matchModeMapper.deleteById(matchModeId);
+    }
+
+    /**
+     * 分页条件查询matchA
+     * @param matchQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult queryPage(MatchQueryDTO matchQueryDTO) {
+        Page<MatchA> page = new Page<>(matchQueryDTO.getPage(),matchQueryDTO.getPageSize());
+        QueryWrapper<MatchA> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("event_id",matchQueryDTO.getEventId());
+        if (matchQueryDTO.getDepartment() != null) {
+            queryWrapper
+                    .eq("team_a_department",matchQueryDTO.getDepartment())
+                    .or()
+                    .eq("team_b_department",matchQueryDTO.getDepartment());
+        }
+        matchAMapper.selectPage(page,queryWrapper);
+        return new PageResult(page.getTotal(),page.getRecords());
     }
 }

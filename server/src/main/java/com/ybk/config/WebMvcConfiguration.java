@@ -126,6 +126,24 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         return docket;
     }
 
+    @Bean
+    public Docket docket4() {
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("羽毛球赛务系统接口文档")
+                .version("2.0")
+                .description("羽毛球赛务系统接口文档")
+                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("visitor接口")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ybk.controller.visitor"))
+                .paths(PathSelectors.any())
+                .build();
+        log.info("开始生成接口文档");
+        return docket;
+    }
+
     /**
      * 设置静态资源映射
      *
