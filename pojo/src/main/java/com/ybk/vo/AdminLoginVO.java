@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @ApiModel(description = "管理员登录返回的数据格式")
 public class AdminLoginVO {
     @ApiModelProperty("主键值")
-    private Long adminId;
+    private Integer adminId;
 
     @ApiModelProperty("用户名")
     private String userName;

@@ -32,7 +32,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void save(PlayerDTO playerDTO) {
         Player player = new Player();
-        Long leaderId = BaseContext.getCurrentId();
+        Integer leaderId = BaseContext.getCurrentId();
         // 查出对应的team_id
         QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("leader_id", leaderId);
@@ -87,7 +87,7 @@ public class PlayerServiceImpl implements PlayerService {
      * @param ids
      */
     @Override
-    public void delete(List<Long> ids) {
+    public void delete(List<Integer> ids) {
         playerMapper.deleteBatchIds(ids);
     }
 

@@ -1,6 +1,7 @@
 package com.ybk.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ybk.constant.StatusConstant;
 import com.ybk.context.BaseContext;
@@ -48,17 +49,8 @@ public class MatchAServiceImpl implements MatchAService {
         if(matchADTO.getGameCount()==null){
             throw new MatchCreateException("请输入比赛轮数");
         }
-        if (matchADTO.getVenueNumber() == null) {
-            throw new MatchCreateException("请选择比赛场地");
-        }
         if (matchADTO.getWinScore() == null) {
             throw new MatchCreateException("请输入每局胜分线");
-        }
-        if (matchADTO.getBeginTime() == null) {
-            throw new MatchCreateException("请选择比赛开始时间");
-        }
-        if (matchADTO.getBeginTime().isBefore(LocalDateTime.now())) {
-            throw new MatchCreateException("比赛开始时间不能早于当前时间");
         }
         if (matchADTO.getMinTeamAgeSum() > matchADTO.getMaxTeamAgeSum()) {
             throw new MatchCreateException("球队年龄范围不正确");
@@ -85,10 +77,16 @@ public class MatchAServiceImpl implements MatchAService {
         if (matchADTO.getMinTeamAgeSum() == null) {
             matchADTO.setMinTeamAgeSum(0);
         }
+        Team teamA = teamMapper.selectById(matchADTO.getTeamAId());
+        String teamADepartment = teamA.getDepartment();
+        Team teamB = teamMapper.selectById(matchADTO.getTeamBId());
+        String teamBDepartment = teamB.getDepartment();
         MatchA matchA = MatchA.builder()
                 .eventId(matchADTO.getEventId())
                 .teamAId(matchADTO.getTeamAId())
                 .teamBId(matchADTO.getTeamBId())
+                .teamADepartment(teamADepartment)
+                .teamBDepartment(teamBDepartment)
                 .maxParticipationTimes(matchADTO.getMaxParticipationTimes())
                 .minTeamAgeSum(matchADTO.getMinTeamAgeSum())
                 .maxTeamAgeSum(matchADTO.getMaxTeamAgeSum())
@@ -145,7 +143,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchId
      */
     @Override
-    public void delete(Long matchId) {
+    public void delete(Integer matchId) {
         matchAMapper.deleteById(matchId);
         // matchModeMapper删除对应的matchAId字段的数据
         matchModeMapper.delete(
@@ -168,7 +166,7 @@ public class MatchAServiceImpl implements MatchAService {
         if(player == null){
             throw new MatchCreateException("球员不存在");
         }
-        Long leaderId = player.getLeaderId();
+        Integer leaderId = player.getLeaderId();
         if(leaderId.equals(BaseContext.getCurrentId())){
             throw new MatchCreateException("非此领队球员");
         }
@@ -178,7 +176,7 @@ public class MatchAServiceImpl implements MatchAService {
                         .select(Leader::getTeamId)
                         .eq(Leader::getLeaderId, leaderId)
         );
-        Long teamId = leader.getTeamId();
+        Integer teamId = leader.getTeamId();
         MatchMode matchMode = matchModeMapper.selectById(matchAPlayerDTO.getMatchModeId());
         if(teamId.equals(matchMode.getTeamAId())){
             if(!matchAPlayerDTO.getIsSubstitute()){
@@ -216,8 +214,8 @@ public class MatchAServiceImpl implements MatchAService {
      */
     @Override
     public void deleteMatchAPlayer(ClearMatchAPlayerDTO clearMatchAPlayerDTO) {
-        Long matchModeId = clearMatchAPlayerDTO.getMatchModeId();
-        Long teamId = clearMatchAPlayerDTO.getTeamId();
+        Integer matchModeId = clearMatchAPlayerDTO.getMatchModeId();
+        Integer teamId = clearMatchAPlayerDTO.getTeamId();
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         if(teamId.equals(matchMode.getTeamAId())){
             matchMode.setTeamAPlayer1(null);
@@ -238,7 +236,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @return
      */
     @Override
-    public MatchMode getDoingMatchADetail(Long matchModeId) {
+    public MatchMode getDoingMatchADetail(Integer matchModeId) {
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         if(!matchMode.getStatus().equals(StatusConstant.DOING)){
             return null;
@@ -285,7 +283,7 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchModeId
      */
     @Override
-    public void endMatchA(Long matchModeId) {
+    public void endMatchA(Integer matchModeId) {
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         matchMode.setStatus(StatusConstant.END);
         matchModeMapper.updateById(matchMode);
@@ -323,14 +321,14 @@ public class MatchAServiceImpl implements MatchAService {
      * @param matchModeId
      */
     @Override
-    public void beginMatchA(Long matchModeId) {
+    public void beginMatchA(Integer matchModeId) {
         MatchMode matchMode = matchModeMapper.selectById(matchModeId);
         matchMode.setCurrentGame(1);
         matchMode.setStatus(StatusConstant.DOING);
         // 局比分
         matchMode.setTeamAGameScore(0);
         matchMode.setTeamBGameScore(0);
-        Long matchAId = matchMode.getMatchAId();
+        Integer matchAId = matchMode.getMatchAId();
         MatchA matchA = matchAMapper.selectById(matchAId);
         Integer gameCount = matchA.getGameCount();
         // 局内比分
@@ -353,9 +351,9 @@ public class MatchAServiceImpl implements MatchAService {
      */
     @Override
     public void matchAScore(MatchAScoreDTO scoreDTO) {
-        Long matchModeId = scoreDTO.getMatchModeId();
-        Long matchAId = scoreDTO.getMatchAId();
-        Long teamId = scoreDTO.getTeamId();
+        Integer matchModeId = scoreDTO.getMatchModeId();
+        Integer matchAId = scoreDTO.getMatchAId();
+        Integer teamId = scoreDTO.getTeamId();
         Integer currentGame = scoreDTO.getCurrentGame();
         Integer plusOrMinus = scoreDTO.getPlusOrMinus();
         MatchA matchA = matchAMapper.selectById(matchAId);
@@ -430,7 +428,7 @@ public class MatchAServiceImpl implements MatchAService {
      */
     @Override
     public void saveMode(MatchAModeDTO matchAModeDTO) {
-        Long matchAId = matchAModeDTO.getMatchAId();
+        Integer matchAId = matchAModeDTO.getMatchAId();
         String mode = matchAModeDTO.getMode();
         LocalDateTime beginTime = matchAModeDTO.getBeginTime();
         Integer venueNumber = matchAModeDTO.getVenueNumber();
@@ -451,12 +449,73 @@ public class MatchAServiceImpl implements MatchAService {
     }
 
     /**
+     * 比赛A模式修改
+     * @param matchAModeDTO
+     */
+    @Override
+    public void updateMode(MatchAModeDTO matchAModeDTO) {
+        Integer matchModeId = matchAModeDTO.getMatchModeId();
+        MatchMode matchMode = matchModeMapper.selectById(matchModeId);
+        if(matchMode == null){
+            throw new MatchCreateException("matchMode不存在");
+        }
+        MatchA matchA = matchAMapper.selectById(matchMode.getMatchAId());
+        if(matchA == null){
+            throw new MatchCreateException("matchA不存在");
+        }
+        if(matchAModeDTO.getMode()!=null){
+            matchMode.setMode(matchAModeDTO.getMode());
+        }
+        if(matchAModeDTO.getBeginTime()!=null){
+            matchMode.setBeginTime(matchAModeDTO.getBeginTime());
+        }
+        if(matchAModeDTO.getVenueNumber()!=null){
+            matchMode.setVenueNumber(matchAModeDTO.getVenueNumber());
+        }
+        matchModeMapper.updateById(matchMode);
+    }
+
+    /**
+     * 分页查询比赛A模式
+     * @param pageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageMatchAMode(PageQueryDTO pageQueryDTO) {
+        Page<MatchMode> page = new Page<>(pageQueryDTO.getPage(),pageQueryDTO.getPageSize());
+        QueryWrapper<MatchMode> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("match_a_id",matchAModeDTO.getMatchAId());
+        matchModeMapper.selectPage(page,queryWrapper);
+        return new PageResult(page.getTotal(),page.getRecords());
+    }
+
+    /**
      * 删除一个matchA的模式
      *
      * @param matchModeId
      */
     @Override
-    public void deleteMode(Long matchModeId) {
+    public void deleteMode(Integer matchModeId) {
         matchModeMapper.deleteById(matchModeId);
+    }
+
+    /**
+     * 分页条件查询matchA
+     * @param matchQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult queryPage(MatchQueryDTO matchQueryDTO) {
+        Page<MatchA> page = new Page<>(matchQueryDTO.getPage(),matchQueryDTO.getPageSize());
+        QueryWrapper<MatchA> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("event_id",matchQueryDTO.getEventId());
+        if (matchQueryDTO.getDepartment() != null) {
+            queryWrapper
+                    .eq("team_a_department",matchQueryDTO.getDepartment())
+                    .or()
+                    .eq("team_b_department",matchQueryDTO.getDepartment());
+        }
+        matchAMapper.selectPage(page,queryWrapper);
+        return new PageResult(page.getTotal(),page.getRecords());
     }
 }

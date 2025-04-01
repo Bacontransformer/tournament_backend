@@ -52,7 +52,7 @@ public class JwtTokenLeaderInterceptor implements HandlerInterceptor {
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getLeaderSecretKey(), token);
-            Long leaderId = Long.valueOf(claims.get(JwtClaimsConstant.LEADER_ID).toString());
+            Integer leaderId = Integer.valueOf(claims.get(JwtClaimsConstant.LEADER_ID).toString());
             BaseContext.setCurrentId(leaderId);
             log.info("当前领队id：", leaderId);
             //3、通过，放行

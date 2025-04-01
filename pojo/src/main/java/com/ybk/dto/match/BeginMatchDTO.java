@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BeginMatchDTO {
-    private Long matchId;
-    private Long teamId;
+    private Integer matchId;
+    private Integer teamId;
 }

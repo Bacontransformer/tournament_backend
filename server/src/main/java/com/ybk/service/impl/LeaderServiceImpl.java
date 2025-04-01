@@ -63,7 +63,7 @@ public class LeaderServiceImpl implements LeaderService {
         leader.setPassword(DigestUtils.md5DigestAsHex(leaderDTO.getPasswordFirst().getBytes()));
         leaderMapper.insert(leader);
         // 新建一个team记录
-        Long leaderId = leader.getLeaderId();
+        Integer leaderId = leader.getLeaderId();
         Team team = Team.builder()
                 .leaderId(leaderId)
                 .LeaderName(leader.getName())
@@ -164,7 +164,7 @@ public class LeaderServiceImpl implements LeaderService {
     }
 
     /**
-     * 分页查询
+     * 分页查询领队
      *
      * @param pageQueryDTO
      * @return
@@ -194,7 +194,7 @@ public class LeaderServiceImpl implements LeaderService {
      */
     @Override
     @Transactional
-    public void passLeader(List<Long> ids) {
+    public void passLeader(List<Integer> ids) {
         Leader updatedLeader = new Leader();
         updatedLeader.setIsPassed(true);
         updatedLeader.setUpdateTime(LocalDateTime.now());

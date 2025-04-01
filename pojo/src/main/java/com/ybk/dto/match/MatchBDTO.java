@@ -16,13 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchBDTO {
-    private Long matchBId;
-    private Long eventId; // 关联到活动表
+    private Integer matchBId;
+    private Integer eventId; // 关联到活动表
     private Integer venueNumber; // 场地编号
     private Integer sectionScore; // 每小节的获胜分数 x，一共有四个小节
-    private Long teamAId; // teamA的编号
-    private Long teamBId; // teamB的编号
-    private Long refereeId; // 裁判的id
+    private Integer teamAId; // teamA的编号
+    private Integer teamBId; // teamB的编号
+    private Integer refereeId; // 裁判的id
     private Integer maxSubstitutePlayer; // 最大替补人数
     private Integer minTeamAgeSum; // 最小队伍年龄和（可选规则）
     private Integer maxTeamAgeSum; // 最大队伍年龄和（可选规则）

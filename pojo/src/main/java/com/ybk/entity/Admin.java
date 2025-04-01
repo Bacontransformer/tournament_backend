@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 @TableName("admin")
 public class Admin {
     @TableId("admin_id")
-    private Long adminId;
-    private String password;
-    private String username;
-    private String name;
-    private String phone;
+    private Integer adminId; // 主键 自增
+    private String password; // 密码 非空
+    private String username; // 用户名 非空
+    private String name; // 姓名 非空
+    private String phone; // 电话号码 非空
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

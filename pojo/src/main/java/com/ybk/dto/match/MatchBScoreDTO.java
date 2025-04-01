@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchBScoreDTO {
-    private Long matchBId;
-    private Long teamId; // 分数变化的队伍id
+    private Integer matchBId;
+    private Integer teamId; // 分数变化的队伍id
     private Integer plusOrMinus; // 加分或者减分
 }

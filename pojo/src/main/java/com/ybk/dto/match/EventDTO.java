@@ -9,7 +9,7 @@ import java.time.LocalDate;
  */
 @Data
 public class EventDTO {
-    private Long eventId;
+    private Integer eventId;
     // 活动名称
     private String name;
     // 活动描述

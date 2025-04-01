@@ -11,27 +11,33 @@ public interface MatchAService {
 
     void update(MatchADTO matchADTO);
 
-    void delete(Long matchId);
+    void delete(Integer matchId);
 
     void setMatchAPlayer(MatchAPlayerDTO matchAPlayerDTO);
 
     void deleteMatchAPlayer(ClearMatchAPlayerDTO clearMatchAPlayerDTO);
 
-    MatchMode getDoingMatchADetail(Long matchModeId);
+    MatchMode getDoingMatchADetail(Integer matchModeId);
 
     PageResult getUnStartMatchABrief(PageQueryDTO pageQueryDTO);
 
     PageResult getDoingMatchABrief(PageQueryDTO pageQueryDTO);
 
-    void endMatchA(Long matchModeId);
+    void endMatchA(Integer matchModeId);
 
     PageResult getRefereeMatchMode(PageQueryDTO pageQueryDTO);
 
-    void beginMatchA(Long matchModeId);
+    void beginMatchA(Integer matchModeId);
 
     void matchAScore(MatchAScoreDTO scoreDTO);
 
     void saveMode(MatchAModeDTO matchAModeDTO);
 
-    void deleteMode(Long matchModeId);
+    void deleteMode(Integer matchModeId);
+
+    PageResult queryPage(MatchQueryDTO matchQueryDTO);
+
+    void updateMode(MatchAModeDTO matchAModeDTO);
+
+    PageResult pageMatchAMode(PageQueryDTO pageQueryDTO);
 }

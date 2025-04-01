@@ -56,12 +56,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addPathPatterns("/leader/**")
                 .addPathPatterns("/player/**")
                 .addPathPatterns("/team/**")
-                .excludePathPatterns("/leader/save")
+                .excludePathPatterns("/leader/register")
                 .excludePathPatterns("/leader/login");
         registry.addInterceptor(jwtTokenRefereeInterceptor)
                 .addPathPatterns("/referee/**")
                 .addPathPatterns("/score/**")
-                .excludePathPatterns("/referee/save")
+                .excludePathPatterns("/referee/register")
                 .excludePathPatterns("/referee/login");
     }
 //401是因为login被拦截，WebMvcConfiguration中的放行指令没有生效，将excludePathPatterns("/user/user/login")改为/**/**/login
@@ -120,6 +120,24 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .apiInfo(apiInfo)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ybk.controller.referee"))
+                .paths(PathSelectors.any())
+                .build();
+        log.info("开始生成接口文档");
+        return docket;
+    }
+
+    @Bean
+    public Docket docket4() {
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("羽毛球赛务系统接口文档")
+                .version("2.0")
+                .description("羽毛球赛务系统接口文档")
+                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("visitor接口")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ybk.controller.visitor"))
                 .paths(PathSelectors.any())
                 .build();
         log.info("开始生成接口文档");

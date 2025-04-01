@@ -19,22 +19,22 @@ import java.time.LocalDateTime;
 @TableName("match_a")
 public class MatchA {
     @TableId("match_a_id")
-    private Long matchAId;
-    private Long eventId;
-    private Long teamAId;
-    private Long teamBId;
-    private Long winnerTeamId; // 最终获胜队伍id
-    private String teamADepartment;
-    private String teamBDepartment;
-    private String winnerTeamDepartment; // 最终获胜队伍部门
-    private Integer gameCount; // 赛制局数目（1或者3）
-    private Integer winScore; // 获胜基础比分（通常是21分）
-    private Integer maxParticipationTimes; // 同一个人最多参加次数
-    private Integer minTeamAgeSum; // 最少团队年龄
-    private Integer maxTeamAgeSum; // 最大团队年龄
-    private Integer maxSubstitutePlayer; // 最大替补人数
-    private Integer teamAModeScore; // A队模式大比分
-    private Integer teamBModeScore; // B队模式大比分
+    private Integer matchAId; // 主键 自增
+    private Integer eventId; // 逻辑关联活动id 非空
+    private Integer teamAId; // 队伍a的id 非空
+    private Integer teamBId; // 队伍b的id 非空
+    private Integer winnerTeamId; // 最终获胜队伍id 可为空
+    private String teamADepartment; // 队伍a的部门 可为空
+    private String teamBDepartment; // 队伍b的部门 可为空
+    private String winnerTeamDepartment; // 最终获胜队伍部门 可为空
+    private Integer gameCount; // 赛制局数目（1或者3） 非空
+    private Integer winScore; // 获胜基础比分（通常是21分） 非空
+    private Integer maxParticipationTimes; // 同一个人最多参加次数 默认唯10
+    private Integer minTeamAgeSum; // 最少团队年龄 默认为0
+    private Integer maxTeamAgeSum; // 最大团队年龄 默认为1000
+    private Integer maxSubstitutePlayer; // 最大替补人数 默认为10
+    private Integer teamAModeScore; // A队模式大比分 默认唯0
+    private Integer teamBModeScore; // B队模式大比分 默认为0
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

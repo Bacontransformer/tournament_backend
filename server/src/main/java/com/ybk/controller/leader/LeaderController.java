@@ -70,7 +70,7 @@ public class LeaderController {
      * @return
      */
     @ApiOperation(value = "领队创建")
-    @PostMapping("/save")
+    @PostMapping("/register")
     public Result saveLeader(@RequestBody LeaderDTO leaderDto) {
         String passwordFirst = leaderDto.getPasswordFirst();
         String passwordSecond = leaderDto.getPasswordSecond();

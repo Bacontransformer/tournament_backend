@@ -21,32 +21,35 @@ import java.util.Map;
 @TableName("match_mode")
 public class MatchMode {
     @TableId("match_mode_id")
-    private Long matchModeId;
-    private Long matchAId;
-    private String mode;
-    private Integer venueNumber; // 不同模式对应的场地编号
-    private Long refereeId; // 不同模式下的裁判id
-    private Long teamAId; // a队id
-    private Long teamBId; // b队id
-    private Long modeWinnerTeamId; // 该模式获胜的队伍id
-    private LocalDateTime beginTime; // 比赛开始时间
-    private Integer status; // 0:未开始，1:进行中，2:已结束
-    private Long teamAPlayer1; // a队参赛队员1号
-    private Long teamAPlayer2; // a队参赛队员2号(不一定有)
-    private Long teamBPlayer1; // b队参赛队员1号
-    private Long teamBPlayer2; // b队参赛队员2号(不一定有)
-    private Long teamASubstitutePlayer1; // a队替补1号
-    private Long teamASubstitutePlayer2; // a队替补2号(不一定有)
-    private Long teamBSubstitutePlayer1; // b队替补1号
-    private Long teamBSubstitutePlayer2; // b队替补2号(不一定有)
-    private Integer teamARoundScore1; // teamA在某个模式下第1局的得分
-    private Integer teamARoundScore2; // teamA在某个模式下第2局的得分(不一定有第二局)
-    private Integer teamARoundScore3; // teamA在某个模式下第3局的得分(不一定有第三局)
-    private Integer teamBRoundScore1; // teamB在某个模式下第1局的得分
-    private Integer teamBRoundScore2; // teamB在某个模式下第2局的得分(不一定有第二局)
-    private Integer teamBRoundScore3; // teamB在某个模式下第3局的得分(不一定有第三局)
-    private Integer teamAGameScore; // A队某个模式的获胜局数
-    private Integer teamBGameScore; // B队某个模式的获胜局数
-    private Integer currentGame; // 某个模式当前第几局
-    private Integer currentRound; // 某个模式当前第几轮
+    private Integer matchModeId; // 主键 自增
+    private Integer matchAId; // 逻辑关联match-a的id 不可空
+    private String mode; // 模式 不可空
+    private Integer venueNumber; // 场地编号 不可空
+    private Integer refereeId; // 裁判id 不可空
+    private Integer substituteRefereeId; // 替补裁判id 可空
+    private Integer teamAId; // a队id  不可空
+    private Integer teamBId; // b队id  不可空
+    private Integer modeWinnerTeamId; // 该模式获胜的队伍id 可空
+    private LocalDateTime beginTime; // 比赛开始时间 不可空
+    private Integer status; // 0:未开始，1:进行中，2:已结束 默认为0
+    private Integer teamAPlayer1; // a队参赛队员1号 可空
+    private Integer teamAPlayer2; // a队参赛队员2号 可空
+    private Integer teamBPlayer1; // b队参赛队员1号 可空
+    private Integer teamBPlayer2; // b队参赛队员2号 可空
+    private Integer teamASubstitutePlayer1; // a队替补1号 可空
+    private Integer teamASubstitutePlayer2; // a队替补2号 可空
+    private Integer teamBSubstitutePlayer1; // b队替补1号 可空
+    private Integer teamBSubstitutePlayer2; // b队替补2号 可空
+    private Integer teamARoundScore1; // teamA第1局的得分 默认为0
+    private Integer teamARoundScore2; // teamA第2局的得分 可为空
+    private Integer teamARoundScore3; // teamA第3局的得分 可为空
+    private Integer teamBRoundScore1; // teamB第1局的得分 默认为0
+    private Integer teamBRoundScore2; // teamB第2局的得分 可为空
+    private Integer teamBRoundScore3; // teamB第3局的得分 可为空
+    private Integer teamAGameScore; // A队某个模式的获胜局数 默认为0
+    private Integer teamBGameScore; // B队某个模式的获胜局数 默认为0
+    private Integer currentGame; // 当前第几局 默认为1
+    private Integer currentRound; // 当前第几轮 默认为1
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

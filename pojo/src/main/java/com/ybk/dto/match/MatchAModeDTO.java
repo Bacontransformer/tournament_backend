@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchAModeDTO {
-    private Long matchAId; // 关联的matchA
+    private Integer matchAId; // 关联的matchA
+    private Integer matchModeId;
     private String mode; // 比赛模式
     private LocalDateTime beginTime; // 比赛时间
     private Integer venueNumber; // 场地编号

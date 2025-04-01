@@ -70,7 +70,7 @@ public class RefereeController {
      * @return
      */
     @ApiOperation(value = "裁判创建")
-    @PostMapping("/save")
+    @PostMapping("/register")
     public Result saveReferee(@RequestBody RefereeDTO refereeDTO) {
         String passwordFirst = refereeDTO.getPasswordFirst();
         String passwordSecond = refereeDTO.getPasswordSecond();
@@ -79,7 +79,7 @@ public class RefereeController {
                 return Result.error("两次输入的密码不一致");
             }
         }
-        log.info("领队创建：{}", refereeDTO);
+        log.info("裁判创建：{}", refereeDTO);
         refereeService.save(refereeDTO);
         return Result.success();
     }

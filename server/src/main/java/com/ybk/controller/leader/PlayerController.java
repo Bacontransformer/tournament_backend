@@ -70,7 +70,7 @@ public class PlayerController {
      */
     @ApiOperation("队员删除")
     @PostMapping("/delete")
-    public Result deletePlayer(List<Long> ids) {
+    public Result deletePlayer(List<Integer> ids) {
         log.info("队员删除：{}", ids);
         playerService.delete(ids);
         return Result.success();

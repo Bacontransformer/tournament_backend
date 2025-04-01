@@ -2,6 +2,8 @@ package com.ybk.controller.admin;
 
 import com.ybk.dto.match.EventDTO;
 import com.ybk.dto.PageQueryDTO;
+import com.ybk.entity.Event;
+import com.ybk.mapper.EventMapper;
 import com.ybk.result.PageResult;
 import com.ybk.result.Result;
 import com.ybk.service.EventService;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 public class EventController {
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private EventMapper eventMapper;
 
     /**
      * 活动创建
@@ -47,6 +52,14 @@ public class EventController {
         return Result.success();
     }
 
+    @ApiOperation(value = "查询某一id的活动详情")
+    @GetMapping("/{eventId}")
+    public Result<Event> getEvent(@PathVariable Integer eventId) {
+        log.info("查询某一id的活动详情:{}", eventId);
+        Event event = eventMapper.selectById(eventId);
+        return Result.success(event);
+    }
+
     /**
      * 活动删除
      * @param id
@@ -54,7 +67,7 @@ public class EventController {
      */
     @ApiOperation(value = "活动删除")
     @PostMapping("/delete")
-    public Result deleteEvent(@RequestBody Long id) {
+    public Result deleteEvent( Integer id) {
         log.info("活动删除:{}", id);
         eventService.delete(id);
         return Result.success();
@@ -66,7 +79,7 @@ public class EventController {
      * @return
      */
     @ApiOperation(value = "分页查询活动信息")
-    @GetMapping("/page-event")
+    @PostMapping("/page-event")
     public Result<PageResult> pageEvent(@RequestBody PageQueryDTO pageQueryDTO) {
         log.info("分页查询所有活动信息");
         PageResult pageResult = eventService.pageQuery(pageQueryDTO);

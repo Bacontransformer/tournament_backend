@@ -14,11 +14,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MatchAVO {
-    private Long matchAId;
-    private Long eventId;
-    private Long teamAId;
-    private Long teamBId;
-    private Long winnerTeamId; // 最终获胜队伍id
+    private Integer matchAId;
+    private Integer eventId;
+    private Integer teamAId;
+    private Integer teamBId;
+    private Integer winnerTeamId; // 最终获胜队伍id
     private String teamADepartment;
     private String teamBDepartment;
     private String winnerTeamDepartment; // 最终获胜队伍部门
@@ -35,16 +35,16 @@ public class MatchAVO {
     private List<String> modes; // 比赛模式（比如男单1，男单2，男双1，男双2）
 
     private Map<String, Integer> venueNumber; // 不同模式对应的场地编号
-    private Map<String,Long> refereeId; // 不同模式下的裁判id
+    private Map<String,Integer> refereeId; // 不同模式下的裁判id
     private Map<String, LocalDateTime> beginTimes; // 比赛开始时间
-    private Map<String, Long> teamAPlayer1; // a队参赛队员1号
-    private Map<String, Long> teamAPlayer2; // a队参赛队员2号(不一定有)
-    private Map<String, Long> teamBPlayer1; // b队参赛队员1号
-    private Map<String, Long> teamBPlayer2; // b队参赛队员2号(不一定有)
-    private Map<String, Long> teamASubstitutePlayer1; // a队替补1号
-    private Map<String, Long> teamASubstitutePlayer2; // a队替补2号(不一定有)
-    private Map<String, Long> teamBSubstitutePlayer1; // b队替补1号
-    private Map<String, Long> teamBSubstitutePlayer2; // b队替补2号(不一定有)
+    private Map<String, Integer> teamAPlayer1; // a队参赛队员1号
+    private Map<String, Integer> teamAPlayer2; // a队参赛队员2号(不一定有)
+    private Map<String, Integer> teamBPlayer1; // b队参赛队员1号
+    private Map<String, Integer> teamBPlayer2; // b队参赛队员2号(不一定有)
+    private Map<String, Integer> teamASubstitutePlayer1; // a队替补1号
+    private Map<String, Integer> teamASubstitutePlayer2; // a队替补2号(不一定有)
+    private Map<String, Integer> teamBSubstitutePlayer1; // b队替补1号
+    private Map<String, Integer> teamBSubstitutePlayer2; // b队替补2号(不一定有)
     private Map<String, Integer> teamARoundScore1; // teamA在某个模式下第1局的得分
     private Map<String, Integer> teamARoundScore2; // teamA在某个模式下第2局的得分(不一定有第二局)
     private Map<String, Integer> teamARoundScore3; // teamA在某个模式下第3局的得分(不一定有第三局)

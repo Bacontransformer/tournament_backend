@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClearMatchAPlayerDTO {
-    private Integer matchModeId;
-    private Integer teamId;
+public class MatchQueryDTO {
+    private Integer eventId;
+    private String department;
+    private int page;
+    private int pageSize;
 }
