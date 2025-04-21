@@ -1,0 +1,60 @@
+{
+  "groups": [
+    {
+      "name": "ybk.jwt",
+      "type": "com.ybk.properties.JwtProperties",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ybk.jwt.admin-secret-key",
+      "type": "java.lang.String",
+      "description": "admin生成jwt令牌相关配置",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.admin-token-name",
+      "type": "java.lang.String",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.admin-ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.leader-secret-key",
+      "type": "java.lang.String",
+      "description": "leader生成jwt令牌相关配置",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.leader-token-name",
+      "type": "java.lang.String",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.leader-ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.referee-secret-key",
+      "type": "java.lang.String",
+      "description": "leader生成jwt令牌相关配置",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.referee-token-name",
+      "type": "java.lang.String",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    },
+    {
+      "name": "ybk.jwt.referee-ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.ybk.properties.JwtProperties"
+    }
+  ],
+  "hints": []
+}
